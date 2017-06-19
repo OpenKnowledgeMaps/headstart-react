@@ -5,14 +5,30 @@
 import React from 'react';
 
 import Node from './Node';
+import {observer} from 'mobx-react';
 
-const Nodes = ({ nodes }) => (
-  <g>{nodes.map((node, index) =>
-    <Node           key={index}
-                    id={index}
-                    node={node}/>
-  )}
-  </g>
+function sortNodes(a, b) {
+  if (a.hover === true) {
+    return 1;
+  }
+  if (b.hover === true) {
+    return -1;
+  }
+  return 0;
+}
+
+const Nodes =
+  observer(
+    ({ nodes }) => (
+      <g>{nodes.sort(sortNodes).map((node, index) =>
+        <Node           key={node.id}
+                        id={node.id}
+                        node={node}
+                        nodes={nodes}
+        />
+      )}
+      </g>
+    )
 );
 
 export default Nodes;

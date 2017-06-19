@@ -11,16 +11,22 @@ const Node =
         "stroke": "#000",
         "strokeWidth": "1.5px"
       };
-
       _style.fillOpacity = (props.node.hover ? "1.0" : "0.2");
-      return (<circle
-        onMouseOver={logicStore.onBubbleMouseOver.bind(this, props.id)}
-        onMouseOut={logicStore.onBubbleMouseOut.bind(this, props.id)}
-        r={props.node.r}
-        cx={props.node.x}
-        cy={props.node.y}
-        style={_style}
-      />);
+      return (
+        <g onMouseOver={logicStore.onBubbleMouseOver.bind(this, props.node)}
+           onMouseOut={logicStore.onBubbleMouseOut.bind(this, props.node)}
+           onClick={logicStore.onBubbleClick.bind(this, props.node)}>
+          <circle
+          r={props.node.r}
+          cx={props.node.x}
+          cy={props.node.y}
+          style={_style}
+          />
+          <text  x={props.node.x - 25} y={props.node.y + 6} fontFamily="Verdana" fontSize="12">
+            {props.node.id}/{props.node.area}
+          </text>
+        </g>
+          );
     }
   )
 export default Node;

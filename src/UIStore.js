@@ -5,18 +5,20 @@
 import { extendObservable } from "mobx";
 import data from './Data';
 
-class HeadstartStore {
+class UIStore {
 
   constructor() {
     extendObservable(this, {
       data : data,
-      currentMouseOverBubbleID : null,
       svgWidth: 900,
       svgHeight: 900
     });
+
+    this.isZoomed = false;
+    this.zoomedInNode = null;
   }
 }
 
-var store = window.store = new HeadstartStore();
+let uiStore = window.store = new UIStore();
 
-export default store;
+export default uiStore;
