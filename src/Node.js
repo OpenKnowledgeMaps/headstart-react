@@ -15,7 +15,7 @@ const Node =
       return (
         <g onMouseOver={logicStore.onBubbleMouseOver.bind(this, props.node)}
            onMouseOut={logicStore.onBubbleMouseOut.bind(this, props.node)}
-           onClick={logicStore.onBubbleClick.bind(this, props.node)}>
+           onClick={logicStore.onBubbleClick.bind(logicStore, props.node)}>
           <circle
           r={props.node.r}
           cx={props.node.x}

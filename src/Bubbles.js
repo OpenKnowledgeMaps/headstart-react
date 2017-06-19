@@ -11,7 +11,7 @@ const Bubbles =
         style={{"border": "2px solid black", "margin": "20px"}}
         width={props.store.svgWidth}
         height={props.store.svgHeight}
-        onClick={logicStore.onSVGClick.bind(this, props.store.data.nodes)}
+        onClick={logicStore.onSVGClick.bind(logicStore, props.store.data.nodes)}
         >
         <Nodes nodes={props.store.data.nodes} />
       </svg>
