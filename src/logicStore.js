@@ -1,18 +1,22 @@
-import {forceSimulation, forceCollide, forceManyBody, forceCenter} from 'd3-force';
+import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, forceY} from 'd3-force';
 import uiStore from './UIStore';
 
 class LogicStore {
   onBubbleClick(node) {
-    console.log("Bubble " + node.id + " with area " + node.area + " clicked");
-    uiStore.zoomedInNode = node.id;
     if (node.selected === false) {
       this.zoomInOn(node);
       node.selected = true;
+      uiStore.data.papers
+        .filter((paper) => paper.area === node.area)
+        .map( (paper) => paper.active = true )
     }
     else
     {
       this.resetCoords();
       node.selected = false;
+      uiStore.data.papers
+        .filter((paper) => paper.area === node.area)
+        .map( (paper) => paper.active = false )
     }
   }
 
@@ -26,10 +30,16 @@ class LogicStore {
 
   onBubbleMouseOver(node) {
     node.hover = true;
+    uiStore.data.papers
+      .filter((paper) => paper.area === node.area)
+      .map( (paper) => paper.active = true )
   }
 
   onBubbleMouseOut(node) {
     node.hover = false;
+    uiStore.data.papers
+      .filter((paper) => paper.area === node.area)
+      .map( (paper) => paper.active = false )
   }
 
   startForceSim() {
@@ -39,11 +49,35 @@ class LogicStore {
       .alphaMin(0.3)
       .force("charge", forceManyBody().strength(1000))
       .force("center", forceCenter(450, 450))
-      .force("collision", forceCollide(70))
+      .force("collision", forceCollide(100))
       .on('end', () => {
         console.log('Force Simulation Done');
         saveCoords();
+        uiStore.data.areas.map((area) => {
+          const alphaMin = 0.6;
+          let bubbleX = uiStore.data.nodes.find((node) => node.area === area).x - 20;
+          let bubbleY = uiStore.data.nodes.find((node) => node.area === area).y - 20;
+          forceSimulation()
+            .alphaMin(alphaMin)
+            .nodes(uiStore.data.papers.filter((paper) => paper.area === area))
+            .force("positioning", forceX(bubbleX).strength(0.5))
+            .force("collision", forceCollide(15))
+            .on('tick', () => {
+              saveCoords();
+            });
+          forceSimulation()
+            .alphaMin(alphaMin)
+            .nodes(uiStore.data.papers.filter((paper) => paper.area === area))
+            .force("positioning", forceY(bubbleY).strength(0.5))
+            // .force("center", forceCenter(bubbleX, bubbleY))
+            .force("collision", forceCollide(25))
+            .on('tick', () => {
+              saveCoords();
+            });
+          return 0;
+        })
       });
+
   }
 
   onAppStart() {
@@ -57,6 +91,11 @@ class LogicStore {
       node.orig_r = node.r;
       return 0;
     });
+    uiStore.data.papers.map((paper) => {
+      paper.orig_x = paper.x;
+      paper.orig_y = paper.y;
+      return 0;
+    });
   }
 
   resetCoords() {
@@ -64,6 +103,14 @@ class LogicStore {
       node.x = node.orig_x;
       node.y = node.orig_y;
       node.r = node.orig_r;
+      return 0;
+    });
+    uiStore.data.papers.map((paper, index) => {
+      paper.x = paper.orig_x;
+      paper.y = paper.orig_y;
+      paper.width = paper.orig_width;
+      paper.height = paper.orig_height;
+      paper.fontsize = paper.orig_fontsize;
       return 0;
     });
   }
@@ -77,6 +124,15 @@ class LogicStore {
       node.y = zoomFactor*node.orig_y + translationVecY;
       node.r = zoomFactor*node.orig_r;
       node.selected = false;
+      return 0;
+    });
+    uiStore.data.papers.map((paper, index) => {
+      paper.x = zoomFactor*paper.orig_x + translationVecX;
+      paper.y = zoomFactor*paper.orig_y + translationVecY;
+      paper.width = zoomFactor*paper.orig_width;
+      paper.height = zoomFactor*paper.orig_height;
+      paper.fontsize = zoomFactor*paper.orig_fontsize;
+      paper.selected = false;
       return 0;
     });
   }

@@ -8,10 +8,10 @@ import Node from './Node';
 import {observer} from 'mobx-react';
 
 function sortNodes(a, b) {
-  if (a.hover === true) {
+  if (a.hover || a.selected) {
     return 1;
   }
-  if (b.hover === true) {
+  if (b.hover || b.selected) {
     return -1;
   }
   return 0;

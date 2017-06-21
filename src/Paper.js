@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { observer } from 'mobx-react';
 
-class Paper extends Component {
-  render() {
-    return (
+const Paper =
+  observer(
+    (props) =>
+      <g>
       <rect
-        x={this.props.x}
-        y={this.props.y}
-        width="18"
-        height="30"
+        x={props.paper.x}
+        y={props.paper.y}
+        width={props.paper.width}
+        height={props.paper.height}
         rx="3"
         ry="3"
         style={{
@@ -16,8 +18,10 @@ class Paper extends Component {
           "stroke":"#000",
           "strokeWidth":"1px"
         }}/>
-    )
-  }
-}
+        <text  x={props.paper.x + props.paper.width*0.5} y={props.paper.y + props.paper.height*0.5} fontFamily="Verdana" fontSize={props.paper.fontsize} textAnchor="middle">
+          {props.paper.area}
+        </text>
+      </g>
+  )
 
 export default Paper;
