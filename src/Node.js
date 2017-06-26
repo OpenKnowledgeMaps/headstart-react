@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import logicStore from './logicStore';
+import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from './BubbleEvents';
 
 const Node =
   observer(
@@ -12,10 +12,14 @@ const Node =
         "strokeWidth": "1.px"
       };
       let text_style = {
-        "display": "inline"
+        "display": "block"
       };
-      if (props.node.hover || props.node.selected ) {
-        circle_style.fillOpacity = "0.2";
+      if (props.node.active) {
+        circle_style.fillOpacity = "1";
+        text_style.display = "none";
+      }
+      else if (props.node.selected) {
+        circle_style.fillOpacity = "1";
         text_style.display = "none";
       }
       else
@@ -24,9 +28,11 @@ const Node =
         text_style.display = "inline";
       }
       return (
-        <g onMouseOver={logicStore.onBubbleMouseOver.bind(this, props.node)}
-           onMouseOut={logicStore.onBubbleMouseOut.bind(this, props.node)}
-           onClick={logicStore.onBubbleClick.bind(logicStore, props.node)}>
+        <g onMouseEnter={onBubbleMouseEnter.bind(this, props.node)}
+           onMouseLeave={onBubbleMouseLeave.bind(this, props.node)}
+           onClick={onBubbleClick.bind(this, props.node)}
+           onDoubleClick={onBubbleDoubleClick.bind(this, props.node)}
+        >
 
           <circle
             r={props.node.r}
@@ -34,19 +40,17 @@ const Node =
             cy={props.node.y}
             style={circle_style}
           />
-
-          <text
-            x={props.node.x}
-            y={props.node.y + 6}
-            fontFamily="Verdana"
+          <foreignObject
+            x={props.node.x - (props.node.r - 10)*0.25}
+            y={props.node.y - (props.node.r - 10)*0.25}
+            width={props.node.r - 10}
+            height={props.node.r - 10}
             fontSize="12"
-            fill="white"
-            stroke="black"
-            textAnchor="middle"
-            style={text_style}>
-              {props.node.id}/{props.node.area}
-          </text>
-
+            fontFamily="Verdana"
+            style={text_style}
+          >
+            <p>{props.node.area}</p>
+          </foreignObject>
         </g>
           );
     }

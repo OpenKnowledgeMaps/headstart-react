@@ -2,78 +2,37 @@ import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, force
 import uiStore from './UIStore';
 
 class LogicStore {
-  onBubbleClick(node) {
-    if (node.selected === false) {
-      this.zoomInOn(node);
-      node.selected = true;
-      uiStore.data.papers
-        .filter((paper) => paper.area === node.area)
-        .map( (paper) => paper.active = true )
-    }
-    else
-    {
-      this.resetCoords();
-      node.selected = false;
-      uiStore.data.papers
-        .filter((paper) => paper.area === node.area)
-        .map( (paper) => paper.active = false )
-    }
-  }
-
-  onSVGClick(nodes) {
-    const hoveringBubble = nodes.some((node) => node.hover    === true);
-    const nodeSelected =   nodes.some((node) => node.selected === true);
-    if (!hoveringBubble && nodeSelected) {
-       this.resetCoords();
-    }
-  }
-
-  onBubbleMouseOver(node) {
-    node.hover = true;
-    uiStore.data.papers
-      .filter((paper) => paper.area === node.area)
-      .map( (paper) => paper.active = true )
-  }
-
-  onBubbleMouseOut(node) {
-    node.hover = false;
-    uiStore.data.papers
-      .filter((paper) => paper.area === node.area)
-      .map( (paper) => paper.active = false )
-  }
-
   startForceSim() {
     let saveCoords = this.saveInitialCoords.bind(this);
     forceSimulation()
       .nodes(uiStore.data.nodes)
-      .alphaMin(0.3)
-      .force("charge", forceManyBody().strength(1000))
-      .force("center", forceCenter(450, 450))
-      .force("collision", forceCollide(100))
+      .alphaMin(uiStore.forceSimParameters.bubblesAlphaMin)
+      .force("charge", forceManyBody().strength(uiStore.forceSimParameters.manyBodyForceStrength))
+      .force("center", forceCenter(uiStore.svgWidth*0.5, uiStore.svgHeight*0.5))
+      .force("collision", forceCollide(uiStore.forceSimParameters.collisionForceRadius))
       .on('end', () => {
-        console.log('Force Simulation Done');
         saveCoords();
         uiStore.data.areas.map((area) => {
-          const alphaMin = 0.6;
-          let bubbleX = uiStore.data.nodes.find((node) => node.area === area).x - 20;
-          let bubbleY = uiStore.data.nodes.find((node) => node.area === area).y - 20;
+          const alphaMin = uiStore.forceSimParameters.papersAlphaMin;
+          let bubbleX = uiStore.data.nodes.find((node) => node.area === area).x - uiStore.bubbleCenterOffset;
+          let bubbleY = uiStore.data.nodes.find((node) => node.area === area).y - uiStore.bubbleCenterOffset;
           forceSimulation()
             .alphaMin(alphaMin)
             .nodes(uiStore.data.papers.filter((paper) => paper.area === area))
-            .force("positioning", forceX(bubbleX).strength(0.5))
-            .force("collision", forceCollide(15))
+            .force("positioning", forceX(bubbleX).strength(uiStore.forceSimParameters.centerXForceStrength))
+            .force("collision", forceCollide(uiStore.paperWidth - 5))
             .on('tick', () => {
-              saveCoords();
+              // saveCoords();
             });
           forceSimulation()
             .alphaMin(alphaMin)
             .nodes(uiStore.data.papers.filter((paper) => paper.area === area))
-            .force("positioning", forceY(bubbleY).strength(0.5))
+            .force("positioning", forceY(bubbleY).strength(uiStore.forceSimParameters.centerXForceStrength))
             // .force("center", forceCenter(bubbleX, bubbleY))
-            .force("collision", forceCollide(25))
+            .force("collision", forceCollide(uiStore.paperHeight - 15))
             .on('tick', () => {
-              saveCoords();
-            });
+              // saveCoords();
+            }).on('end', () => { uiStore.forceSimIsDone = true; saveCoords(); });
           return 0;
         })
       });
@@ -116,9 +75,9 @@ class LogicStore {
   }
 
   zoomInOn(node) {
-    const zoomFactor = node.zoomFactor = 450./node.orig_r;
-    const translationVecX = node.translationVecX = 450. - zoomFactor*node.orig_x;
-    const translationVecY = node.translationVecY = 450. - zoomFactor*node.orig_y;
+    const zoomFactor = node.zoomFactor = uiStore.svgWidth*0.5/node.orig_r;
+    const translationVecX = node.translationVecX = uiStore.svgWidth*0.5 - zoomFactor*node.orig_x;
+    const translationVecY = node.translationVecY = uiStore.svgWidth*0.5 - zoomFactor*node.orig_y;
     uiStore.data.nodes.map((node, index) => {
       node.x = zoomFactor*node.orig_x + translationVecX;
       node.y = zoomFactor*node.orig_y + translationVecY;

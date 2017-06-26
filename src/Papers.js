@@ -8,10 +8,20 @@ import Paper from './Paper';
 import {observer} from 'mobx-react';
 
 function sortPapers(a, b) {
-  if (a.active) {
+  if (a.active || a.selected) {
     return 1;
   }
-  if (b.active) {
+  if (b.active || b.selected) {
+    return -1;
+  }
+  return 0;
+}
+
+function sortByHover(a,b) {
+  if (a.hover) {
+    return 1;
+  }
+  if (b.hover) {
     return -1;
   }
   return 0;
@@ -21,7 +31,7 @@ const Papers =
   observer(
     ({papers}) =>
       (<g>
-      {papers.sort(sortPapers).map((paper, index) =>
+      {papers.sort(sortPapers).sort(sortByHover).map((paper, index) =>
         <Paper
           key={index}
           paper={paper}
@@ -31,6 +41,4 @@ const Papers =
       )
   );
 
-export default Papers;/**
- * Created by rbachleitner on 6/20/17.
- */
+export default Papers;

@@ -7,11 +7,21 @@ import React from 'react';
 import Node from './Node';
 import {observer} from 'mobx-react';
 
-function sortNodes(a, b) {
-  if (a.hover || a.selected) {
+function sortByActive(a, b) {
+  if (a.active) {
     return 1;
   }
-  if (b.hover || b.selected) {
+  if (b.active) {
+    return -1;
+  }
+  return 0;
+}
+
+function sortBySelected(a, b) {
+  if (a.selected) {
+    return 1;
+  }
+  if (b.selected) {
     return -1;
   }
   return 0;
@@ -20,7 +30,7 @@ function sortNodes(a, b) {
 const Nodes =
   observer(
     ({ nodes }) => (
-      <g>{nodes.sort(sortNodes).map((node, index) =>
+      <g>{nodes.sort(sortByActive).sort(sortBySelected).map((node, index) =>
         <Node           key={node.id}
                         id={node.id}
                         node={node}
