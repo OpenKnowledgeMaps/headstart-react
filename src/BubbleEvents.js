@@ -2,40 +2,42 @@
  * Created by rbachleitner on 6/26/17.
  */
 import uiStore from './UIStore';
-import logicStore from './logicStore';
 
 function onBubbleClick(node)
 {
   if (uiStore.forceSimIsDone) {
     if (node.selected === false) {
-      logicStore.zoomInOn(node);
+      uiStore.data.nodes.forEach((node) => node.selected = false);
       node.selected = true;
-      uiStore.data.papers
-        .filter((paper) => paper.area === node.area)
-        .map((paper) => paper.selected = true)
+      uiStore.papersStore.selectedArea = node.area;
+    }
+    else
+    {
+      uiStore.papersStore.clickedPaper = null;
     }
   }
 }
 
 function onBubbleDoubleClick(node)
 {
-  logicStore.resetCoords();
-  node.selected = false;
-  uiStore.data.papers
-    .filter((paper) => paper.area === node.area)
-    .map( (paper) => paper.selected = false )
+  if (uiStore.forceSimIsDone && node.selected === true) {
+    node.selected = false;
+    uiStore.papersStore.papers
+      .forEach( (paper) => {
+        paper.selected = false;
+        paper.listvisible = true;
+      });
+  }
 }
 
 function onBubbleMouseEnter(node) {
   if (uiStore.forceSimIsDone) {
-    uiStore.data.nodes.map((node) => node.active = false);
-    uiStore.data.nodes.map((node) => node.hover = false);
-    uiStore.data.papers.map((paper) => paper.active = false);
+    uiStore.data.nodes.forEach((node) => node.active = false);
+    uiStore.data.nodes.forEach((node) => node.hover = false);
     node.hover = true;
     node.active = true;
-    uiStore.data.papers.filter((paper) => paper.area === node.area)
-      .map((paper) => paper.active = true);
-    uiStore.data.papers.map((paper) => paper.hover = false);
+    uiStore.papersStore.activeArea = node.area;
+    uiStore.papersStore.papers.forEach((paper) => paper.hover = false);
   }
 }
 

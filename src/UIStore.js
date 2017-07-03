@@ -2,14 +2,18 @@
  * Created by rbachleitner on 5/24/17.
  */
 
-import { extendObservable } from "mobx";
+import { extendObservable, autorun } from "mobx";
 import data from './Data';
+import PapersModel from './PapersModel';
+import logicStore from './logicStore';
 
 class UIStore {
-
   constructor() {
+    let papersModel = new PapersModel(data);
+    this.isZoomed = false;
+    this.papersStore = papersModel;
     extendObservable(this, {
-      data : data,
+      data : { nodes: data.nodes, areas: data.areas },
       svgWidth: 900,
       svgHeight: 900,
       forceSimParameters: {
@@ -24,14 +28,53 @@ class UIStore {
       bubbleCenterOffset: 20,
       paperWidth: 26,
       paperHeight: 40,
-      forceSimIsDone: false
+      forceSimIsDone: false,
+      zoomFactor: 1.,
+      translationVecX: 0.,
+      translationVecY: 0.,
+      searchString: "",
+      get extendedSearchString() {
+        return this.searchString + "extended";
+      },
+      set extendedSearchString(value) {
+        this.searchString = value + "extended";
+      }
     });
 
-    this.isZoomed = false;
-    this.zoomedInNode = null;
-  }
-}
+    }
 
+    disposer()
+    {
+      autorun(() => {
+        if ((this.papersStore.hasSelectedPapers ||
+            this.data.nodes.some((node) => node.selected)) &&
+            this.isZoomed === false) {
+          console.log("Zoomin");
+          this.isZoomed = true;
+          let node = this.data.nodes.find((node) => node.selected);
+          logicStore.updateZoomState(node);
+        } else if (!this.papersStore.hasSelectedPapers && this.isZoomed === true) {
+          console.log("Zoomout");
+          this.isZoomed = false;
+          logicStore.resetZoomState();
+        }
+      });
+    }
+
+  resetPaperFlags() {
+    this.papersStore.papers.forEach((paper) =>
+    {
+      paper.selected = false;
+      paper.listvisible = true;
+      paper.clicked = false;
+    });
+  }
+
+}
 let uiStore = window.store = new UIStore();
+uiStore.papersStore.disposer();
+uiStore.disposer();
+
+// assignIn(uiStore, new PapersModel(data));
 
 export default uiStore;

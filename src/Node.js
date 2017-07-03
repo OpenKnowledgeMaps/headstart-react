@@ -1,6 +1,7 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from './BubbleEvents';
+import uiStore from './UIStore';
 
 const Node =
   observer(
@@ -11,48 +12,49 @@ const Node =
         "stroke": "#333",
         "strokeWidth": "1.px"
       };
+
       let text_style = {
         "display": "block"
       };
-      if (props.node.active) {
+
+      if (props.node.active || props.node.selected) {
         circle_style.fillOpacity = "1";
         text_style.display = "none";
       }
-      else if (props.node.selected) {
-        circle_style.fillOpacity = "1";
-        text_style.display = "none";
-      }
-      else
-      {
+      else {
         circle_style.fillOpacity = "0.8";
         text_style.display = "inline";
       }
+
+      const x_ = uiStore.zoomFactor*props.node.x + uiStore.translationVecX;
+      const y_ = uiStore.zoomFactor*props.node.y + uiStore.translationVecY;
+      const r_ = uiStore.zoomFactor*props.node.r;
+
       return (
         <g onMouseEnter={onBubbleMouseEnter.bind(this, props.node)}
            onMouseLeave={onBubbleMouseLeave.bind(this, props.node)}
            onClick={onBubbleClick.bind(this, props.node)}
            onDoubleClick={onBubbleDoubleClick.bind(this, props.node)}
         >
-
           <circle
-            r={props.node.r}
-            cx={props.node.x}
-            cy={props.node.y}
+            r={r_}
+            cx={x_}
+            cy={y_}
             style={circle_style}
           />
           <foreignObject
-            x={props.node.x - (props.node.r - 10)*0.25}
-            y={props.node.y - (props.node.r - 10)*0.25}
-            width={props.node.r - 10}
-            height={props.node.r - 10}
+            x={x_ - r_}
+            y={y_ - r_}
+            width={2.*r_}
+            height={2.*r_}
             fontSize="12"
             fontFamily="Verdana"
             style={text_style}
           >
-            <p>{props.node.area}</p>
+            <p style={{textAlign: "center", marginTop:(r_ - 5) }}>{props.node.area}</p>
           </foreignObject>
         </g>
-          );
+      );
     }
-  )
+  );
 export default Node;

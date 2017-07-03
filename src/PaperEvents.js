@@ -4,33 +4,30 @@
 import uiStore from './UIStore';
 
 function onPaperMouseEnter(paper) {
-  if (uiStore.forceSimIsDone) {
-    const paperZoomFactor = uiStore.paperZoomFactor
-    if (!paper.zoomed && paper.selected) {
-      paper.width = paper.width * paperZoomFactor;
-      paper.height = paper.height * paperZoomFactor;
-      paper.fontsize = paper.fontsize * paperZoomFactor;
-      paper.zoomed = true;
-    }
-    if (!paper.hover) {
-      paper.hover = true;
-    }
+  if (uiStore.forceSimIsDone && paper.selected) {
+    paper.zoomed = true;
   }
+  paper.hover = true;
 }
 
 function onPaperMouseLeave(paper) {
+  if (uiStore.forceSimIsDone && paper.selected) {
+    paper.zoomed = false;
+  }
+  paper.hover = false;
+}
+
+function onPaperClick(paper) {
+  let node = uiStore.data.nodes.find((node) => node.area === paper.area);
   if (uiStore.forceSimIsDone) {
-    const paperZoomFactor = uiStore.paperZoomFactor;
-    if (paper.zoomed && paper.selected) {
-      paper.width = paper.width / paperZoomFactor;
-      paper.height = paper.height / paperZoomFactor;
-      paper.fontsize = paper.fontsize / paperZoomFactor;
-      paper.zoomed = false;
+    if (node.selected === true) {
+      uiStore.papersStore.clickedPaper = paper;
     }
-    if (paper.hover) {
-      paper.hover = false;
+    if (node.selected === false && paper.selected === false) {
+      node.selected = true;
+      uiStore.papersStore.selectedArea = (paper.area);
     }
   }
 }
 
-export {onPaperMouseLeave, onPaperMouseEnter};
+export {onPaperMouseLeave, onPaperMouseEnter, onPaperClick};
