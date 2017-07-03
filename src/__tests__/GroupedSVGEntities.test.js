@@ -1,8 +1,8 @@
 /**
  * Created by rbachleitner on 7/3/17.
  */
-import GroupedSVGEntities from './GroupedSVGEntities';
-import EntityModel from './EntityModel';
+import GroupedSVGEntities from '../models/GroupedSVGEntities';
+import EntityModel from '../models/EntityModel';
 
 const entities =  {entities:  [{
     readers: 243,

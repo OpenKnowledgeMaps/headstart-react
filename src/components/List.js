@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import ListEntry from './ListEntry';
-import uiStore from './UIStore';
+import uiStore from '../models/UIStore';
 import { observer } from 'mobx-react';
 
 function hasSubstring(listEntry) {

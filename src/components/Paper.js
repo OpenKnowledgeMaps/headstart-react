@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from './PaperEvents';
-import logicStore from './logicStore';
-import uiStore from './UIStore';
+import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../models/PaperEvents';
+import logicStore from '../models/logicStore';
+import uiStore from '../models/UIStore';
 //
 // onMouseOut={logicStore.onPaperMouseOut.bind(logicStore, props.paper)}
 const Paper =

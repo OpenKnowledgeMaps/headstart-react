@@ -3,7 +3,7 @@
  */
 
 import { extendObservable, autorun } from "mobx";
-import data from './Data';
+import data from '../static/Data';
 import PapersModel from './PapersModel';
 import logicStore from './logicStore';
 

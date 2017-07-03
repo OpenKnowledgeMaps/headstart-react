@@ -1,7 +1,7 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from './BubbleEvents';
-import uiStore from './UIStore';
+import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../models/BubbleEvents';
+import uiStore from '../models/UIStore';
 
 const Node =
   observer(

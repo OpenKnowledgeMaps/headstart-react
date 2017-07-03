@@ -1,8 +1,8 @@
 /**
  * Created by rbachleitner on 6/27/17.
  */
-import uiStore from './UIStore';
-import logicStore from './logicStore';
+import uiStore from '../models/UIStore';
+import logicStore from '../models/logicStore';
 
 function onListClick(paper) {
   uiStore.papersStore.papers.forEach((paper) => paper.listvisible = false);

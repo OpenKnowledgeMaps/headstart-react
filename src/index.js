@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import uiStore from './UIStore';
+import App from './components/App';
+import uiStore from './models/UIStore';
 import './index.css';
 
 

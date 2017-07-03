@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Bubbles from './Bubbles';
-import logicStore from './logicStore';
+import logicStore from '../models/logicStore';
 
 class App extends Component {
     componentDidMount() {
