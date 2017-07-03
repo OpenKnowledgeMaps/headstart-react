@@ -13,7 +13,7 @@ function onBubbleClick(node)
     }
     else
     {
-      uiStore.papersStore.clickedPaper = null;
+      uiStore.papersStore.clickedEntity = null;
     }
   }
 }

@@ -21,7 +21,7 @@ function onPaperClick(paper) {
   let node = uiStore.data.nodes.find((node) => node.area === paper.area);
   if (uiStore.forceSimIsDone) {
     if (node.selected === true) {
-      uiStore.papersStore.clickedPaper = paper;
+      uiStore.papersStore.clickedEntity = paper;
     }
     if (node.selected === false && paper.selected === false) {
       node.selected = true;

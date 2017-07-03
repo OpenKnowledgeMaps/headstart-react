@@ -75,6 +75,4 @@ let uiStore = window.store = new UIStore();
 uiStore.papersStore.disposer();
 uiStore.disposer();
 
-// assignIn(uiStore, new PapersModel(data));
-
 export default uiStore;

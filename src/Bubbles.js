@@ -8,7 +8,6 @@ const Bubbles =
   observer(
     (props) => (
       <div style={{height: "900px", width: "1304px"}}>
-        <p>{props.store.extendedSearchString}</p>
         <Chart store={props.store}/>
         <List />
       </div>
