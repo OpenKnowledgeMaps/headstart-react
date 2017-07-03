@@ -57,6 +57,11 @@ class GroupedSVGEntities {
         });
       },
 
+      set hoveredEntity(entity) {
+        this.allOtherEntitiesExcept(entity).forEach((entity) => entity.hover = false);
+        if (entity !== null) entity.hover = true;
+      },
+
       set clickedEntity(entity) {
         if (entity === null) this.entities.forEach((entity) => entity.clicked = false);
         else {
@@ -74,11 +79,13 @@ class GroupedSVGEntities {
   }
 
   entitiesInArea(area) {
-    return this.entities.filter((entity) => entity.area === area);
+    if (area !== null) return this.entities.filter((entity) => entity.area === area);
+    return [];
   }
 
   entitiesOutsideArea(area) {
-    return this.entities.filter((entity) => entity.area !== area);
+    if (area !== null) return this.entities.filter((entity) => entity.area !== area);
+    return this.entities;
   }
 
   disposer() {

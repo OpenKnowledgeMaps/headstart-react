@@ -5,15 +5,19 @@
 import { extendObservable, autorun } from "mobx";
 import data from '../static/Data';
 import PapersModel from './PapersModel';
+import NodeModel from './NodeModel';
+import GroupedSVGEntities from './GroupedSVGEntities';
 import logicStore from './logicStore';
 
 class UIStore {
   constructor() {
     let papersModel = new PapersModel(data);
+    let nodesModel = new GroupedSVGEntities(data, NodeModel);
     this.isZoomed = false;
     this.papersStore = papersModel;
+    this.nodesStore = nodesModel;
     extendObservable(this, {
-      data : { nodes: data.nodes, areas: data.areas },
+      data : { areas: data.areas },
       svgWidth: 900,
       svgHeight: 900,
       forceSimParameters: {
@@ -47,14 +51,12 @@ class UIStore {
     {
       autorun(() => {
         if ((this.papersStore.hasSelectedPapers ||
-            this.data.nodes.some((node) => node.selected)) &&
-            this.isZoomed === false) {
-          console.log("Zoomin");
+            this.nodesStore.hasSelectedEntities)) {
           this.isZoomed = true;
-          let node = this.data.nodes.find((node) => node.selected);
-          logicStore.updateZoomState(node);
-        } else if (!this.papersStore.hasSelectedPapers && this.isZoomed === true) {
-          console.log("Zoomout");
+          let node = this.nodesStore.selectedEntities;
+          if (node.length > 0) logicStore.updateZoomState(node[0]);
+        } else if (!(this.papersStore.hasSelectedPapers && this.nodesStore.hasSelectedEntities)
+            && this.isZoomed === true) {
           this.isZoomed = false;
           logicStore.resetZoomState();
         }

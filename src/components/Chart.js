@@ -9,18 +9,20 @@ import {onSVGClick, onSVGMouseOver} from '../models/SVGEvents';
 
 const Chart =
   observer(
-    (props) => (
+    ({store}) => (
       <div style={{float: "left", display: "block"}}>
         <svg
-          width={props.store.svgWidth}
-          height={props.store.svgHeight}
-          onClick={onSVGClick.bind(this, props.store.data.nodes)}
+          width={store.svgWidth}
+          height={store.svgHeight}
+          onClick={onSVGClick.bind(this, store.nodesStore.entities)}
           onMouseOver={onSVGMouseOver.bind(this)}
         >
           <g>
-            <Papers papers={props.store.papersStore.papers.filter((paper) => paper.active === false)} />
-            <Nodes nodes={props.store.data.nodes} />
-            <Papers papers={props.store.papersStore.papers.filter((paper) => ((paper.active === true) || (paper.selected === true)))} />
+            <Papers store={store} papers={store.papersStore.flaglessPapers} />
+            <Nodes store={store} nodes={store.nodesStore} />
+            <Papers store={store} papers={store.papersStore.activePapers} />
+            <Papers store={store} papers={store.papersStore.selectedPapers} />
+            <Papers store={store} papers={store.papersStore.hoveredPaper} />
           </g>
         </svg>
       </div>

@@ -7,7 +7,7 @@ class LogicStore {
     let saveCoords = this.saveInitialCoords.bind(this);
 
     forceSimulation()
-      .nodes(uiStore.data.nodes)
+      .nodes(uiStore.nodesStore.entities)
       .alphaMin(uiStore.forceSimParameters.bubblesAlphaMin)
       .force("charge", forceManyBody().strength(uiStore.forceSimParameters.manyBodyForceStrength))
       .force("center", forceCenter(uiStore.svgWidth * 0.5, uiStore.svgHeight * 0.5))
@@ -18,18 +18,18 @@ class LogicStore {
         uiStore.data.areas.forEach((area) => {
 
           const alphaMin = uiStore.forceSimParameters.papersAlphaMin;
-          let bubbleX = uiStore.data.nodes.find((node) => node.area === area).x - uiStore.bubbleCenterOffset;
-          let bubbleY = uiStore.data.nodes.find((node) => node.area === area).y - uiStore.bubbleCenterOffset;
+          let bubbleX = uiStore.nodesStore.entities.find((node) => node.area === area).x - uiStore.bubbleCenterOffset;
+          let bubbleY = uiStore.nodesStore.entities.find((node) => node.area === area).y - uiStore.bubbleCenterOffset;
 
           forceSimulation()
             .alphaMin(alphaMin)
-            .nodes(uiStore.papersStore.papers.filter((paper) => paper.area === area))
+            .nodes(uiStore.papersStore.papersInArea(area))
             .force("positioning", forceX(bubbleX).strength(uiStore.forceSimParameters.centerXForceStrength))
             .force("collision", forceCollide(uiStore.paperWidth - 3));
 
           forceSimulation()
             .alphaMin(alphaMin)
-            .nodes(uiStore.papersStore.papers.filter((paper) => paper.area === area))
+            .nodes(uiStore.papersStore.papersInArea(area))
             .force("positioning", forceY(bubbleY).strength(uiStore.forceSimParameters.centerYForceStrength))
             .force("collision", forceCollide(uiStore.paperHeight - 12))
             .on('end', () => {
@@ -46,7 +46,7 @@ class LogicStore {
   }
 
   saveInitialCoords() {
-    uiStore.data.nodes.forEach((node) => {
+    uiStore.nodesStore.entities.forEach((node) => {
       node.orig_x = node.x;
       node.orig_y = node.y;
       node.orig_r = node.r;

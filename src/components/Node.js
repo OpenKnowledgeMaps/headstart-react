@@ -1,11 +1,10 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../models/BubbleEvents';
-import uiStore from '../models/UIStore';
 
 const Node =
   observer(
-    (props) => {
+    ({id, node, nodes, store}) => {
       let circle_style = {
         "fill": "#fff",
         "fillOpacity": "0.2",
@@ -17,7 +16,7 @@ const Node =
         "display": "block"
       };
 
-      if (props.node.active || props.node.selected) {
+      if (node.active || node.selected) {
         circle_style.fillOpacity = "1";
         text_style.display = "none";
       }
@@ -26,15 +25,15 @@ const Node =
         text_style.display = "inline";
       }
 
-      const x_ = uiStore.zoomFactor*props.node.x + uiStore.translationVecX;
-      const y_ = uiStore.zoomFactor*props.node.y + uiStore.translationVecY;
-      const r_ = uiStore.zoomFactor*props.node.r;
+      const x_ = store.zoomFactor*node.x + store.translationVecX;
+      const y_ = store.zoomFactor*node.y + store.translationVecY;
+      const r_ = store.zoomFactor*node.r;
 
       return (
-        <g onMouseEnter={onBubbleMouseEnter.bind(this, props.node)}
-           onMouseLeave={onBubbleMouseLeave.bind(this, props.node)}
-           onClick={onBubbleClick.bind(this, props.node)}
-           onDoubleClick={onBubbleDoubleClick.bind(this, props.node)}
+        <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}
+           onMouseLeave={onBubbleMouseLeave.bind(this, store)}
+           onClick={onBubbleClick.bind(this, store, node)}
+           onDoubleClick={onBubbleDoubleClick.bind(this, store, node)}
         >
           <circle
             r={r_}
@@ -51,7 +50,7 @@ const Node =
             fontFamily="Verdana"
             style={text_style}
           >
-            <p style={{textAlign: "center", marginTop:(r_ - 5) }}>{props.node.area}</p>
+            <p style={{textAlign: "center", marginTop:(r_ - 5) }}>{node.area}</p>
           </foreignObject>
         </g>
       );

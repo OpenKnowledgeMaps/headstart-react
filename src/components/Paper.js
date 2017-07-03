@@ -3,11 +3,11 @@ import { observer } from 'mobx-react';
 import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../models/PaperEvents';
 import logicStore from '../models/logicStore';
 import uiStore from '../models/UIStore';
-//
-// onMouseOut={logicStore.onPaperMouseOut.bind(logicStore, props.paper)}
+
+
 const Paper =
   observer(
-    (props) =>{
+    ({store, paper}) =>{
 
       let rect_style = {
         "fill": "#eee",
@@ -16,25 +16,25 @@ const Paper =
         "strokeWidth":"1px"
       };
 
-      rect_style.strokeWidth = props.paper.clicked ? "2px" : "1px";
-      rect_style.stroke = props.paper.clicked ? "#f00" : "#000";
+      rect_style.strokeWidth = paper.clicked ? "2px" : "1px";
+      rect_style.stroke = paper.clicked ? "#f00" : "#000";
       const zoomFactor = uiStore.zoomFactor;
       const paperZoomFactor = uiStore.paperZoomFactor;
       const translationVecX = uiStore.translationVecX;
       const translationVecY = uiStore.translationVecY;
-      const x_ = zoomFactor*props.paper.x + translationVecX;
-      const y_ = zoomFactor*props.paper.y + translationVecY;
-      const w_ =  props.paper.zoomed ? paperZoomFactor*zoomFactor*props.paper.width : zoomFactor*props.paper.width;
-      const h_ =  props.paper.zoomed ? paperZoomFactor*zoomFactor*props.paper.height : zoomFactor*props.paper.height;
-      const fs_ = props.paper.zoomed ? paperZoomFactor*zoomFactor*props.paper.fontsize : zoomFactor*props.paper.fontsize;
+      const x_ = zoomFactor*paper.x + translationVecX;
+      const y_ = zoomFactor*paper.y + translationVecY;
+      const w_ =  paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width;
+      const h_ =  paper.zoomed ? paperZoomFactor*zoomFactor*paper.height : zoomFactor*paper.height;
+      const fs_ = paper.zoomed ? paperZoomFactor*zoomFactor*paper.fontsize : zoomFactor*paper.fontsize;
 
       return (
         <g
           width={w_}
           height={h_}
-          onMouseEnter={onPaperMouseEnter.bind(logicStore, props.paper)}
-          onMouseLeave={onPaperMouseLeave.bind(logicStore, props.paper)}
-          onClick={onPaperClick.bind(logicStore, props.paper)}
+          onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
+          onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
+          onClick={onPaperClick.bind(this, store, paper)}
         >
           <rect
             x={x_}
@@ -52,7 +52,7 @@ const Paper =
             height={h_ - 8}
             fontSize={fs_ - 3}
           >
-            <p>{props.paper.area}</p>
+            <p>{paper.area}</p>
           </foreignObject>
         </g>
       )

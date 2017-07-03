@@ -1,31 +1,28 @@
 /**
  * Created by rbachleitner on 6/26/17.
  */
-import uiStore from './UIStore';
 
-function onPaperMouseEnter(paper) {
-  if (uiStore.forceSimIsDone && paper.selected) {
-    paper.zoomed = true;
+function onPaperMouseEnter(store, paper) {
+  if (store.forceSimIsDone && store.isZoomed) {
+    store.papersStore.zoomedPaper = paper;
   }
-  paper.hover = true;
+  store.papersStore.hoveredPaper = paper;
 }
 
-function onPaperMouseLeave(paper) {
-  if (uiStore.forceSimIsDone && paper.selected) {
-    paper.zoomed = false;
+function onPaperMouseLeave(store, paper) {
+  if (store.forceSimIsDone && store.isZoomed) {
+    store.papersStore.zoomedPaper = null;
   }
-  paper.hover = false;
+  store.papersStore.hoveredPaper = null;
 }
 
-function onPaperClick(paper) {
-  let node = uiStore.data.nodes.find((node) => node.area === paper.area);
-  if (uiStore.forceSimIsDone) {
-    if (node.selected === true) {
-      uiStore.papersStore.clickedEntity = paper;
-    }
-    if (node.selected === false && paper.selected === false) {
-      node.selected = true;
-      uiStore.papersStore.selectedArea = (paper.area);
+function onPaperClick(store, paper) {
+  if (store.forceSimIsDone) {
+    if (store.isZoomed) {
+      store.papersStore.clickedPaper = paper;
+    } else {
+      store.nodesStore.selectedArea = paper.area;
+      store.papersStore.selectedArea = paper.area;
     }
   }
 }

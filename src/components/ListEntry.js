@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { observer } from 'mobx-react';
-import { onListClick } from './ListEvents';
+import { onListClick } from '../models/ListEvents';
 
 const ListEntry =
   observer(

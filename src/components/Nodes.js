@@ -9,29 +9,33 @@ import {observer} from 'mobx-react';
 
 const Nodes =
   observer(
-    ({ nodes }) =>
+    ({ store, nodes }) =>
       {
+        let entities = nodes.entities;
       return (
         <g>
-          {nodes.filter((node) => !(node.selected || node.active)).map((node, index) =>
+          {nodes.entities.filter((node) => !(node.selected || node.active)).map((node, index) =>
             <Node           key={node.id}
                             id={node.id}
                             node={node}
-                            nodes={nodes}
+                            nodes={entities}
+                            store={store}
             />
           )};
-          {nodes.filter((node) => (node.active)).map((node, index) =>
+          {nodes.activeEntities.map((node, index) =>
           <Node           key={node.id}
                           id={node.id}
                           node={node}
-                          nodes={nodes}
+                          nodes={entities}
+                          store={store}
           />
           )};
-          {nodes.filter((node) => (node.selected)).map((node, index) =>
+          {nodes.selectedEntities.map((node, index) =>
             <Node           key={node.id}
                             id={node.id}
                             node={node}
-                            nodes={nodes}
+                            nodes={entities}
+                            store={store}
             />
           )};
         </g>);

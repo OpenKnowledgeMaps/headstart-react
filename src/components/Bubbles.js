@@ -6,9 +6,9 @@ import { observer } from 'mobx-react';
 
 const Bubbles =
   observer(
-    (props) => (
+    ({store}) => (
       <div style={{height: "900px", width: "1304px"}}>
-        <Chart store={props.store}/>
+        <Chart store={store}/>
         <List />
       </div>
     )

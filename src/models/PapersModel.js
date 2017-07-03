@@ -13,6 +13,9 @@ class PapersModel {
     });
     extendObservable(this, {
       papers: papers,
+      get flaglessPapers() {
+        return this.papers.filter((paper) => !(paper.selected && paper.hover && paper.active)) || [];
+      },
       get selectedPapers() {
         return this.papers.filter((paper) => paper.selected) || [];
       },
@@ -51,13 +54,34 @@ class PapersModel {
         });
       },
 
+      set hoveredPaper(paper) {
+        this.allOtherPapersExcept(paper).forEach((paper) => paper.hover = false);
+        if (paper !== null) paper.hover = true;
+      },
+
+      get hoveredPaper() {
+        return this.papers.filter((paper) => paper.hover);
+      },
+
       set clickedPaper(paper) {
         if (paper === null) this.papers.forEach((paper) => paper.clicked = false);
         else {
           this.allOtherPapersExcept(paper).forEach((paper) => paper.clicked = false);
           paper.clicked = !paper.clicked;
-          if (!paper.clicked) this.papersInArea(paper.area).forEach((paper) => paper.listvisible = true);
         }
+      },
+
+      set zoomedPaper(paper) {
+        if (paper === null) this.papers.forEach((paper) => paper.zoomed = false);
+        else {
+          this.allOtherPapersExcept(paper).forEach((paper) => paper.zoomed = false);
+          paper.zoomed = true;
+        }
+      },
+
+      set listVisiblePapers(papers) {
+        this.papers.forEach((paper) => paper.listvisibel = false);
+        papers.forEach((paper) => paper.listvisible = true);
       }
 
     });
@@ -68,11 +92,13 @@ class PapersModel {
   }
 
   papersInArea(area) {
-    return this.papers.filter((paper) => paper.area === area);
+    if (area !== null) return this.papers.filter((paper) => paper.area === area);
+    return [];
   }
 
   papersOutsideArea(area) {
-    return this.papers.filter((paper) => paper.area !== area);
+    if (area !== null) return this.papers.filter((paper) => paper.area !== area);
+    return this.papers;
   }
 
   disposer() {

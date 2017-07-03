@@ -1,13 +1,15 @@
 import uiStore from './UIStore';
 
-function onSVGClick(nodes) {
+function onSVGClick() {
   if (uiStore.forceSimIsDone) {
-    const hoveringBubble = nodes.some((node) => node.hover === true);
+    const hoveringBubble = uiStore.nodesStore.hasHoverEntities;
     const hoveringPaper = uiStore.papersStore.hasHoverPapers;
-    const nodeSelected = nodes.some((node) => node.selected === true);
+    const nodeSelected = uiStore.nodesStore.hasSelectedEntities;
     if (!hoveringBubble && !hoveringPaper && nodeSelected) {
-      nodes.forEach((node) => node.selected = false);
-      uiStore.resetPaperFlags();
+      uiStore.nodesStore.selectedArea = null;
+      uiStore.papersStore.selectedArea = null;
+      uiStore.papersStore.clickedPaper = null;
+      uiStore.papersStore.listVisiblePapers = uiStore.papersStore.papers;
     }
   }
 }
@@ -15,9 +17,9 @@ function onSVGClick(nodes) {
 function onSVGMouseOver() {
   if (uiStore.forceSimIsDone) {
     if (!uiStore.papersStore.hasHoverPapers &&
-        !uiStore.data.nodes.some((node) => node.hover) ) {
+        !uiStore.nodesStore.hasHoverEntities ) {
       uiStore.papersStore.activeArea = null;
-      uiStore.data.nodes.forEach((node) => node.active = false);
+      uiStore.nodesStore.activeArea = null;
     }
   }
 }

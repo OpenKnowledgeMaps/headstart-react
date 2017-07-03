@@ -1,49 +1,38 @@
 /**
  * Created by rbachleitner on 6/26/17.
  */
-import uiStore from './UIStore';
 
-function onBubbleClick(node)
+function onBubbleClick(store, node) {
+  if (store.forceSimIsDone) {
+    store.nodesStore.selectedArea = node.area;
+    store.papersStore.selectedArea = node.area;
+    store.papersStore.clickedPaper = null;
+  }
+}
+
+function onBubbleDoubleClick(store, node)
 {
-  if (uiStore.forceSimIsDone) {
-    if (node.selected === false) {
-      uiStore.data.nodes.forEach((node) => node.selected = false);
-      node.selected = true;
-      uiStore.papersStore.selectedArea = node.area;
+  if (store.forceSimIsDone) {
+    store.nodesStore.selectedArea = null;
+    store.papersStore.selectedArea = null;
+    store.papersStore.listVisiblePapers = store.papersStore.papers;
+  }
+}
+
+function onBubbleMouseEnter(store, node) {
+  if (store.forceSimIsDone) {
+    store.nodesStore.hoveredEntity = node;
+    store.papersStore.hoveredPaper = null;
+    if (!store.nodesStore.hasSelectedEntities) {
+      store.nodesStore.activeArea = node.area;
+      store.papersStore.activeArea = node.area;
     }
-    else
-    {
-      uiStore.papersStore.clickedEntity = null;
-    }
   }
 }
 
-function onBubbleDoubleClick(node)
-{
-  if (uiStore.forceSimIsDone && node.selected === true) {
-    node.selected = false;
-    uiStore.papersStore.papers
-      .forEach( (paper) => {
-        paper.selected = false;
-        paper.listvisible = true;
-      });
-  }
-}
-
-function onBubbleMouseEnter(node) {
-  if (uiStore.forceSimIsDone) {
-    uiStore.data.nodes.forEach((node) => node.active = false);
-    uiStore.data.nodes.forEach((node) => node.hover = false);
-    node.hover = true;
-    node.active = true;
-    uiStore.papersStore.activeArea = node.area;
-    uiStore.papersStore.papers.forEach((paper) => paper.hover = false);
-  }
-}
-
-function onBubbleMouseLeave(node) {
-  if (uiStore.forceSimIsDone) {
-    node.hover = false;
+function onBubbleMouseLeave(store) {
+  if (store.forceSimIsDone) {
+    store.nodesStore.hoveredEntity = null;
   }
 }
 
