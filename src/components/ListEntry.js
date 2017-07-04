@@ -1,15 +1,12 @@
-/**
- * Created by rbachleitner on 6/27/17.
- */
 import React from 'react';
 import { observer } from 'mobx-react';
 import { onListClick } from '../models/ListEvents';
 
 const ListEntry =
   observer(
-    (props) => {
+    ({store, paper}) => {
       let abstract = null;
-      if (props.paper.clicked) {
+      if (paper.clicked) {
         abstract =
           <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -24,9 +21,9 @@ const ListEntry =
       }
       return (
       <div style={{borderBottom: "2px grey solid", display: "block", padding: "10px"}}>
-        <div><a href="#" onClick={onListClick.bind(this, props.paper, props.store)}>{props.paper.title}</a></div>
+        <div><a href="#" onClick={onListClick.bind(this, paper, store)}>{paper.title}</a></div>
         {abstract}
-        <div>Area: {props.paper.area}</div>
+        <div>Area: {paper.area}</div>
       </div>
         );
     }
