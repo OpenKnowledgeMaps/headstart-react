@@ -9,7 +9,7 @@ const Bubbles =
     ({store}) => (
       <div style={{height: "900px", width: "1304px"}}>
         <Chart store={store}/>
-        <List />
+        <List store={store}/>
       </div>
     )
   );

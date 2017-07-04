@@ -1,39 +1,38 @@
 import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, forceY} from 'd3-force';
-import uiStore from './UIStore';
 
 class LogicStore {
 
-  startForceSim() {
-    let saveCoords = this.saveInitialCoords.bind(this);
+  startForceSim(store) {
+    let saveCoords = this.saveInitialCoords.bind(this, store);
 
     forceSimulation()
-      .nodes(uiStore.bubblesStore.entities)
-      .alphaMin(uiStore.forceSimParameters.bubblesAlphaMin)
-      .force("charge", forceManyBody().strength(uiStore.forceSimParameters.manyBodyForceStrength))
-      .force("center", forceCenter(uiStore.svgWidth * 0.5, uiStore.svgHeight * 0.5))
-      .force("collision", forceCollide(uiStore.forceSimParameters.collisionForceRadius))
+      .nodes(store.bubblesStore.entities)
+      .alphaMin(store.forceSimParameters.bubblesAlphaMin)
+      .force("charge", forceManyBody().strength(store.forceSimParameters.manyBodyForceStrength))
+      .force("center", forceCenter(store.svgWidth * 0.5, store.svgHeight * 0.5))
+      .force("collision", forceCollide(store.forceSimParameters.collisionForceRadius))
       .on('end', () => {
 
         saveCoords();
-        uiStore.data.areas.forEach((area) => {
+        store.data.areas.forEach((area) => {
 
-          const alphaMin = uiStore.forceSimParameters.papersAlphaMin;
-          let bubbleX = uiStore.bubblesStore.entities.find((node) => node.area === area).x - uiStore.bubbleCenterOffset;
-          let bubbleY = uiStore.bubblesStore.entities.find((node) => node.area === area).y - uiStore.bubbleCenterOffset;
-
-          forceSimulation()
-            .alphaMin(alphaMin)
-            .nodes(uiStore.papersStore.entitiesInArea(area))
-            .force("positioning", forceX(bubbleX).strength(uiStore.forceSimParameters.centerXForceStrength))
-            .force("collision", forceCollide(uiStore.paperWidth - 3));
+          const alphaMin = store.forceSimParameters.papersAlphaMin;
+          let bubbleX = store.bubblesStore.entities.find((node) => node.area === area).x - store.bubbleCenterOffset;
+          let bubbleY = store.bubblesStore.entities.find((node) => node.area === area).y - store.bubbleCenterOffset;
 
           forceSimulation()
             .alphaMin(alphaMin)
-            .nodes(uiStore.papersStore.entitiesInArea(area))
-            .force("positioning", forceY(bubbleY).strength(uiStore.forceSimParameters.centerYForceStrength))
-            .force("collision", forceCollide(uiStore.paperHeight - 12))
+            .nodes(store.papersStore.entitiesInArea(area))
+            .force("positioning", forceX(bubbleX).strength(store.forceSimParameters.centerXForceStrength))
+            .force("collision", forceCollide(store.paperWidth - 3));
+
+          forceSimulation()
+            .alphaMin(alphaMin)
+            .nodes(store.papersStore.entitiesInArea(area))
+            .force("positioning", forceY(bubbleY).strength(store.forceSimParameters.centerYForceStrength))
+            .force("collision", forceCollide(store.paperHeight - 12))
             .on('end', () => {
-              uiStore.forceSimIsDone = true;
+              store.forceSimIsDone = true;
               saveCoords();
             });
         });
@@ -41,32 +40,32 @@ class LogicStore {
 
   }
 
-  onAppStart() {
-    this.startForceSim();
+  onAppStart(store) {
+    this.startForceSim(store);
   }
 
-  saveInitialCoords() {
-    uiStore.bubblesStore.entities.forEach((node) => {
+  saveInitialCoords(store) {
+    store.bubblesStore.entities.forEach((node) => {
       node.orig_x = node.x;
       node.orig_y = node.y;
       node.orig_r = node.r;
     });
-    uiStore.papersStore.entities.forEach((paper) => {
+    store.papersStore.entities.forEach((paper) => {
       paper.orig_x = paper.x;
       paper.orig_y = paper.y;
     });
   }
 
-  updateZoomState(node) {
-    uiStore.zoomFactor = uiStore.svgWidth * 0.5 / node.orig_r;
-    uiStore.translationVecX = uiStore.svgWidth * 0.5 - uiStore.zoomFactor * node.orig_x;
-    uiStore.translationVecY = uiStore.svgHeight * 0.5 - uiStore.zoomFactor * node.orig_y;
+  updateZoomState(node, store) {
+    store.zoomFactor = store.svgWidth * 0.5 / node.orig_r;
+    store.translationVecX = store.svgWidth * 0.5 - store.zoomFactor * node.orig_x;
+    store.translationVecY = store.svgHeight * 0.5 - store.zoomFactor * node.orig_y;
   }
 
-  resetZoomState() {
-    uiStore.zoomFactor = 1.;
-    uiStore.translationVecX = 0.;
-    uiStore.translationVecY = 0.;
+  resetZoomState(store) {
+    store.zoomFactor = 1.;
+    store.translationVecX = 0.;
+    store.translationVecY = 0.;
   }
 }
 

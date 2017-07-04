@@ -3,21 +3,20 @@
  */
 
 import { extendObservable, autorun } from "mobx";
-import data from '../static/Data';
 import PapersModel from './PapersModel';
 import BubbleModel from './BubbleModel';
 import GroupedSVGEntities from './GroupedSVGEntities';
 import logicStore from './logicStore';
 
 class UIStore {
-  constructor() {
-    let papersModel = new PapersModel(data);
-    let bubblesStore = new GroupedSVGEntities(data, BubbleModel);
+  constructor(initialState) {
+    let papersStore = new PapersModel(initialState);
+    let bubblesStore = new GroupedSVGEntities(initialState, BubbleModel);
     this.isZoomed = false;
-    this.papersStore = papersModel;
+    this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
     extendObservable(this, {
-      data : { areas: data.areas },
+      data : { areas: initialState.areas },
       svgWidth: 900,
       svgHeight: 900,
       forceSimParameters: {
@@ -54,11 +53,11 @@ class UIStore {
             this.bubblesStore.hasSelectedEntities)) {
           this.isZoomed = true;
           let node = this.bubblesStore.selectedEntities;
-          if (node.length > 0) logicStore.updateZoomState(node[0]);
+          if (node.length > 0) logicStore.updateZoomState(node[0], this);
         } else if (!(this.papersStore.hasSelectedEntities && this.bubblesStore.hasSelectedEntities)
             && this.isZoomed === true) {
           this.isZoomed = false;
-          logicStore.resetZoomState();
+          logicStore.resetZoomState(this);
         }
       });
     }
@@ -73,8 +72,5 @@ class UIStore {
   }
 
 }
-let uiStore = window.store = new UIStore();
-uiStore.papersStore.disposer();
-uiStore.disposer();
 
-export default uiStore;
+export default UIStore;

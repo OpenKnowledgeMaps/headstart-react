@@ -5,7 +5,7 @@ import logicStore from '../models/logicStore';
 
 class App extends Component {
     componentDidMount() {
-      logicStore.onAppStart();
+      logicStore.onAppStart(this.props.store);
     }
     render() {
         return (
