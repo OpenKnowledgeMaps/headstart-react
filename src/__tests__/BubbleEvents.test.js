@@ -1,7 +1,7 @@
 import data from '../static/Data.js';
 import UIStore from '../models/UIStore';
-import { startForceSim } from '../models/forceSimulation';
-import {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick} from '../models/BubbleEvents';
+import { startForceSim } from '../helpers/forceSimulation';
+import {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick} from '../eventhandlers/BubbleEvents';
 
 let store = null;
 let node = null;

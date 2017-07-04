@@ -1,10 +1,10 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../models/BubbleEvents';
+import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../eventhandlers/BubbleEvents';
 
 const Node =
   observer(
-    ({id, node, nodes, store}) => {
+    ({node, store}) => {
       let circle_style = {
         "fill": "#fff",
         "fillOpacity": "0.2",

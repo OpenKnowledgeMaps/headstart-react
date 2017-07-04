@@ -1,7 +1,3 @@
-/**
- * Created by rbachleitner on 6/26/17.
- */
-
 function onBubbleClick(store, node) {
   if (store.forceSimIsDone) {
     store.bubblesStore.selectedArea = node.area;
@@ -10,7 +6,7 @@ function onBubbleClick(store, node) {
   }
 }
 
-function onBubbleDoubleClick(store, node)
+function onBubbleDoubleClick(store)
 {
   if (store.forceSimIsDone) {
     store.bubblesStore.selectedArea = null;

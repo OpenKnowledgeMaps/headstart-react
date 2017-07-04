@@ -1,7 +1,3 @@
-/**
- * Created by rbachleitner on 6/26/17.
- */
-
 function onPaperMouseEnter(store, paper) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = paper;
@@ -9,7 +5,7 @@ function onPaperMouseEnter(store, paper) {
   store.papersStore.hoveredEntity = paper;
 }
 
-function onPaperMouseLeave(store, paper) {
+function onPaperMouseLeave(store) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = null;
   }

@@ -1,7 +1,7 @@
 import data from '../static/Data.js';
 import UIStore from '../models/UIStore';
-import { startForceSim } from '../models/forceSimulation';
-import {onSVGClick, onSVGMouseOver} from '../models/SVGEvents';
+import { startForceSim } from '../helpers/forceSimulation';
+import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
 
 let store = null;
 let node = null;

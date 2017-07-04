@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Bubbles from './Bubbles';
-import { startForceSim } from '../models/forceSimulation';
+import { startForceSim } from '../helpers/forceSimulation';
 
 class App extends Component {
     componentDidMount() {

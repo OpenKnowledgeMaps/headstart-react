@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../models/PaperEvents';
+import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandlers/PaperEvents';
 
 
 const Paper =
