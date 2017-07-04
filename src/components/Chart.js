@@ -1,6 +1,3 @@
-/**
- * Created by rbachleitner on 6/27/17.
- */
 import React from 'react';
 import Nodes from './Nodes';
 import Papers from './Papers';
@@ -14,8 +11,8 @@ const Chart =
         <svg
           width={store.svgWidth}
           height={store.svgHeight}
-          onClick={onSVGClick.bind(this, store.bubblesStore.entities)}
-          onMouseOver={onSVGMouseOver.bind(this)}
+          onClick={onSVGClick.bind(this, store)}
+          onMouseOver={onSVGMouseOver.bind(this, store)}
         >
           <g>
             <Papers store={store} papers={store.papersStore.flaglessPapers} />

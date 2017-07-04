@@ -1,25 +1,23 @@
-import uiStore from './UIStore';
-
-function onSVGClick() {
-  if (uiStore.forceSimIsDone) {
-    const hoveringBubble = uiStore.bubblesStore.hasHoverEntities;
-    const hoveringPaper = uiStore.papersStore.hasHoverEntities;
-    const nodeSelected = uiStore.bubblesStore.hasSelectedEntities;
+function onSVGClick({bubblesStore, papersStore, forceSimIsDone}) {
+  if (forceSimIsDone) {
+    const hoveringBubble = bubblesStore.hasHoverEntities;
+    const hoveringPaper = papersStore.hasHoverEntities;
+    const nodeSelected = bubblesStore.hasSelectedEntities;
     if (!hoveringBubble && !hoveringPaper && nodeSelected) {
-      uiStore.bubblesStore.selectedArea = null;
-      uiStore.papersStore.selectedArea = null;
-      uiStore.papersStore.clickedEntity = null;
-      uiStore.papersStore.listVisiblePapers = uiStore.papersStore.entities;
+      bubblesStore.selectedArea = null;
+      papersStore.selectedArea = null;
+      papersStore.clickedEntity = null;
+      papersStore.listVisiblePapers = papersStore.entities;
     }
   }
 }
 
-function onSVGMouseOver() {
-  if (uiStore.forceSimIsDone) {
-    if (!uiStore.papersStore.hasHoverEntities &&
-        !uiStore.bubblesStore.hasHoverEntities ) {
-      uiStore.papersStore.activeArea = null;
-      uiStore.bubblesStore.activeArea = null;
+function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone}) {
+  if (forceSimIsDone) {
+    if (!papersStore.hasHoverEntities &&
+        !bubblesStore.hasHoverEntities ) {
+      papersStore.activeArea = null;
+      bubblesStore.activeArea = null;
     }
   }
 }
