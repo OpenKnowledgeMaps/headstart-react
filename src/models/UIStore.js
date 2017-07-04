@@ -5,17 +5,17 @@
 import { extendObservable, autorun } from "mobx";
 import data from '../static/Data';
 import PapersModel from './PapersModel';
-import NodeModel from './NodeModel';
+import BubbleModel from './BubbleModel';
 import GroupedSVGEntities from './GroupedSVGEntities';
 import logicStore from './logicStore';
 
 class UIStore {
   constructor() {
     let papersModel = new PapersModel(data);
-    let nodesModel = new GroupedSVGEntities(data, NodeModel);
+    let bubblesStore = new GroupedSVGEntities(data, BubbleModel);
     this.isZoomed = false;
     this.papersStore = papersModel;
-    this.nodesStore = nodesModel;
+    this.bubblesStore = bubblesStore;
     extendObservable(this, {
       data : { areas: data.areas },
       svgWidth: 900,
@@ -50,12 +50,12 @@ class UIStore {
     disposer()
     {
       autorun(() => {
-        if ((this.papersStore.hasSelectedPapers ||
-            this.nodesStore.hasSelectedEntities)) {
+        if ((this.papersStore.hasSelectedEntities ||
+            this.bubblesStore.hasSelectedEntities)) {
           this.isZoomed = true;
-          let node = this.nodesStore.selectedEntities;
+          let node = this.bubblesStore.selectedEntities;
           if (node.length > 0) logicStore.updateZoomState(node[0]);
-        } else if (!(this.papersStore.hasSelectedPapers && this.nodesStore.hasSelectedEntities)
+        } else if (!(this.papersStore.hasSelectedEntities && this.bubblesStore.hasSelectedEntities)
             && this.isZoomed === true) {
           this.isZoomed = false;
           logicStore.resetZoomState();
@@ -64,7 +64,7 @@ class UIStore {
     }
 
   resetPaperFlags() {
-    this.papersStore.papers.forEach((paper) =>
+    this.papersStore.entities.forEach((paper) =>
     {
       paper.selected = false;
       paper.listvisible = true;

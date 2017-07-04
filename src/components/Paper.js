@@ -1,8 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../models/PaperEvents';
-import logicStore from '../models/logicStore';
-import uiStore from '../models/UIStore';
 
 
 const Paper =
@@ -18,10 +16,10 @@ const Paper =
 
       rect_style.strokeWidth = paper.clicked ? "2px" : "1px";
       rect_style.stroke = paper.clicked ? "#f00" : "#000";
-      const zoomFactor = uiStore.zoomFactor;
-      const paperZoomFactor = uiStore.paperZoomFactor;
-      const translationVecX = uiStore.translationVecX;
-      const translationVecY = uiStore.translationVecY;
+      const zoomFactor = store.zoomFactor;
+      const paperZoomFactor = store.paperZoomFactor;
+      const translationVecX = store.translationVecX;
+      const translationVecY = store.translationVecY;
       const x_ = zoomFactor*paper.x + translationVecX;
       const y_ = zoomFactor*paper.y + translationVecY;
       const w_ =  paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width;

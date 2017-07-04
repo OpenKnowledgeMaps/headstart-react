@@ -7,7 +7,7 @@
 
 import EntityModel from './EntityModel';
 
-class NodeModel extends EntityModel {
+class BubbleModel extends EntityModel {
   constructor(node) {
     if(!(node.hasOwnProperty('orig_x'))) node.orig_x = 0.;
     if(!(node.hasOwnProperty('orig_y'))) node.orig_y = 0.;
@@ -28,4 +28,4 @@ class NodeModel extends EntityModel {
   }
 }
 
-export default NodeModel;
+export default BubbleModel;

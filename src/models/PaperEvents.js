@@ -6,22 +6,22 @@ function onPaperMouseEnter(store, paper) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = paper;
   }
-  store.papersStore.hoveredPaper = paper;
+  store.papersStore.hoveredEntity = paper;
 }
 
 function onPaperMouseLeave(store, paper) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = null;
   }
-  store.papersStore.hoveredPaper = null;
+  store.papersStore.hoveredEntity = null;
 }
 
 function onPaperClick(store, paper) {
   if (store.forceSimIsDone) {
     if (store.isZoomed) {
-      store.papersStore.clickedPaper = paper;
+      store.papersStore.clickedEntity = paper;
     } else {
-      store.nodesStore.selectedArea = paper.area;
+      store.bubblesStore.selectedArea = paper.area;
       store.papersStore.selectedArea = paper.area;
     }
   }

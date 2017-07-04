@@ -14,15 +14,15 @@ const Chart =
         <svg
           width={store.svgWidth}
           height={store.svgHeight}
-          onClick={onSVGClick.bind(this, store.nodesStore.entities)}
+          onClick={onSVGClick.bind(this, store.bubblesStore.entities)}
           onMouseOver={onSVGMouseOver.bind(this)}
         >
           <g>
             <Papers store={store} papers={store.papersStore.flaglessPapers} />
-            <Nodes store={store} nodes={store.nodesStore} />
-            <Papers store={store} papers={store.papersStore.activePapers} />
-            <Papers store={store} papers={store.papersStore.selectedPapers} />
-            <Papers store={store} papers={store.papersStore.hoveredPaper} />
+            <Nodes store={store} nodes={store.bubblesStore} />
+            <Papers store={store} papers={store.papersStore.activeEntities} />
+            <Papers store={store} papers={store.papersStore.selectedEntities} />
+            <Papers store={store} papers={store.papersStore.hoveredEntity} />
           </g>
         </svg>
       </div>

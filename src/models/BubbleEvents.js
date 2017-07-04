@@ -4,27 +4,27 @@
 
 function onBubbleClick(store, node) {
   if (store.forceSimIsDone) {
-    store.nodesStore.selectedArea = node.area;
+    store.bubblesStore.selectedArea = node.area;
     store.papersStore.selectedArea = node.area;
-    store.papersStore.clickedPaper = null;
+    store.papersStore.clickedEntity = null;
   }
 }
 
 function onBubbleDoubleClick(store, node)
 {
   if (store.forceSimIsDone) {
-    store.nodesStore.selectedArea = null;
+    store.bubblesStore.selectedArea = null;
     store.papersStore.selectedArea = null;
-    store.papersStore.listVisiblePapers = store.papersStore.papers;
+    store.papersStore.listVisiblePapers = store.papersStore.entities;
   }
 }
 
 function onBubbleMouseEnter(store, node) {
   if (store.forceSimIsDone) {
-    store.nodesStore.hoveredEntity = node;
-    store.papersStore.hoveredPaper = null;
-    if (!store.nodesStore.hasSelectedEntities) {
-      store.nodesStore.activeArea = node.area;
+    store.bubblesStore.hoveredEntity = node;
+    store.papersStore.hoveredEntity = null;
+    if (!store.bubblesStore.hasSelectedEntities) {
+      store.bubblesStore.activeArea = node.area;
       store.papersStore.activeArea = node.area;
     }
   }
@@ -32,7 +32,7 @@ function onBubbleMouseEnter(store, node) {
 
 function onBubbleMouseLeave(store) {
   if (store.forceSimIsDone) {
-    store.nodesStore.hoveredEntity = null;
+    store.bubblesStore.hoveredEntity = null;
   }
 }
 

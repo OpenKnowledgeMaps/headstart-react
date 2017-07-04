@@ -62,6 +62,10 @@ class GroupedSVGEntities {
         if (entity !== null) entity.hover = true;
       },
 
+      get hoveredEntity() {
+        return this.entities.filter((entity) => entity.hover);
+      },
+
       set clickedEntity(entity) {
         if (entity === null) this.entities.forEach((entity) => entity.clicked = false);
         else {

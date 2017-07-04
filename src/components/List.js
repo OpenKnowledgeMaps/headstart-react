@@ -24,8 +24,8 @@ const List =
           <div>Search: <input id="search" onChange={() => {uiStore.searchString = document.getElementById('search').value;}}/></div>
         </div>
         <div style={{height: "88%", overflow: "scroll"}}>
-          {uiStore.papersStore.papers
-            .filter((paper) => (uiStore.papersStore.papers.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
+          {uiStore.papersStore.entities
+            .filter((paper) => (uiStore.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
             .filter((paper) => hasSubstring(paper))
             .map((paper, index) =>
             <ListEntry paper={paper} key={index}/>

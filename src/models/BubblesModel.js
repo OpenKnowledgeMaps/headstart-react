@@ -5,5 +5,5 @@
 
 import GroupedSVGEntities from './GroupedSVGEntities';
 
-class NodesModel extends GroupedSVGEntities {
+class BubblesModel extends GroupedSVGEntities {
 }
