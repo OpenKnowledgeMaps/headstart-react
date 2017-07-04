@@ -1,10 +1,3 @@
-/**
- * Created by rbachleitner on 7/3/17.
- */
-/**
- * Created by rbachleitner on 6/29/17.
- */
-
 import EntityModel from './EntityModel';
 
 class BubbleModel extends EntityModel {
@@ -25,6 +18,13 @@ class BubbleModel extends EntityModel {
     if(!(node.hasOwnProperty('translationX'))) node.translationX = 0.;
     if(!(node.hasOwnProperty('translationX'))) node.translationY = 0;
     super(node);
+  }
+
+
+  saveCoordsToOriginalCoords() {
+    this.orig_x = this.x;
+    this.orig_y = this.y;
+    this.orig_r = this.r;
   }
 }
 

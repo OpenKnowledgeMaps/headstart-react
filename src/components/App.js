@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import './App.css';
 import Bubbles from './Bubbles';
-import logicStore from '../models/logicStore';
+import { startForceSim } from '../models/forceSimulation';
 
 class App extends Component {
     componentDidMount() {
-      logicStore.onAppStart(this.props.store);
+      startForceSim(this.props.store);
     }
     render() {
         return (

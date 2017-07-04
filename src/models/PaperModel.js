@@ -1,7 +1,3 @@
-/**
- * Created by rbachleitner on 6/29/17.
- */
-
 import EntityModel from './EntityModel';
 
 class PaperModel extends EntityModel {
@@ -21,6 +17,11 @@ class PaperModel extends EntityModel {
     if (!paper.hasOwnProperty('listvisible')) paper.listvisible = true;
     if(!(paper.hasOwnProperty('orig_fontsize'))) paper.orig_fontsize = paper.fontsize;
     super(paper);
+  }
+
+  saveCoordsToOriginalCoords() {
+    this.orig_x = this.x;
+    this.orig_y = this.y;
   }
 }
 

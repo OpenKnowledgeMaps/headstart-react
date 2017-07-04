@@ -1,17 +1,11 @@
-/**
- * Created by rbachleitner on 5/24/17.
- */
-
 import { extendObservable, autorun } from "mobx";
 import PapersModel from './PapersModel';
-import BubbleModel from './BubbleModel';
-import GroupedSVGEntities from './GroupedSVGEntities';
-import logicStore from './logicStore';
+import BubblesModel from './BubblesModel';
 
 class UIStore {
   constructor(initialState) {
     let papersStore = new PapersModel(initialState);
-    let bubblesStore = new GroupedSVGEntities(initialState, BubbleModel);
+    let bubblesStore = new BubblesModel(initialState);
     this.isZoomed = false;
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
@@ -53,22 +47,25 @@ class UIStore {
             this.bubblesStore.hasSelectedEntities)) {
           this.isZoomed = true;
           let node = this.bubblesStore.selectedEntities;
-          if (node.length > 0) logicStore.updateZoomState(node[0], this);
+          if (node.length > 0) this.updateZoomState(node[0], this);
         } else if (!(this.papersStore.hasSelectedEntities && this.bubblesStore.hasSelectedEntities)
             && this.isZoomed === true) {
           this.isZoomed = false;
-          logicStore.resetZoomState(this);
+          this.resetZoomState(this);
         }
       });
     }
 
-  resetPaperFlags() {
-    this.papersStore.entities.forEach((paper) =>
-    {
-      paper.selected = false;
-      paper.listvisible = true;
-      paper.clicked = false;
-    });
+  updateZoomState(node) {
+    this.zoomFactor = this.svgWidth * 0.5 / node.orig_r;
+    this.translationVecX = this.svgWidth * 0.5 - this.zoomFactor * node.orig_x;
+    this.translationVecY = this.svgHeight * 0.5 - this.zoomFactor * node.orig_y;
+  }
+
+  resetZoomState() {
+    this.zoomFactor = 1.;
+    this.translationVecX = 0.;
+    this.translationVecY = 0.;
   }
 
 }

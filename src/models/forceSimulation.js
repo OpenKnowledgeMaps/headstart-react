@@ -1,9 +1,6 @@
 import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, forceY} from 'd3-force';
 
-class LogicStore {
-
-  startForceSim(store) {
-    let saveCoords = this.saveInitialCoords.bind(this, store);
+function  startForceSim(store) {
 
     forceSimulation()
       .nodes(store.bubblesStore.entities)
@@ -13,7 +10,8 @@ class LogicStore {
       .force("collision", forceCollide(store.forceSimParameters.collisionForceRadius))
       .on('end', () => {
 
-        saveCoords();
+        store.bubblesStore.saveAllCoordsToOriginalCoords();
+        store.papersStore.saveAllCoordsToOriginalCoords();
         store.data.areas.forEach((area) => {
 
           const alphaMin = store.forceSimParameters.papersAlphaMin;
@@ -33,42 +31,12 @@ class LogicStore {
             .force("collision", forceCollide(store.paperHeight - 12))
             .on('end', () => {
               store.forceSimIsDone = true;
-              saveCoords();
+              store.bubblesStore.saveAllCoordsToOriginalCoords();
+              store.papersStore.saveAllCoordsToOriginalCoords();
             });
         });
       });
 
-  }
-
-  onAppStart(store) {
-    this.startForceSim(store);
-  }
-
-  saveInitialCoords(store) {
-    store.bubblesStore.entities.forEach((node) => {
-      node.orig_x = node.x;
-      node.orig_y = node.y;
-      node.orig_r = node.r;
-    });
-    store.papersStore.entities.forEach((paper) => {
-      paper.orig_x = paper.x;
-      paper.orig_y = paper.y;
-    });
-  }
-
-  updateZoomState(node, store) {
-    store.zoomFactor = store.svgWidth * 0.5 / node.orig_r;
-    store.translationVecX = store.svgWidth * 0.5 - store.zoomFactor * node.orig_x;
-    store.translationVecY = store.svgHeight * 0.5 - store.zoomFactor * node.orig_y;
-  }
-
-  resetZoomState(store) {
-    store.zoomFactor = 1.;
-    store.translationVecX = 0.;
-    store.translationVecY = 0.;
-  }
 }
 
-let logicStore = window.logicStore = new LogicStore();
-
-export default logicStore;
+export {startForceSim};

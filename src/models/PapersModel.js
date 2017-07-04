@@ -1,7 +1,3 @@
-/**
- * Created by rbachleitner on 6/29/17.
- */
-
 import {extendObservable, autorun} from 'mobx';
 import PaperModel from './PaperModel';
 import GroupedSVGEntities from './GroupedSVGEntities';
@@ -30,6 +26,10 @@ class PapersModel extends GroupedSVGEntities {
       }
 
     });
+  }
+
+  saveAllCoordsToOriginalCoords() {
+    this.entities.forEach((entity) => entity.saveCoordsToOriginalCoords());
   }
 
   disposer() {

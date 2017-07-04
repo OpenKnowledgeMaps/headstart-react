@@ -1,6 +1,6 @@
 import data from '../static/Data.js';
 import UIStore from '../models/UIStore';
-import logicStore from '../models/logicStore';
+import { startForceSim } from '../models/forceSimulation';
 import {onSVGClick, onSVGMouseOver} from '../models/SVGEvents';
 
 let store = null;
@@ -11,7 +11,7 @@ beforeEach(() => {
   store = new UIStore(data);
   store.disposer();
   store.papersStore.disposer();
-  logicStore.onAppStart(store);
+  startForceSim(store);
   node = store.bubblesStore.entities[0];
   store.forceSimIsDone = true;
 });

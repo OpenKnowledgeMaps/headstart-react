@@ -1,8 +1,3 @@
-/**
- *
- * Created by rbachleitner on 7/3/17.
- */
-
 import EntityModel from '../models/EntityModel';
 
 it('Takes an initial state and assign it to itself', () => {
