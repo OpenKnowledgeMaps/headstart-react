@@ -44,7 +44,7 @@ class LogicStore {
     this.startForceSim(store);
   }
 
-  saveInitialCoords(store) {
+  static saveInitialCoords(store) {
     store.bubblesStore.entities.forEach((node) => {
       node.orig_x = node.x;
       node.orig_y = node.y;
@@ -56,13 +56,13 @@ class LogicStore {
     });
   }
 
-  updateZoomState(node, store) {
+  static updateZoomState(node, store) {
     store.zoomFactor = store.svgWidth * 0.5 / node.orig_r;
     store.translationVecX = store.svgWidth * 0.5 - store.zoomFactor * node.orig_x;
     store.translationVecY = store.svgHeight * 0.5 - store.zoomFactor * node.orig_y;
   }
 
-  resetZoomState(store) {
+  static resetZoomState(store) {
     store.zoomFactor = 1.;
     store.translationVecX = 0.;
     store.translationVecY = 0.;
