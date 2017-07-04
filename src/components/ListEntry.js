@@ -24,7 +24,7 @@ const ListEntry =
       }
       return (
       <div style={{borderBottom: "2px grey solid", display: "block", padding: "10px"}}>
-        <div><a href="#" onClick={onListClick.bind(this, props.paper)}>{props.paper.title}</a></div>
+        <div><a href="#" onClick={onListClick.bind(this, props.paper, props.store)}>{props.paper.title}</a></div>
         {abstract}
         <div>Area: {props.paper.area}</div>
       </div>
