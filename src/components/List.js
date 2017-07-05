@@ -27,7 +27,7 @@ const List =
             .filter((paper) => (store.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
             .filter((paper) => hasSubstring(paper, store))
             .map((paper, index) =>
-            <ListEntry store={store} paper={paper} key={index}/>
+            <ListEntry store={store}  paper={paper} key={index}/>
           )}
         </div>
       </div>

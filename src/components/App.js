@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
-import Bubbles from './Bubbles';
+import Visualization from './Visualization';
 import { startForceSim } from '../helpers/forceSimulation';
 
 class App extends Component {
@@ -10,7 +9,7 @@ class App extends Component {
     render() {
         return (
           <div>
-            {<Bubbles store={this.props.store}/>}
+            {<Visualization store={this.props.store}/>}
           </div>
         );
     }

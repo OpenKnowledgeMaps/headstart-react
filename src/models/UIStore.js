@@ -9,6 +9,7 @@ class UIStore {
     this.isZoomed = false;
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
+
     extendObservable(this, {
       data : { areas: initialState.areas },
       svgWidth: 900,
@@ -29,29 +30,27 @@ class UIStore {
       zoomFactor: 1.,
       translationVecX: 0.,
       translationVecY: 0.,
-      searchString: "",
-      get extendedSearchString() {
-        return this.searchString + "extended";
-      },
-      set extendedSearchString(value) {
-        this.searchString = value + "extended";
-      }
+      searchString: ""
     });
 
-    }
+  }
 
     disposer()
     {
       autorun(() => {
         if ((this.papersStore.hasSelectedEntities ||
             this.bubblesStore.hasSelectedEntities)) {
+
           this.isZoomed = true;
           let node = this.bubblesStore.selectedEntities;
           if (node.length > 0) this.updateZoomState(node[0], this);
+
         } else if (!(this.papersStore.hasSelectedEntities && this.bubblesStore.hasSelectedEntities)
             && this.isZoomed === true) {
+
           this.isZoomed = false;
           this.resetZoomState(this);
+
         }
       });
     }

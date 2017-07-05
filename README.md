@@ -10,6 +10,6 @@ The project is still in a very early phase and will change quickly.
 To start a development server, just type `npm start`. A browser window will open at `http://localhost:3000`
 and you can play around with the app.
 
-You can run the test suite by running `npm run test`.
+You can run the test suite by running `npm test`.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

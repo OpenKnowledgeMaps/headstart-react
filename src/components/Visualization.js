@@ -4,7 +4,7 @@ import List from './List'
 import { observer } from 'mobx-react';
 /* eslint-disable react/no-direct-mutation-state */
 
-const Bubbles =
+const Visualization =
   observer(
     ({store}) => (
       <div style={{height: "900px", width: "1304px"}}>
@@ -14,4 +14,4 @@ const Bubbles =
     )
   );
 
-export default Bubbles;
+export default Visualization;
