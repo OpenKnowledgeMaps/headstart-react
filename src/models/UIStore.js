@@ -10,10 +10,18 @@ class UIStore {
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
 
+    this.svgW = window.innerHeight;
+    this.listW = (window.innerWidth - this.svgW)*0.95;
+    if ((this.listW/window.innerWidth) < 0.26) {
+      this.svgW = window.innerWidth*0.7;
+      this.listW = window.innerWidth*0.27;
+    }
+
     extendObservable(this, {
       data : { areas: initialState.areas },
-      svgWidth: 900,
-      svgHeight: 900,
+      svgWidth: this.svgW,
+      svgHeight: this.svgW,
+      listWidth: this.listW,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
         collisionForceRadius: 100,
@@ -30,7 +38,9 @@ class UIStore {
       zoomFactor: 1.,
       translationVecX: 0.,
       translationVecY: 0.,
-      searchString: ""
+      searchString: "",
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
     });
 
   }

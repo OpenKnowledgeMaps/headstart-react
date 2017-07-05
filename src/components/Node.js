@@ -25,9 +25,9 @@ const Node =
         text_style.display = "inline";
       }
 
-      const x_ = store.zoomFactor*node.x + store.translationVecX;
-      const y_ = store.zoomFactor*node.y + store.translationVecY;
-      const r_ = store.zoomFactor*node.r;
+      const x_ = (store.zoomFactor*node.x + store.translationVecX)*(store.svgWidth/store.svgW);
+      const y_ = (store.zoomFactor*node.y + store.translationVecY)*(store.svgWidth/store.svgW);
+      const r_ = (store.zoomFactor*node.r)*(store.svgWidth/store.svgW);
 
       return (
         <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}

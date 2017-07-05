@@ -20,11 +20,11 @@ const Paper =
       const paperZoomFactor = store.paperZoomFactor;
       const translationVecX = store.translationVecX;
       const translationVecY = store.translationVecY;
-      const x_ = zoomFactor*paper.x + translationVecX;
-      const y_ = zoomFactor*paper.y + translationVecY;
-      const w_ =  paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width;
-      const h_ =  paper.zoomed ? paperZoomFactor*zoomFactor*paper.height : zoomFactor*paper.height;
-      const fs_ = paper.zoomed ? paperZoomFactor*zoomFactor*paper.fontsize : zoomFactor*paper.fontsize;
+      const x_ = (zoomFactor*paper.x + translationVecX)*(store.svgWidth/store.svgW);
+      const y_ = (zoomFactor*paper.y + translationVecY)*(store.svgWidth/store.svgW);
+      const w_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width)*(store.svgWidth/store.svgW);
+      const h_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.height : zoomFactor*paper.height)*(store.svgWidth/store.svgW);
+      const fs_ = (paper.zoomed ? paperZoomFactor*zoomFactor*paper.fontsize : zoomFactor*paper.fontsize)*(store.svgWidth/store.svgW);
 
       return (
         <g
