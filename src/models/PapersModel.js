@@ -32,6 +32,20 @@ class PapersModel extends GroupedSVGEntities {
     this.entities.forEach((entity) => entity.saveCoordsToOriginalCoords());
   }
 
+  onWindowResize({previousSVGWidth, svgWidth}) {
+    this.recalculateCoords(svgWidth/previousSVGWidth);
+  }
+
+  recalculateCoords(factor) {
+    this.entities.forEach((entity) => {
+      entity.orig_x = entity.orig_x * factor;
+      entity.orig_y = entity.orig_y * factor;
+      entity.orig_width = entity.orig_width * factor;
+      entity.orig_height = entity.orig_height * factor;
+      entity.orig_fontsize = entity.orig_fontsize * factor;
+    });
+  }
+
   disposer() {
     autorun(() => {
     });

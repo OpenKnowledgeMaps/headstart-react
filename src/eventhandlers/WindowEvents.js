@@ -96,18 +96,22 @@ optimizedResize.add(function() {
   }
 
   function actualResizeHandler() {
-    let svgW = window.innerHeight;
-    let listW = (window.innerWidth - svgW)*0.95;
-    if ((listW/window.innerWidth) < 0.26) {
-      svgW = window.innerWidth*0.7;
-      listW = window.innerWidth*0.27;
+    let newSVGWidth = window.innerHeight;
+    let newListWidth = (window.innerWidth - newSVGWidth)*0.95;
+    if ((newListWidth/window.innerWidth) < 0.26) {
+      newSVGWidth = window.innerWidth*0.7;
+      newListWidth = window.innerWidth*0.27;
     }
-    store.svgWidth = svgW;
-    store.svgHeight = svgW;
-    store.listWidth = listW;
+    store.previousSVGWidth = store.svgWidth;
+    store.previousListWidth = store.listWidth;
+    store.svgWidth = newSVGWidth;
+    store.svgHeight = newSVGWidth;
+    store.listWidth = newListWidth;
 
-    store.bubblesStore.saveAllCoordsToOriginalCoords();
-    store.papersStore.saveAllCoordsToOriginalCoords();
+    store.bubblesStore.onWindowResize(store);
+    store.papersStore.onWindowResize(store);
+
+    store.updateCoords();
   }
 
 }());

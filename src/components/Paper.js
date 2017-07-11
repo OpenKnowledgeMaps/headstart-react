@@ -16,15 +16,16 @@ const Paper =
 
       rect_style.strokeWidth = paper.clicked ? "2px" : "1px";
       rect_style.stroke = paper.clicked ? "#f00" : "#000";
-      const zoomFactor = store.zoomFactor;
-      const paperZoomFactor = store.paperZoomFactor;
-      const translationVecX = store.translationVecX;
-      const translationVecY = store.translationVecY;
-      const x_ = (zoomFactor*paper.x + translationVecX)*(store.svgWidth/store.svgW);
-      const y_ = (zoomFactor*paper.y + translationVecY)*(store.svgWidth/store.svgW);
-      const w_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width)*(store.svgWidth/store.svgW);
-      const h_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.height : zoomFactor*paper.height)*(store.svgWidth/store.svgW);
-      const fs_ = (paper.zoomed ? paperZoomFactor*zoomFactor*paper.fontsize : zoomFactor*paper.fontsize)*(store.svgWidth/store.svgW);
+      // const zoomFactor = store.zoomFactor;
+      // const paperZoomFactor = store.paperZoomFactor;
+      // const translationVecX = store.translationVecX;
+      // const translationVecY = store.translationVecY;
+      // const x_ = (zoomFactor*paper.x + translationVecX)*(store.svgWidth/store.svgW);
+      // const y_ = (zoomFactor*paper.y + translationVecY)*(store.svgWidth/store.svgW);
+      // const w_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width)*(store.svgWidth/store.svgW);
+      // const h_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.height : zoomFactor*paper.height)*(store.svgWidth/store.svgW);
+      // const fs_ = (paper.zoomed ? paperZoomFactor*zoomFactor*paper.fontsize : zoomFactor*paper.fontsize)*(store.svgWidth/store.svgW);
+      let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_} = paper;
 
       return (
         <g
