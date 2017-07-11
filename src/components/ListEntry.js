@@ -9,19 +9,12 @@ const ListEntry =
       if (paper.clicked) {
         abstract =
           <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi
-            ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum
-            dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            {paper.paper_abstract}
           </div>;
       }
       return (
       <div style={{borderBottom: "2px grey solid", display: "block", padding: "10px"}}>
-        <div><a href="#" onClick={onListClick.bind(this, paper, store)}>{paper.title}</a></div>
+        <div><span style={{"textDecoration" : "underline"}} onClick={onListClick.bind(this, paper, store)}>{paper.title}</span></div>
         {abstract}
         <div>Area: {paper.area}</div>
       </div>

@@ -1,11 +1,12 @@
 import { extendObservable, autorun } from "mobx";
+import {scaleLinear} from 'd3-scale';
 import PapersModel from './PapersModel';
 import BubblesModel from './BubblesModel';
 
 class UIStore {
-  constructor(initialState) {
-    let papersStore = new PapersModel(initialState);
-    let bubblesStore = new BubblesModel(initialState);
+  constructor(domainStore) {
+    let papersStore = new PapersModel(domainStore.papersObject);
+    let bubblesStore = new BubblesModel(domainStore.bubblesObject);
     this.isZoomed = false;
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
@@ -16,21 +17,20 @@ class UIStore {
       this.previousSVGWidth = window.innerWidth*0.7;
       this.previousListWidth = window.innerWidth*0.27;
     }
-
     extendObservable(this, {
-      data : { areas: initialState.areas },
+      data : { areas: domainStore.areasObject },
       svgWidth: this.previousSVGWidth,
       svgHeight: this.previousSVGWidth,
       listWidth: this.previousListWidth,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
-        collisionForceRadius: 100,
+        collisionForceRadius: 120,
         bubblesAlphaMin: 0.8,
         papersAlphaMin: 0.8,
         centerXForceStrength: 0.5,
         centerYForceStrength: 0.5,
       },
-      paperZoomFactor: 2.,
+      paperZoomFactor: 3.,
       bubbleCenterOffset: 20,
       paperWidth: 26,
       paperHeight: 40,
@@ -42,7 +42,7 @@ class UIStore {
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
     });
-
+    this.initCoords(this.svgWidth);
   }
 
     disposer()
@@ -97,6 +97,34 @@ class UIStore {
     this.zoomFactor = 1.;
     this.translationVecX = 0.;
     this.translationVecY = 0.;
+  }
+
+
+  initCoords(range) {
+    const max = Math.max(
+      Math.max(...this.papersStore.entities.map((entity) => entity.x)),
+      Math.max(...this.papersStore.entities.map((entity) => entity.y)));
+    const min = Math.min(
+      Math.min(...this.papersStore.entities.map((entity) => entity.x)),
+      Math.min(...this.papersStore.entities.map((entity) => entity.y)));
+    const maxReaders = Math.max(...this.bubblesStore.entities.map((entity) => entity.readers));
+    const minReaders = Math.min(...this.bubblesStore.entities.map((entity) => entity.readers));
+
+    let scale = scaleLinear().domain([min, max]).range([0, range]);
+    let radiusScale = scaleLinear().domain([minReaders, maxReaders]).range([range/10., range/6.]);
+
+    this.papersStore.entities.forEach((entity) => {
+      entity.x = scale(entity.x);
+      entity.y = scale(entity.y);
+      entity.meanx = scale(entity.meanx);
+      entity.meany = scale(entity.meany);
+    });
+
+    this.bubblesStore.entities.forEach((entity) => {
+      entity.x = scale(entity.x);
+      entity.y = scale(entity.y);
+      entity.r = radiusScale(entity.readers);
+    });
   }
 
 }

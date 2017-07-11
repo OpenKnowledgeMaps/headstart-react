@@ -16,17 +16,19 @@ const Paper =
 
       rect_style.strokeWidth = paper.clicked ? "2px" : "1px";
       rect_style.stroke = paper.clicked ? "#f00" : "#000";
-      // const zoomFactor = store.zoomFactor;
-      // const paperZoomFactor = store.paperZoomFactor;
-      // const translationVecX = store.translationVecX;
-      // const translationVecY = store.translationVecY;
-      // const x_ = (zoomFactor*paper.x + translationVecX)*(store.svgWidth/store.svgW);
-      // const y_ = (zoomFactor*paper.y + translationVecY)*(store.svgWidth/store.svgW);
-      // const w_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.width : zoomFactor*paper.width)*(store.svgWidth/store.svgW);
-      // const h_ =  (paper.zoomed ? paperZoomFactor*zoomFactor*paper.height : zoomFactor*paper.height)*(store.svgWidth/store.svgW);
-      // const fs_ = (paper.zoomed ? paperZoomFactor*zoomFactor*paper.fontsize : zoomFactor*paper.fontsize)*(store.svgWidth/store.svgW);
-      let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_} = paper;
-
+      const paperZoomFactor = store.paperZoomFactor;
+      let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_, zoomed} = paper;
+      w_ = zoomed ? paperZoomFactor*w_ : w_;
+      h_ = zoomed ? paperZoomFactor*h_ : h_;
+      fs_ = zoomed ? paperZoomFactor*fs_ : fs_;
+      const authors = paper.authors.split(';');
+      let correctedAuthors = authors.map((author) => {
+        let names = author.split(',');
+        return names[1] + ' ' + names[0];
+      });
+      let displayAuthors = correctedAuthors[0];
+      if (authors.length > 2) displayAuthors = correctedAuthors[0] + ', ' + correctedAuthors[1];
+      const title = paper.title;
       return (
         <g
           width={w_}
@@ -47,11 +49,17 @@ const Paper =
           <foreignObject
             x={x_}
             y={y_}
-            width={w_ - 8}
-            height={h_ - 8}
-            fontSize={fs_ - 3}
+            width={w_}
+            height={h_}
+            fontSize={fs_}
+            style={{"overflow":"hidden"}}
           >
-            <p>{paper.area}</p>
+            <div style={{'padding':'3px'}}>
+              <p>{title}</p>
+              <p>{displayAuthors}</p>
+              <p>in {paper.published_in}</p>
+              <p>{paper.readers} citations</p>
+            </div>
           </foreignObject>
         </g>
       )

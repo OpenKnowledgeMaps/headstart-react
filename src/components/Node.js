@@ -24,10 +24,6 @@ const Node =
         circle_style.fillOpacity = "0.8";
         text_style.display = "inline";
       }
-
-      // const x_ = (store.zoomFactor*node.x + store.translationVecX)*(store.svgWidth/store.svgW);
-      // const y_ = (store.zoomFactor*node.y + store.translationVecY)*(store.svgWidth/store.svgW);
-      // const r_ = (store.zoomFactor*node.r);
       let {x: x_, y: y_, r: r_} = node;
 
       return (

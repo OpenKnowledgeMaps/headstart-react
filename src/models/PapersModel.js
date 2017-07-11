@@ -4,8 +4,7 @@ import GroupedSVGEntities from './GroupedSVGEntities';
 
 class PapersModel extends GroupedSVGEntities {
   constructor(initialState) {
-    let initialState_ = { entities: initialState.papers };
-    super(initialState_, PaperModel);
+    super(initialState, PaperModel);
     extendObservable(this, {
 
       get flaglessPapers() {
