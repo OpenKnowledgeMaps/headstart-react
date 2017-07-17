@@ -133,7 +133,7 @@ class UIStore {
     if (SVGSize < this.minimalSVGSize) {
       SVGSize = this.minimalSVGSize;
     }
-    let listSize = (width - SVGSize)*0.99;
+    let listSize = (width - SVGSize)*0.98;
     listSize = listSize < this.minimalListSize ? this.minimalListSize : listSize;
     return {SVGSize: SVGSize, listSize: listSize}
   }
