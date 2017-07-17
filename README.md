@@ -7,6 +7,8 @@ The project is still in a very early phase and will change quickly.
 
 ## Getting started
 
+To install the necessary dependencies, issue the command `npm install` after cloning the repo.
+
 To start a development server, just type `npm start`. A browser window will open at `http://localhost:3000`
 and you can play around with the app.
 
