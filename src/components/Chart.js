@@ -1,6 +1,7 @@
 import React from 'react';
 import Nodes from './Nodes';
 import Papers from './Papers';
+import SubTitle from './SubTitle';
 import {observer} from 'mobx-react';
 import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
 
@@ -8,6 +9,7 @@ const Chart =
   observer(
     ({store}) => (
       <div style={{display: "inline-block"}}>
+        <SubTitle store={store}/>
         <svg
           width={store.svgWidth}
           height={store.svgHeight}

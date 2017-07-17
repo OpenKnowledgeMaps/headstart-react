@@ -13,6 +13,7 @@ class UIStore {
 
     this.minimalSVGSize = 700;
     this.minimalListSize = 300;
+    this.subtitleHeight = 100;
     const chartSize = this.getChartSize(window.innerHeight, window.innerWidth);
     this.previousSVGSize = chartSize.SVGSize;
     this.previousListSize = chartSize.listSize;
@@ -21,6 +22,7 @@ class UIStore {
       data : { areas: domainStore.areasObject },
       svgWidth: this.previousSVGSize,
       svgHeight: this.previousSVGSize,
+      subtitleHeight: 100,
       listWidth: this.previousListSize,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
@@ -133,6 +135,7 @@ class UIStore {
     if (SVGSize < this.minimalSVGSize) {
       SVGSize = this.minimalSVGSize;
     }
+    SVGSize -= this.subtitleHeight;
     let listSize = (width - SVGSize)*0.98;
     listSize = listSize < this.minimalListSize ? this.minimalListSize : listSize;
     return {SVGSize: SVGSize, listSize: listSize}
