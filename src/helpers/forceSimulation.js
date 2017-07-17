@@ -1,7 +1,6 @@
 import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, forceY} from 'd3-force';
 
 function  startForceSim(store) {
-
     forceSimulation()
       .nodes(store.bubblesStore.entities)
       .alphaMin(store.forceSimParameters.bubblesAlphaMin)
@@ -33,6 +32,7 @@ function  startForceSim(store) {
               store.forceSimIsDone = true;
               store.bubblesStore.saveAllCoordsToOriginalCoords();
               store.papersStore.saveAllCoordsToOriginalCoords();
+              store.updateChartSize(window.innerHeight, window.innerWidth);
             });
         });
       });

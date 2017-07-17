@@ -12,19 +12,16 @@ class UIStore {
     this.bubblesStore = bubblesStore;
 
     this.minimalSVGSize = 700;
+    this.minimalListSize = 300;
+    const chartSize = this.getChartSize(window.innerHeight, window.innerWidth);
+    this.previousSVGSize = chartSize.SVGSize;
+    this.previousListSize = chartSize.listSize;
 
-    const initialSize = window.innerHeight < this.minimalSVGSize ? this.minimalSVGSize : window.innerHeight;
-    this.previousSVGWidth = initialSize;
-    this.previousListWidth = (window.innerWidth - this.previousSVGWidth)*0.95;
-    if ((this.previousListWidth/window.innerWidth) < 0.26) {
-      this.previousSVGWidth = window.innerWidth*0.7;
-      this.previousListWidth = window.innerWidth*0.27;
-    }
     extendObservable(this, {
       data : { areas: domainStore.areasObject },
-      svgWidth: this.previousSVGWidth,
-      svgHeight: this.previousSVGWidth,
-      listWidth: this.previousListWidth,
+      svgWidth: this.previousSVGSize,
+      svgHeight: this.previousSVGSize,
+      listWidth: this.previousListSize,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
         collisionForceRadius: 120,
@@ -44,8 +41,10 @@ class UIStore {
       searchString: "",
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
+      displayList: true
     });
     this.initCoords(this.svgWidth);
+
   }
 
     disposer()
@@ -82,6 +81,7 @@ class UIStore {
     const zoomFactor = this.zoomFactor;
     const translationVecX = this.translationVecX;
     const translationVecY = this.translationVecY;
+
     this.papersStore.entities.forEach((paper) => {
       paper.x = (zoomFactor*paper.orig_x + translationVecX);
       paper.y = (zoomFactor*paper.orig_y + translationVecY);
@@ -89,6 +89,7 @@ class UIStore {
       paper.height =  zoomFactor*paper.orig_height;
       paper.fontsize = zoomFactor*paper.orig_fontsize;
     });
+
     this.bubblesStore.entities.forEach((node) => {
       node.x = (this.zoomFactor*node.orig_x + this.translationVecX);
       node.y = (this.zoomFactor*node.orig_y + this.translationVecY);
@@ -112,7 +113,6 @@ class UIStore {
       Math.min(...this.papersStore.entities.map((entity) => entity.y)));
     const maxReaders = Math.max(...this.bubblesStore.entities.map((entity) => entity.readers));
     const minReaders = Math.min(...this.bubblesStore.entities.map((entity) => entity.readers));
-
     let scale = scaleLinear().domain([min, max]).range([0, range]);
     let radiusScale = scaleLinear().domain([minReaders, maxReaders]).range([range/10., range/6.]);
 
@@ -130,22 +130,26 @@ class UIStore {
     });
   }
   
-  updateChartSize(height, width) {
-    let newSVGSize = height;
-    let newListSize = (width - newSVGSize)*0.95;
-    if ((newListSize/width) < 0.26) {
-      newSVGSize = width * 0.7 < this.minimalSVGSize ? this.minimalSVGSize : width * 0.7;;
-      newListSize = (newSVGSize*0.27)/0.7;
+  getChartSize(height, width) {
+    let SVGSize = (width*0.7 > height) ? height : width*0.7;
+    if (SVGSize < this.minimalSVGSize) {
+      SVGSize = this.minimalSVGSize;
     }
-    newSVGSize = width * 0.7 < this.minimalSVGSize ? this.minimalSVGSize : width * 0.7;
+    let listSize = (width - SVGSize)*0.9;
+    return {SVGSize: SVGSize, listSize: listSize}
+  }
+  
+  updateChartSize(height, width) {
+    let {SVGSize: newSVGSize, listSize: newListSize} = this.getChartSize(height, width);
+    this.displayList = (newListSize < this.minimalListSize) ? false : true;
 
-    this.previousSVGWidth = this.svgWidth;
-    this.previousListWidth = this.listWidth;
+    this.previousSVGSize = this.svgWidth;
+    this.previousListSize = this.listWidth;
     this.svgWidth = newSVGSize;
     this.svgHeight = newSVGSize;
     this.listWidth = newListSize;
-    this.bubblesStore.onWindowResize(this.previousSVGWidth, newSVGSize);
-    this.papersStore.onWindowResize(this.previousSVGWidth, newSVGSize);
+    this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
+    this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
     this.updateCoords();
   }
 
