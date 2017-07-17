@@ -1,0 +1,249 @@
+.list_entry {
+    border-bottom: 2px solid #E1E5E6;
+    padding: 10px 0px 10px 15px;
+    border-left: 0px solid #E1E5E6;
+}
+
+.list_entry_full {
+    border-bottom: 0px;
+    padding-left: 15px;
+}
+
+#open-access-logo_list {
+    background-color: $open-access;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 5px;
+    font-size: 10px;
+    vertical-align: top;
+    font-weight: normal;
+}
+
+.list_metadata {
+    /*border-top-width: 2px;
+    border-top-style: solid;
+    border-color: $list_metadata_border_color;*/
+    padding-top: 10px;
+    margin-bottom: 10px;
+    font-family: Helvetica;
+
+    /*.list_title.oa a {
+            color: $okm-red;
+            }*/
+
+
+    .list_title {
+        font-size: 14px;
+        margin-bottom: 4px;
+        max-width: 82%;
+        display: inline-block;
+        font-weight: bold;
+
+        a {
+            text-decoration: none;
+            color: $list_metadata_title_paper;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+    }
+
+    #outlink_list {
+        vertical-align:top;
+        width: 12px;
+        height: 12px;
+        padding-left:0px;
+        margin-top:0px;
+    }
+
+    .list_links {
+        float: right;
+        vertical-align: top;
+        display: inline-block;
+        text-align: center;
+        padding-top: 5px;
+        padding-right: 10px;
+        
+        .outlink_symbol {
+        vertical-align: baseline;
+    }
+    }
+
+    .list_links a.pdf-link {
+        color: $open-access;
+        border: 1px solid $open-access;
+        &:hover {
+            background-color: $open-access;
+            color: white;
+        }
+    }
+
+    .list_links a {
+        background-color: white;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+        color: $journal-gray;
+        border: 1px solid $journal-gray;
+        &:hover {
+            background-color: $journal-gray;
+            color: white;
+        }
+    }
+
+
+    .outlink_symbol {
+        font-family: FontAwesome;
+        vertical-align: top;
+    }
+
+    .list_details {
+        font: 12px 'Helvetica', sans-serif;
+        font-size: 12px;
+        line-height: 14px;
+        color: $list_detail;
+        padding: 0;
+        max-width: 82%;
+
+        .list_authors {
+            color: $list_detail_authors;
+        }
+
+        .list_in {
+            color: $list_detail_in;
+        }
+
+        .list_published_in {
+            color: black;
+            font-style: italic;
+        }
+
+        .list_pubyear {
+            font-weight: bold;
+            color: black;
+        }
+    }
+}
+
+#list_abstract {
+    max-width: 82%;
+    font: 12px 'Helvetica', sans-serif;
+    line-height: 13px;
+    padding-right: 0;
+    padding-left: 0px;
+    color: $list_abstract;
+
+    //border-left: solid 2.5px $list_abstract_border_left;
+}
+
+#list_area {
+    font-family: 'Helvetica';
+    font-size: 11px;
+    line-height: 11px;
+    margin-bottom: 10px;
+    padding: 0;
+    text-align: left;
+    color: black;
+    display: inline-block;
+    max-width: 82%;
+
+    .area_tag {
+        font-weight: bold;
+    }
+}
+
+.link2 {
+
+    display: block;
+    margin-top: 10px;
+
+}
+
+
+
+.list_readers {
+    font-size: 11px;
+    line-height: 11px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+    float: right;
+    color: black;
+    display: inline-block;
+    font-weight: bold;
+    padding-right: 10px;
+
+    .list_readers_entity {
+        font: 11px 'Helvetica' sans-serif;
+        font-weight: normal;
+    }
+}
+
+// Preview image part
+
+div {
+    &#preview_image {
+        display: block;
+        margin-top: 20px;
+        margin-left: 15px;
+    }
+
+    &#transbox {
+        display: none;
+        cursor: pointer;
+        opacity: .9;
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    &#preview_page_index {
+        font-size: 11px;
+        height: 20px;
+        margin-top: 15px;
+        padding: 5px;
+        text-align: center;
+        background-color: #eee;
+        text-shadow: 0 1px 1px white;
+
+        &:first-child {
+            margin-top:0px;
+        }
+    }
+}
+
+img#preview_page {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    border: 1px solid;
+}
+
+@media screen and (max-width: 950px) {
+
+    .list_metadata {
+
+        .list_links {
+            float:none;
+            margin-bottom: 15px;
+
+            a {
+                display: inline;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .list_metadata .list_title {
+        font-size: 12px;
+    }
+
+    .list_readers {
+        margin-top: 0px;
+        float: none;
+        display: block;
+        padding-right: 0px;
+    }
+}

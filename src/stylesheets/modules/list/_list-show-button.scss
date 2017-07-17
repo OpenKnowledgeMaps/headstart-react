@@ -1,0 +1,21 @@
+#show_hide_button {
+    cursor: pointer;
+    padding: 5px 0px;
+    border: 2px solid $list_show_hide_button_border;
+    background-color: white;
+    color: $list_show_hide_button;
+
+    &.hover {
+        background-color: $list_show_hide_button;
+        color: white;
+    }
+}
+
+#show_hide_button_label {
+    font-family: 'Helvetica';
+    font-size: 14px;
+    font-weight: 700;
+    float: left;
+    text-align: center;
+}
+

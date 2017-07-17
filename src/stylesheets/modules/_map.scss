@@ -1,0 +1,44 @@
+@import "map/header";
+@import "map/bubbles";
+@import "map/papers";
+
+/* ################ Chart ############### */
+
+#headstart-chart {
+    /*position: absolute;*/
+    font-family: Helvetica;
+        margin: 0 auto;
+        display: table;
+    /*margin-top: 6px;*/
+}
+
+#chart-svg {
+        overflow: visible;
+}
+
+rect {
+    fill: rgb(31, 119, 180);
+    fill-opacity: .0;
+    stroke: rgb(31, 119, 180);
+    stroke-width: 0;
+}
+
+path {
+    fill: white;
+    fill-opacity: 1;
+    stroke: #cacfd3;
+    stroke-width: 1px;
+}
+
+.dogear {
+    fill: #cacfd3;
+}
+
+line {
+    stroke: rgb(31, 119, 180);
+    stroke-width: 1px;
+}
+
+text {
+    font: 10px sans-serif;
+}

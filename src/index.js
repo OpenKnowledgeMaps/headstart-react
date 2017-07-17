@@ -5,7 +5,7 @@ import App from './components/App';
 import UIStore from './models/UIStore';
 import pubmedPayload from './static/cool_pubmed';
 import DomainStore from './models/domainStore';
-import './index.css';
+import './stylesheets/main.css';
 
 let domainStore = window.domainStore = new DomainStore(pubmedPayload);
 domainStore.populateObjects();
