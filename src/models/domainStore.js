@@ -1,3 +1,5 @@
+// TODO integrate transport layer to get data from backend
+
 class DomainStore {
   constructor(payload) {
     this.payload = payload;

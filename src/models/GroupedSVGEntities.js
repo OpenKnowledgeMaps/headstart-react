@@ -7,7 +7,6 @@ import {extendObservable, autorun} from 'mobx';
 class GroupedSVGEntities {
   constructor(initialState, EntityModel) {
     let entities = [];
-    debugger;
     initialState.forEach((entity) => {
       entities.push(new EntityModel(entity));
     });

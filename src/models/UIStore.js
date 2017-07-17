@@ -11,7 +11,10 @@ class UIStore {
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
 
-    this.previousSVGWidth = window.innerHeight;
+    this.minimalSVGSize = 700;
+
+    const initialSize = window.innerHeight < this.minimalSVGSize ? this.minimalSVGSize : window.innerHeight;
+    this.previousSVGWidth = initialSize;
     this.previousListWidth = (window.innerWidth - this.previousSVGWidth)*0.95;
     if ((this.previousListWidth/window.innerWidth) < 0.26) {
       this.previousSVGWidth = window.innerWidth*0.7;
@@ -125,6 +128,25 @@ class UIStore {
       entity.y = scale(entity.y);
       entity.r = radiusScale(entity.readers);
     });
+  }
+  
+  updateChartSize(height, width) {
+    let newSVGSize = height;
+    let newListSize = (width - newSVGSize)*0.95;
+    if ((newListSize/width) < 0.26) {
+      newSVGSize = width * 0.7 < this.minimalSVGSize ? this.minimalSVGSize : width * 0.7;;
+      newListSize = (newSVGSize*0.27)/0.7;
+    }
+    newSVGSize = width * 0.7 < this.minimalSVGSize ? this.minimalSVGSize : width * 0.7;
+
+    this.previousSVGWidth = this.svgWidth;
+    this.previousListWidth = this.listWidth;
+    this.svgWidth = newSVGSize;
+    this.svgHeight = newSVGSize;
+    this.listWidth = newListSize;
+    this.bubblesStore.onWindowResize(this.previousSVGWidth, newSVGSize);
+    this.papersStore.onWindowResize(this.previousSVGWidth, newSVGSize);
+    this.updateCoords();
   }
 
 }

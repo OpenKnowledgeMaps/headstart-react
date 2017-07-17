@@ -96,22 +96,7 @@ optimizedResize.add(function() {
   }
 
   function actualResizeHandler() {
-    let newSVGWidth = window.innerHeight;
-    let newListWidth = (window.innerWidth - newSVGWidth)*0.95;
-    if ((newListWidth/window.innerWidth) < 0.26) {
-      newSVGWidth = window.innerWidth*0.7;
-      newListWidth = window.innerWidth*0.27;
-    }
-    store.previousSVGWidth = store.svgWidth;
-    store.previousListWidth = store.listWidth;
-    store.svgWidth = newSVGWidth;
-    store.svgHeight = newSVGWidth;
-    store.listWidth = newListWidth;
-
-    store.bubblesStore.onWindowResize(store);
-    store.papersStore.onWindowResize(store);
-
-    store.updateCoords();
+    store.updateChartSize(window.innerHeight, window.innerWidth);
   }
 
 }());

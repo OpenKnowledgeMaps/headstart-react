@@ -14,6 +14,7 @@ const Paper =
         "strokeWidth":"1px"
       };
 
+      // TODO cleanup
       rect_style.strokeWidth = paper.clicked ? "2px" : "1px";
       rect_style.stroke = paper.clicked ? "#f00" : "#000";
       const paperZoomFactor = store.paperZoomFactor;

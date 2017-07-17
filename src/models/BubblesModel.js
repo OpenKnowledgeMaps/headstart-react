@@ -10,7 +10,7 @@ class BubblesModel extends GroupedSVGEntities {
     this.entities.forEach((entity) => entity.saveCoordsToOriginalCoords());
   }
 
-  onWindowResize({previousSVGWidth, svgWidth}) {
+  onWindowResize(previousSVGWidth, svgWidth) {
     this.recalculateCoords(svgWidth/previousSVGWidth);
   }
 
