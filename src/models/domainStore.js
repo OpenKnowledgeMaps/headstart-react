@@ -43,6 +43,7 @@ class DomainStore {
           authors: entry.authors,
           published_in: entry.published_in,
           paper_abstract: entry.paper_abstract,
+          year: entry.year,
           x: entry.x[0],
           y: entry.y[0],
           meanx: bubble.x,
