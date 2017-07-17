@@ -7,7 +7,7 @@ import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
 const Chart =
   observer(
     ({store}) => (
-      <div style={{float: "left", display: "block"}}>
+      <div style={{display: "inline-block"}}>
         <svg
           width={store.svgWidth}
           height={store.svgHeight}

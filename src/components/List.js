@@ -17,10 +17,10 @@ function hasSubstring(listEntry, store) {
 const List =
   observer(
     ({store}) => {
-    const displayMode = (store.displayList ? "block" : "none");
+    const displayMode = (store.displayList ? "inline-block" : "none");
     return (
-      <div style={{width: store.listWidth, height: window.innerHeight, float: "right", display: displayMode, border: "0px solid grey", overflow: "hidden"}}>
-        <div style={{borderBottom: "2px grey solid", display: "block", padding: "10px",backgroundColor: "lightblue", height: "10%"}}>
+      <div style={{width: store.listWidth, height: store.svgHeight, float: "right", display: displayMode, border: "0px solid grey", overflow: "hidden"}}>
+        <div style={{borderBottom: "2px grey solid", padding: "10px",backgroundColor: "lightblue", height: "10%"}}>
           <h3>Headstart React Mobx</h3>
           <div>Search: <input id="search" onChange={() => {store.searchString = document.getElementById('search').value;}}/></div>
         </div>

@@ -24,7 +24,7 @@ class UIStore {
       listWidth: this.previousListSize,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
-        collisionForceRadius: 120,
+        collisionForceRadius: this.previousSVGSize / 8.,
         bubblesAlphaMin: 0.8,
         papersAlphaMin: 0.8,
         centerXForceStrength: 0.5,
@@ -43,8 +43,6 @@ class UIStore {
       windowHeight: window.innerHeight,
       displayList: true
     });
-    this.initCoords(this.svgWidth);
-
   }
 
     disposer()
@@ -114,7 +112,7 @@ class UIStore {
     const maxReaders = Math.max(...this.bubblesStore.entities.map((entity) => entity.readers));
     const minReaders = Math.min(...this.bubblesStore.entities.map((entity) => entity.readers));
     let scale = scaleLinear().domain([min, max]).range([0, range]);
-    let radiusScale = scaleLinear().domain([minReaders, maxReaders]).range([range/10., range/6.]);
+    let radiusScale = scaleLinear().domain([minReaders, maxReaders]).range([range/7., range/5.]);
 
     this.papersStore.entities.forEach((entity) => {
       entity.x = scale(entity.x);
@@ -135,13 +133,13 @@ class UIStore {
     if (SVGSize < this.minimalSVGSize) {
       SVGSize = this.minimalSVGSize;
     }
-    let listSize = (width - SVGSize)*0.9;
+    let listSize = (width - SVGSize)*0.99;
+    listSize = listSize < this.minimalListSize ? this.minimalListSize : listSize;
     return {SVGSize: SVGSize, listSize: listSize}
   }
   
   updateChartSize(height, width) {
     let {SVGSize: newSVGSize, listSize: newListSize} = this.getChartSize(height, width);
-    this.displayList = (newListSize < this.minimalListSize) ? false : true;
 
     this.previousSVGSize = this.svgWidth;
     this.previousListSize = this.listWidth;

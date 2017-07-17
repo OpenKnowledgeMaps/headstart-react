@@ -1,6 +1,8 @@
 import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, forceY} from 'd3-force';
 
 function  startForceSim(store) {
+    store.initCoords(store.svgWidth);
+    // store.initCoords(store.getChartSize(window.innerHeight, window.innerWidth).SVGSize);
     forceSimulation()
       .nodes(store.bubblesStore.entities)
       .alphaMin(store.forceSimParameters.bubblesAlphaMin)
@@ -16,18 +18,19 @@ function  startForceSim(store) {
           const alphaMin = store.forceSimParameters.papersAlphaMin;
           let bubbleX = store.bubblesStore.entities.find((node) => node.area === area).x - store.bubbleCenterOffset;
           let bubbleY = store.bubblesStore.entities.find((node) => node.area === area).y - store.bubbleCenterOffset;
+          const paperCollisionRadius = store.svgWidth * 0.028;
 
           forceSimulation()
             .alphaMin(alphaMin)
             .nodes(store.papersStore.entitiesInArea(area))
             .force("positioning", forceX(bubbleX).strength(store.forceSimParameters.centerXForceStrength))
-            .force("collision", forceCollide(store.paperWidth - 3));
+            .force("collision", forceCollide(paperCollisionRadius));
 
           forceSimulation()
             .alphaMin(alphaMin)
             .nodes(store.papersStore.entitiesInArea(area))
             .force("positioning", forceY(bubbleY).strength(store.forceSimParameters.centerYForceStrength))
-            .force("collision", forceCollide(store.paperHeight - 12))
+            .force("collision", forceCollide(paperCollisionRadius))
             .on('end', () => {
               store.forceSimIsDone = true;
               store.bubblesStore.saveAllCoordsToOriginalCoords();
