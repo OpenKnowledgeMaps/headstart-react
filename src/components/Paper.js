@@ -74,7 +74,7 @@ const Paper =
 
               <div className="metadata">
                 <div id="icons">
-                  <p id="open-access-logo" style={{display: "none"}} className={textClassName}></p>
+                  <p id="open-access-logo" style={{display: "inline"}} className={textClassName}>&#xf09c;</p>
                 </div>
                 <p id="title" className={textClassName}>{title}</p>
                 <p id="details" className={textClassName}>{displayAuthors}</p>

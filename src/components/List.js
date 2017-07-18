@@ -6,7 +6,10 @@ function hasSubstring(listEntry, store) {
   let containsSubstring = false;
   const searchStringLowerCase = store.searchString.toLowerCase();
   containsSubstring = listEntry.title.toLowerCase().includes(searchStringLowerCase) ||
-                      listEntry.area.toLowerCase().includes(store.searchString);
+    listEntry.area.toLowerCase().includes(store.searchString) ||
+    listEntry.authors.toLowerCase().includes(store.searchString) ||
+    listEntry.paper_abstract.toLowerCase().includes(store.searchString);
+
   if (store.searchString === "") return true;
   return containsSubstring;
 }
@@ -43,7 +46,7 @@ const List = observer(class List extends React.Component {
 
             <div className="" id="filter_container">
               <div className="input-group input-group-sm">
-                <input id="filter_input" type="text" className="form-control" onChange={() => {this.store.searchString = document.getElementById('search').value;}} />
+                <input id="filter_input" type="text" className="form-control" onChange={() => {this.store.searchString = window.document.getElementById('filter_input').value;}} />
                 <span id="searchclear" className="glyphicon glyphicon-remove-circle"></span>
               </div>
             </div>

@@ -37,7 +37,7 @@ class UIStore {
       paperExplorerHeight: "50px",
       bubbleCenterOffset: 0,
       paperWidth: 20,
-      paperHeight: 26.66,
+      paperHeight: 26,
       forceSimIsDone: false,
       zoomFactor: 1.,
       translationVecX: 0.,

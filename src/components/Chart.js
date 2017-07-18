@@ -21,6 +21,7 @@ const Chart =
             onMouseOver={onSVGMouseOver.bind(this, store)}
           >
             <g id="chart_canvas">
+              <rect width={store.svgWidth} height={store.svgHeight} />
               <Papers store={store} papers={store.papersStore.flaglessPapers} />
               <Nodes store={store} nodes={store.bubblesStore} />
               <Papers store={store} papers={store.papersStore.activeEntities} />

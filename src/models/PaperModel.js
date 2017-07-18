@@ -7,8 +7,8 @@ class PaperModel extends EntityModel {
     if(!(paper.hasOwnProperty('zoomed_x'))) paper.zoomed_x = 0.;
     if(!(paper.hasOwnProperty('zoomed_y'))) paper.zoomed_y = 0.;
     if(!(paper.hasOwnProperty('zoomed'))) paper.zoomed = false;
-    if(!(paper.hasOwnProperty('width'))) paper.width = 26.;
-    if(!(paper.hasOwnProperty('height'))) paper.height = 40.;
+    if(!(paper.hasOwnProperty('width'))) paper.width = 30;
+    if(!(paper.hasOwnProperty('height'))) paper.height = 40;
     if(!(paper.hasOwnProperty('orig_width'))) paper.orig_width = paper.width;
     if(!(paper.hasOwnProperty('orig_height'))) paper.orig_height = paper.height;
     if(!(paper.hasOwnProperty('zoomed_width'))) paper.zoomed_width = 0.;
