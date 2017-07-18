@@ -6,18 +6,7 @@ import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandle
 const Paper =
   observer(
     ({store, paper}) =>{
-
-      let rect_style = {
-        "fill": "#eee",
-        "fillOpacity": "1",
-        "stroke":"#000",
-        "strokeWidth":"1px"
-      };
-
-      // TODO cleanup
-      rect_style.strokeWidth = paper.clicked ? "2px" : "1px";
-      rect_style.stroke = paper.clicked ? "#f00" : "#000";
-      const paperZoomFactor = store.paperZoomFactor;
+            const paperZoomFactor = store.paperZoomFactor;
       let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_, zoomed} = paper;
       w_ = zoomed ? paperZoomFactor*w_ : w_;
       h_ = zoomed ? paperZoomFactor*h_ : h_;
@@ -30,6 +19,26 @@ const Paper =
       let displayAuthors = correctedAuthors[0];
       if (authors.length > 2) displayAuthors = correctedAuthors[0] + ', ' + correctedAuthors[1];
       const title = paper.title;
+
+      const textClassName = paper.selected ? 'large highlightable' : 'highlightable';
+
+      const pathD = 'M ' + x_ + ' ' + y_ +
+                    ' h ' + (0.9*w_) +
+                    ' l ' + (0.1*w_) + ' ' + (0.1*h_) +
+                    ' v ' + (0.9*h_) +
+                    ' h ' + (-w_) +
+                    ' v ' + (-h_);
+      const pathClassName = paper.clicked ? 'framed' : 'unframed';
+
+      const dogearPath = "M " + (x_ + 0.9*w_) + ' ' + y_ + " v " + (0.1*h_) + " h " + (0.1*w_);
+
+      let displayStyle = {display: "block"};
+      if (store.papersStore.hasSelectedEntities && !paper.selected) {
+        displayStyle.display = "none";
+      }
+
+      let readersDivStyle = {height: "15px", width: w_ + "px", marginTop: "3px"};
+
       return (
         <g
           width={w_}
@@ -38,16 +47,21 @@ const Paper =
           onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
           onClick={onPaperClick.bind(this, store, paper)}
           className="paper"
+          style={displayStyle}
         >
-          <rect
-            x={x_}
-            y={y_}
-            width={w_}
-            height={h_}
-            rx="3"
-            ry="3"
-            style={rect_style}
-          />
+
+          <path
+            id="region"
+            d={pathD}
+            className={pathClassName}
+          >
+          </path>
+
+          <path
+            className="dogear"
+            d={dogearPath}>
+          </path>
+
           <foreignObject
             x={x_}
             y={y_}
@@ -56,11 +70,29 @@ const Paper =
             fontSize={fs_}
             style={{"overflow":"hidden"}}
           >
-            <div style={{'padding':'3px'}}>
-              <p>{title}</p>
-              <p>{displayAuthors}</p>
-              <p>in {paper.published_in}</p>
-              <p>{paper.readers} citations</p>
+            <div className="paper_holder">
+
+              <div className="metadata">
+                <div id="icons">
+                  <p id="open-access-logo" style={{display: "none"}} className={textClassName}></p>
+                </div>
+                <p id="title" className={textClassName}>{title}</p>
+                <p id="details" className={textClassName}>{displayAuthors}</p>
+                <p id="in" className={textClassName}>in
+                  <span className={textClassName}>
+                    {paper.published_in}
+                    <span className="pubyear">{paper.year}</span>
+                  </span>
+                  </p>
+
+              </div>
+
+            </div>
+            <div className="readers" style={readersDivStyle}>
+              <p id="readers" className={textClassName}>
+                <span id="num-readers">{paper.readers}</span>
+                <span className="readers_entity"> citations</span>
+              </p>
             </div>
           </foreignObject>
         </g>

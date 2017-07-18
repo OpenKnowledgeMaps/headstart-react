@@ -96,7 +96,9 @@ optimizedResize.add(function() {
   }
 
   function actualResizeHandler() {
-    store.updateChartSize(window.innerHeight, window.innerWidth);
+    const headstartContainer = window.document.querySelector(".vis-col");
+    store.updateChartSize(headstartContainer.clientWidth);
+
   }
 
 }());

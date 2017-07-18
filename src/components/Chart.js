@@ -9,7 +9,9 @@ const Chart =
   observer(
     ({store}) => (
       <div className="vis-col">
+
         <SubTitle store={store}/>
+
         <div id="headstart-chart">
           <svg
             width={store.svgWidth}

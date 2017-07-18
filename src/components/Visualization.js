@@ -15,4 +15,3 @@ const Visualization =
   );
 
 export default Visualization;
-// style={{width: store.svgWidth + store.listWidth, height: store.svgHeight + store.subtitleHeight, display: "block"}}

@@ -5,22 +5,20 @@ import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleCli
 const Node =
   observer(
     ({node, store}) => {
-      let circle_style = {
-        "fillOpacity": "0.2",
-      };
+      let circleClassName = null;
+      let circleStyle = {fillOpacity: "0.8"};
+      if (store.bubblesStore.hasSelectedEntities) {
+        circleClassName = node.selected ? "zoom_selected" : "zoom_unselected";
+        circleStyle.fillOpacity = "0.1";
+      } else {
+        circleClassName = "area";
+      }
 
-      let text_style = {
-        "display": "block"
-      };
-
+      let areaTitleStyle = {"word-wrap" : "break-word", "font-size" : "12"};
       if (node.active || node.selected) {
-        circle_style.fillOpacity = "1";
-        text_style.display = "none";
+        areaTitleStyle.display = "none";
       }
-      else {
-        circle_style.fillOpacity = "0.8";
-        text_style.display = "inline";
-      }
+
       let {x: x_, y: y_, r: r_} = node;
 
       return (
@@ -31,11 +29,11 @@ const Node =
            className="bubble_frame"
         >
           <circle
-            className="area"
+            className={circleClassName}
             r={r_}
             cx={x_}
             cy={y_}
-            style={circle_style}
+            style={circleStyle}
           />
           <foreignObject
             x={x_ - r_}
@@ -43,11 +41,10 @@ const Node =
             width={2.*r_}
             height={2.*r_}
 
-            style={text_style}
             id="area_title_object"
             className="headstart"
           >
-            <div id="area_title" style={{"word-wrap" : "break-word", "font-size" : "12"}}>
+            <div id="area_title" style={areaTitleStyle}>
                 <h2 className="highlightable">{node.area}</h2>
             </div>
           </foreignObject>

@@ -33,8 +33,8 @@ class UIStore {
         centerYForceStrength: 0.5,
       },
       paperZoomFactor: 3.,
-      bubbleCenterOffset: 20,
-      paperWidth: 26,
+      bubbleCenterOffset: 0,
+      paperWidth: 30,
       paperHeight: 40,
       forceSimIsDone: false,
       zoomFactor: 1.,
@@ -130,28 +130,24 @@ class UIStore {
     });
   }
   
-  getChartSize(height, width) {
-    let SVGSize = (width*0.7 > height) ? height : width*0.7;
-    if (SVGSize < this.minimalSVGSize) {
-      SVGSize = this.minimalSVGSize;
-    }
-    SVGSize -= this.subtitleHeight;
-    let listSize = (width - SVGSize)*0.9;
-    listSize = listSize < this.minimalListSize ? this.minimalListSize : listSize;
+  getChartSize(width) {
+    let SVGSize = width*0.99;
+    let listSize = 100;
     return {SVGSize: SVGSize, listSize: listSize}
   }
   
-  updateChartSize(height, width) {
-    let {SVGSize: newSVGSize, listSize: newListSize} = this.getChartSize(height, width);
-
-    this.previousSVGSize = this.svgWidth;
-    this.previousListSize = this.listWidth;
-    this.svgWidth = newSVGSize;
-    this.svgHeight = newSVGSize;
-    this.listWidth = newListSize;
-    this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
-    this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
-    this.updateCoords();
+  updateChartSize(width, check) {
+    if (!check) {
+      let {SVGSize: newSVGSize, listSize: newListSize} = this.getChartSize(width);
+      this.previousSVGSize = this.svgWidth;
+      this.previousListSize = this.listWidth;
+      this.svgWidth = newSVGSize;
+      this.svgHeight = newSVGSize;
+      this.listWidth = newListSize;
+      this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
+      this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
+      this.updateCoords();
+    }
   }
 
 }
