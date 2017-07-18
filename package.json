@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "d3": "^4.9.1",
+    "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
     "mobx": "^3.1.10",
     "mobx-react": "^4.1.8",
     "react": "^15.5.4",
+    "react-bootstrap": "^0.31.1",
     "react-dom": "^15.5.4"
   },
   "devDependencies": {

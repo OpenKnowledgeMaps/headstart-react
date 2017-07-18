@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 const Visualization =
   observer(
     ({store}) => (
-      <div style={{width: store.svgWidth + store.listWidth, height: store.svgHeight + store.subtitleHeight, display: "block"}}>
+      <div className="container-headstart">
         <Chart store={store}/>
         <List store={store}/>
       </div>
@@ -15,3 +15,4 @@ const Visualization =
   );
 
 export default Visualization;
+// style={{width: store.svgWidth + store.listWidth, height: store.svgHeight + store.subtitleHeight, display: "block"}}

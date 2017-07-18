@@ -18,7 +18,7 @@ function  startForceSim(store) {
           const alphaMin = store.forceSimParameters.papersAlphaMin;
           let bubbleX = store.bubblesStore.entities.find((node) => node.area === area).x - store.bubbleCenterOffset;
           let bubbleY = store.bubblesStore.entities.find((node) => node.area === area).y - store.bubbleCenterOffset;
-          const paperCollisionRadius = store.svgWidth * 0.028;
+          const paperCollisionRadius = store.svgWidth * 0.019;
 
           forceSimulation()
             .alphaMin(alphaMin)
@@ -35,7 +35,8 @@ function  startForceSim(store) {
               store.forceSimIsDone = true;
               store.bubblesStore.saveAllCoordsToOriginalCoords();
               store.papersStore.saveAllCoordsToOriginalCoords();
-              store.updateChartSize(window.innerHeight, window.innerWidth);
+              const headstartContainer = window.document.querySelector("#visualization");
+              store.updateChartSize(headstartContainer.clientHeight, headstartContainer.clientWidth);
             });
         });
       });

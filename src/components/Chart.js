@@ -8,22 +8,25 @@ import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
 const Chart =
   observer(
     ({store}) => (
-      <div style={{display: "inline-block"}}>
+      <div className="vis-col">
         <SubTitle store={store}/>
-        <svg
-          width={store.svgWidth}
-          height={store.svgHeight}
-          onClick={onSVGClick.bind(this, store)}
-          onMouseOver={onSVGMouseOver.bind(this, store)}
-        >
-          <g>
-            <Papers store={store} papers={store.papersStore.flaglessPapers} />
-            <Nodes store={store} nodes={store.bubblesStore} />
-            <Papers store={store} papers={store.papersStore.activeEntities} />
-            <Papers store={store} papers={store.papersStore.selectedEntities} />
-            <Papers store={store} papers={store.papersStore.hoveredEntity} />
-          </g>
-        </svg>
+        <div id="headstart-chart">
+          <svg
+            width={store.svgWidth}
+            height={store.svgHeight}
+            id="chart-svg"
+            onClick={onSVGClick.bind(this, store)}
+            onMouseOver={onSVGMouseOver.bind(this, store)}
+          >
+            <g id="chart_canvas">
+              <Papers store={store} papers={store.papersStore.flaglessPapers} />
+              <Nodes store={store} nodes={store.bubblesStore} />
+              <Papers store={store} papers={store.papersStore.activeEntities} />
+              <Papers store={store} papers={store.papersStore.selectedEntities} />
+              <Papers store={store} papers={store.papersStore.hoveredEntity} />
+            </g>
+          </svg>
+        </div>
       </div>
     )
 );

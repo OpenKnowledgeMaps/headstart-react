@@ -26,7 +26,7 @@ class UIStore {
       listWidth: this.previousListSize,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
-        collisionForceRadius: this.previousSVGSize / 8.,
+        collisionForceRadius: this.previousSVGSize / 9.,
         bubblesAlphaMin: 0.8,
         papersAlphaMin: 0.8,
         centerXForceStrength: 0.5,
@@ -114,7 +114,7 @@ class UIStore {
     const maxReaders = Math.max(...this.bubblesStore.entities.map((entity) => entity.readers));
     const minReaders = Math.min(...this.bubblesStore.entities.map((entity) => entity.readers));
     let scale = scaleLinear().domain([min, max]).range([0, range]);
-    let radiusScale = scaleLinear().domain([minReaders, maxReaders]).range([range/7., range/5.]);
+    let radiusScale = scaleLinear().domain([minReaders, maxReaders]).range([range/12., range/8.]);
 
     this.papersStore.entities.forEach((entity) => {
       entity.x = scale(entity.x);
@@ -136,7 +136,7 @@ class UIStore {
       SVGSize = this.minimalSVGSize;
     }
     SVGSize -= this.subtitleHeight;
-    let listSize = (width - SVGSize)*0.98;
+    let listSize = (width - SVGSize)*0.9;
     listSize = listSize < this.minimalListSize ? this.minimalListSize : listSize;
     return {SVGSize: SVGSize, listSize: listSize}
   }

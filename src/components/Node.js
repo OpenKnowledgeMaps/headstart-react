@@ -6,10 +6,7 @@ const Node =
   observer(
     ({node, store}) => {
       let circle_style = {
-        "fill": "#fff",
         "fillOpacity": "0.2",
-        "stroke": "#333",
-        "strokeWidth": "1.px"
       };
 
       let text_style = {
@@ -31,8 +28,10 @@ const Node =
            onMouseLeave={onBubbleMouseLeave.bind(this, store)}
            onClick={onBubbleClick.bind(this, store, node)}
            onDoubleClick={onBubbleDoubleClick.bind(this, store, node)}
+           className="bubble_frame"
         >
           <circle
+            className="area"
             r={r_}
             cx={x_}
             cy={y_}
@@ -40,14 +39,17 @@ const Node =
           />
           <foreignObject
             x={x_ - r_}
-            y={y_ - r_}
+            y={y_ - 0.25*r_}
             width={2.*r_}
             height={2.*r_}
-            fontSize="12"
-            fontFamily="Verdana"
+
             style={text_style}
+            id="area_title_object"
+            className="headstart"
           >
-            <p style={{textAlign: "center", marginTop:(r_ - 5) }}>{node.area}</p>
+            <div id="area_title" style={{"word-wrap" : "break-word", "font-size" : "12"}}>
+                <h2 className="highlightable">{node.area}</h2>
+            </div>
           </foreignObject>
         </g>
       );

@@ -37,6 +37,7 @@ const Paper =
           onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
           onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
           onClick={onPaperClick.bind(this, store, paper)}
+          className="paper"
         >
           <rect
             x={x_}
