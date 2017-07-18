@@ -15,7 +15,7 @@ const Node =
       }
 
       let areaTitleStyle = {"word-wrap" : "break-word", "font-size" : "12"};
-      if (node.active || node.selected) {
+      if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
         areaTitleStyle.display = "none";
       }
 

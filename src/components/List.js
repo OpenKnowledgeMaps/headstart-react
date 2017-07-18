@@ -11,13 +11,25 @@ function hasSubstring(listEntry, store) {
   return containsSubstring;
 }
 
-const List =
-  observer(
-    ({store}) => {
-    return (
+const List = observer(class List extends React.Component {
 
+  constructor({store}) {
+    super();
+    this.store = store;
+  }
+
+  componentDidMount() {
+    this.store.paperListHeight = document.querySelector(".vis-col").clientHeight - document.querySelector("#explorer_header").clientHeight + "px";
+    this.store.paperExplorerHeight = document.querySelector("#explorer_header").clientHeight;
+    this.papersListStyle = {height: this.store.paperListHeight, display: "block"};
+  }
+
+  render() {
+    this.papersListStyle = {height: this.store.paperListHeight, display: "block"};
+    return (
       <div className="list-col">
-        <div id="explorer_header">
+        <div id="list_exporer">
+        <div className="col-xs-12" id="explorer_header">
           <div id="show_hide_button" className="row">
             <div className="col-xs-2" >▼</div>
             <div className="col-xs-8" id="show_hide_button_label">
@@ -31,8 +43,8 @@ const List =
 
             <div className="" id="filter_container">
               <div className="input-group input-group-sm">
-                <input id="filter_input" type="text" className="form-control" onChange={() => {store.searchString = document.getElementById('search').value;}} />
-                  <span id="searchclear" className="glyphicon glyphicon-remove-circle"></span>
+                <input id="filter_input" type="text" className="form-control" onChange={() => {this.store.searchString = document.getElementById('search').value;}} />
+                <span id="searchclear" className="glyphicon glyphicon-remove-circle"></span>
               </div>
             </div>
 
@@ -45,19 +57,19 @@ const List =
           </div>
 
 
-          <div id="papers_list" className="col-xs-12">
-            {store.papersStore.entities
-              .filter((paper) => (store.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
-              .filter((paper) => hasSubstring(paper, store))
+        </div>
+          <div id="papers_list" className="col-xs-12" style={this.papersListStyle}>
+            {this.store.papersStore.entities
+              .filter((paper) => (this.store.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
+              .filter((paper) => hasSubstring(paper, this.store))
               .map((paper, index) =>
-              <ListEntry store={store}  paper={paper} key={index}/>
-            )}
+                <ListEntry store={this.store}  paper={paper} key={index}/>
+              )}
           </div>
       </div>
       </div>
     )
-    }
-  );
+  }
+});
 
 export default List;
-// style={{width: store.listWidth, height: store.svgHeight + store.subtitleHeight, float: "right", display: "inline-block", overflow: "hidden"}}
