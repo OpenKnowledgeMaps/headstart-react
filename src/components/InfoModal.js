@@ -15,7 +15,7 @@ const InfoModal =
       const infoModalStyle = store.showInfoModal ? {display: "block", paddingRight: 15 + "px"} : {display: "none"};
       return (
 
-        <div id="info_modal" className={infoModalClassName} role="dialog" tabindex='-1' style={infoModalStyle}>
+        <div id="info_modal" className={infoModalClassName} role="dialog" tabIndex='-1' style={infoModalStyle}>
 
           <div className="modal-dialog">
 
@@ -30,18 +30,18 @@ const InfoModal =
                 <div className="description-headstart" style={{maxWidth: "1000px"}}>
                   <div style={{margin: "0 0 30px"}}>
                     <p className="icon">
-                      <img src={top100} /></p>             <p className="icon-description">An Open
+                      <img alt="" src={top100} /></p>             <p className="icon-description">An Open
                     Knowledge Maps visualization presents you with a topical overview for a search term. It is based on
-                    the <a href="faqs.php" target="_blank" className="underline">most relevant</a> papers in the chosen
+                    the <a href="faqs.php" target="_blank" rel="noopener noreferrer" className="underline">most relevant</a> papers in the chosen
                     library. </p></div>
-                  <div style={{margin: "0 0 30px"}}><p className="icon"><img src={textSimliarity} /></p>
+                  <div style={{margin: "0 0 30px"}}><p className="icon"><img alt="" src={textSimliarity} /></p>
                     <p className="icon-description">
                       We use text similarity to create the knowledge maps. The algorithm
                       groups
                       those papers together that have many words in common.
                     </p>
                   </div>
-                  <div style={{display: "block"}}><p className="icon"><img src={headstartSearch} /></p>
+                  <div style={{display: "block"}}><p className="icon"><img alt=""src={headstartSearch} /></p>
                     <p className="icon-description">
                       The visualization is intended to give you a head start on your
                       literature

@@ -14,7 +14,7 @@ const Node =
         circleClassName = "area";
       }
 
-      let areaTitleStyle = {"word-wrap" : "break-word", "font-size" : "12"};
+      let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px"};
       if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
         areaTitleStyle.display = "none";
       }

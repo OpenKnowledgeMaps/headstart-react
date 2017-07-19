@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { onListClick } from '../models/ListEvents';
 
-import openAccessLogo from '../static/open-access-logo.png';
+/* eslint-disable jsx-a11y/href-no-hash */
 
 const ListEntry =
   observer(
@@ -22,7 +22,7 @@ const ListEntry =
             </div>
 
             <div className="list_links">
-              <a href="#" target="_blank" className="outlink">HTML  <span className="outlink_symbol">&#xf08e;</span></a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="outlink">HTML  <span className="outlink_symbol">&#xf08e;</span></a>
               <a className="link2 pdf-link">PDF  <span className="outlink_symbol">&#xf06e;</span></a>
             </div>
 
@@ -53,4 +53,3 @@ const ListEntry =
   );
 
 export default ListEntry;
-// style={{borderBottom: "2px grey solid", display: "block", padding: "10px"}}

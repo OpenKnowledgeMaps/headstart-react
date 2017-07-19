@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import data from './static/Data';
 import App from './components/App';
 import UIStore from './models/UIStore';
 import pubmedPayload from './static/cool_pubmed';

@@ -12,20 +12,14 @@ export default function bubbleForce(x, y, r) {
   function force(alpha) {
     for (var i = 0, n = nodes.length, node; i < n; ++i) {
       node = nodes[i];
-      var rX = node.x + node.width;
-      var lY = node.y + node.height;
       var midpoint = {x: node.x + node.width/2., y: node.y + node.height/2.};
       var distX = midpoint.x - x;
       var distY = midpoint.y - y;
       var diag = vectorLength(node.width, node.height)/2.;
       var diagR = r - 2*diag;
-      var diagRP = r - diag;
       var dist  = vectorLength(distX, distY);
       var allInBubble =
         isInBubble(midpoint.x, midpoint.y, diagR);
-        // isInBubble(node.x, lY, r) &&
-        // isInBubble(rX, lY, r) &&
-        // isInBubble(rX, node.y, r);
 
       var strength = (diagR - dist)/diagR;
       node.vx += strength*(distX/dist);
