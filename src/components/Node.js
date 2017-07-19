@@ -8,18 +8,18 @@ const Node =
       let circleClassName = null;
       let circleStyle = {fillOpacity: "0.8"};
       if (store.bubblesStore.hasSelectedEntities) {
-        circleClassName = node.selected ? "zoom_selected" : "zoom_unselected";
+        circleClassName = (node.selected) ? "zoom_selected" : "zoom_unselected";
         circleStyle.fillOpacity = "0.1";
       } else {
-        circleClassName = "area";
+        circleClassName = node.active ? "zoom_selected" : "area";
       }
+      let {x: x_, y: y_, r: r_} = node;
 
-      let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px"};
+      let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", textAlign: "center", width: 2*r_ + "px"};
       if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
         areaTitleStyle.display = "none";
       }
 
-      let {x: x_, y: y_, r: r_} = node;
 
       return (
         <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}
@@ -37,10 +37,9 @@ const Node =
           />
           <foreignObject
             x={x_ - r_}
-            y={y_ - 0.25*r_}
-            width={2.*r_}
-            height={2.*r_}
-
+            y={y_ - 24}
+            width={2*r_}
+            height={0.33*r_}
             id="area_title_object"
             className="headstart"
           >
