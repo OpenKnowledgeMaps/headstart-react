@@ -48,6 +48,7 @@ class DomainStore {
           y: entry.y[0],
           meanx: bubble.x,
           meany: bubble.y,
+          oa: (entry.pmcid === '') ? false : true,
           readers: parseInt(entry.readers, 10)
         });
     });

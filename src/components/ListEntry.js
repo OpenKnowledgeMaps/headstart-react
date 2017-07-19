@@ -9,6 +9,7 @@ const ListEntry =
     ({store, paper}) => {
 
       const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 75);
+      const openAccessLogoStyle = paper.oa ? {display: 'inline'} : {display: 'none'};
 
       return (
         <div className="list_entry">
@@ -16,7 +17,7 @@ const ListEntry =
           <div className="list_metadata">
 
             <div className="list_title" onClick={onListClick.bind(this, paper, store)}>
-              <span id="open-access-logo_list">open access <span className="outlink_symbol">&#xf09c;</span></span>
+              <span id="open-access-logo_list" style={openAccessLogoStyle}>open access <span className="outlink_symbol">&#xf09c;</span></span>
               <a href="#" id="paper_list_title" className="highlightable">{paper.title}</a>
             </div>
 

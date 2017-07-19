@@ -39,10 +39,10 @@ const Paper =
 
       let readersDivStyle = {height: "15px", width: w_ + "px", marginTop: "3px"};
 
+      let openAccessStyle = paper.oa ? {display: "inline", height: "20px"} : {display: "none"};
+      // TODO hyphenate title
       return (
         <g
-          width={w_}
-          height={h_}
           onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
           onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
           onClick={onPaperClick.bind(this, store, paper)}
@@ -74,7 +74,7 @@ const Paper =
 
               <div className="metadata">
                 <div id="icons">
-                  <p id="open-access-logo" style={{display: "inline"}} className={textClassName}>&#xf09c;</p>
+                  <p id="open-access-logo" style={openAccessStyle} className={textClassName}>&#xf09c;</p>
                 </div>
                 <p id="title" className={textClassName}>{title}</p>
                 <p id="details" className={textClassName}>{displayAuthors}</p>
@@ -87,12 +87,13 @@ const Paper =
 
               </div>
 
-            </div>
-            <div className="readers" style={readersDivStyle}>
+              <div className="readers" style={readersDivStyle}>
               <p id="readers" className={textClassName}>
                 <span id="num-readers">{paper.readers}</span>
                 <span className="readers_entity"> citations</span>
               </p>
+            </div>
+
             </div>
           </foreignObject>
         </g>

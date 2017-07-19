@@ -78,13 +78,15 @@ function areInBubble(papers, bubbleX, bubbleY, bubbleRadius) {
 
 function  startForceSim(store) {
     let counter = 0;
+    let bubbleCollisionForce = forceCollide(store.forceSimParameters.collisionForceRadius);
+    bubbleCollisionForce.radius((node) => node.r*1.05);
     store.initCoords(store.svgWidth);
     forceSimulation()
       .nodes(store.bubblesStore.entities)
       .alphaMin(store.forceSimParameters.bubblesAlphaMin)
       .force("charge", forceManyBody().strength(store.forceSimParameters.manyBodyForceStrength))
       .force("center", forceCenter(store.svgWidth * 0.5, store.svgHeight * 0.5))
-      .force("collision", forceCollide(store.forceSimParameters.collisionForceRadius))
+      .force("collision", bubbleCollisionForce)
       .on('end', () => {
 
         store.data.areas.forEach((area) => {
