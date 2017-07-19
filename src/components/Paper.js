@@ -6,11 +6,17 @@ import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandle
 const Paper =
   observer(
     ({store, paper}) =>{
-            const paperZoomFactor = store.paperZoomFactor;
+      const paperZoomFactor = store.paperZoomFactor;
       let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_, zoomed} = paper;
-      w_ = zoomed ? paperZoomFactor*w_ : w_;
-      h_ = zoomed ? paperZoomFactor*h_ : h_;
-      fs_ = zoomed ? paperZoomFactor*fs_ : fs_;
+      // w_ = zoomed ? paperZoomFactor*w_ : w_;
+      // h_ = zoomed ? paperZoomFactor*h_ : h_;
+      // fs_ = zoomed ? paperZoomFactor*fs_ : fs_;
+
+      while (((x_ + w_) < store.svgWidth) && ((y_ + h_) < store.svgHeight) && zoomed && (w_ < store.svgWidth*0.5) && (h_ < store.svgHeight*0.5)) {
+        w_ += 1;
+        h_ += 1.33;
+      }
+
       const authors = paper.authors.split(';');
       let correctedAuthors = authors.map((author) => {
         let names = author.split(',');

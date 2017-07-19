@@ -65,6 +65,7 @@ const List = observer(class List extends React.Component {
             {this.store.papersStore.entities
               .filter((paper) => (this.store.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
               .filter((paper) => hasSubstring(paper, this.store))
+              .sort((a, b) => (a.readers > b.readers ? -1 : 1))
               .map((paper, index) =>
                 <ListEntry store={this.store}  paper={paper} key={index}/>
               )}

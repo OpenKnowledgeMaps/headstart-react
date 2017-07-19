@@ -32,7 +32,7 @@ class UIStore {
         centerXForceStrength: 0.5,
         centerYForceStrength: 0.5,
       },
-      paperZoomFactor: 3.,
+      paperZoomFactor: 2.,
       paperListHeight: window.innerHeight,
       paperExplorerHeight: "50px",
       bubbleCenterOffset: 0,
