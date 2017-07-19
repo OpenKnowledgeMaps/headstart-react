@@ -1,5 +1,6 @@
 import React from 'react';
 import ListEntry from './ListEntry';
+import {toggleList} from '../models/ListEvents';
 import { observer } from 'mobx-react';
 
 function hasSubstring(listEntry, store) {
@@ -29,16 +30,19 @@ const List = observer(class List extends React.Component {
 
   render() {
     this.papersListStyle = {height: this.store.paperListHeight, display: "block"};
+    const showHideLabel = this.props.store.displayList ? "Hide list" : "Show list";
+    const showHideIcon = this.props.store.displayList ? "▼" : "▼";
+    this.papersListStyle.display = this.props.store.displayList ? "block" : "none";
     return (
       <div className="list-col">
         <div id="list_exporer">
         <div className="col-xs-12" id="explorer_header">
-          <div id="show_hide_button" className="row">
-            <div className="col-xs-2" >▼</div>
+          <div id="show_hide_button" className="row" onClick={toggleList.bind(this, this.props.store)}>
+            <div className="col-xs-2" >{showHideIcon}</div>
             <div className="col-xs-8" id="show_hide_button_label">
-              <span id="show_hide_label">Hide list</span>
+              <span id="show_hide_label">{showHideLabel}</span>
             </div>
-            <div className="col-xs-2 text-right">▼</div>
+            <div className="col-xs-2 text-right">{showHideIcon}</div>
           </div>
 
 

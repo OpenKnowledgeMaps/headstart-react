@@ -8,4 +8,8 @@ function onListClick(paper, store) {
   store.bubblesStore.selectedArea = paper.area;
 }
 
-export {onListClick};
+function toggleList(store) {
+  store.displayList = !store.displayList;
+}
+
+export {onListClick, toggleList};
