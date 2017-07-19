@@ -45,7 +45,8 @@ class UIStore {
       searchString: "",
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
-      displayList: true
+      displayList: true,
+      showInfoModal: false
     });
   }
 
