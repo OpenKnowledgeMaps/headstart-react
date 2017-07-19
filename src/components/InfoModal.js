@@ -14,13 +14,18 @@ const InfoModal =
       const infoModalClassName = store.showInfoModal ? "modal fade in" : "modal fade";
       const infoModalStyle = store.showInfoModal ? {display: "block", paddingRight: 15 + "px"} : {display: "none"};
       return (
+
         <div id="info_modal" className={infoModalClassName} role="dialog" tabindex='-1' style={infoModalStyle}>
+
           <div className="modal-dialog">
+
             <div className="modal-content">
+
               <div className="modal-header">
                 <button type="button" className="btn btn-default pull-right" onClick={dismissInfoModal.bind(this, store)}>&times;</button>
                 <h3 id="info-title" className="modal-title" style={{fontSize : "20px"}}>What's this?</h3>
               </div>
+
               <div id="info-body" className="modal-body">
                 <div className="description-headstart" style={{maxWidth: "1000px"}}>
                   <div style={{margin: "0 0 30px"}}>
@@ -47,6 +52,7 @@ const InfoModal =
                   </div>
                 </div>
               </div>
+
             </div>
 
           </div>
