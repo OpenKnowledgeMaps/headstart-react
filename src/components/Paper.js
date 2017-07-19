@@ -39,7 +39,7 @@ const Paper =
 
       let readersDivStyle = {height: "15px", width: w_ + "px", marginTop: "3px"};
 
-      let openAccessStyle = paper.oa ? {display: "inline", height: "20px"} : {display: "none"};
+      let openAccessStyle = paper.oa ? {display: "inline", height: "20px", marginTop: "10px"} : {display: "none"};
       // TODO hyphenate title
       return (
         <g
