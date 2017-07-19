@@ -1,4 +1,5 @@
 import {forceSimulation, forceCollide, forceManyBody, forceCenter, forceX, forceY} from 'd3-force';
+import bubbleForce from './bubbleForce';
 
 function moveToCoord(paper, x_, y_, r_) {
   let {x, y, width, height} = paper;
@@ -33,17 +34,18 @@ function moveCentroid(papers, bubbleX, bubbleY) {
 
 function movePapersIntoBubble(papers, bubbleX, bubbleY, bubbleRadius) {
   let maxPaperDistance = -1;
+  let diag = 0;
   papers.forEach((paper) => {
-    const diag = Math.sqrt(Math.pow(paper.width, 2) + Math.pow(paper.height, 2))*0.7;
+    diag = Math.sqrt(Math.pow(paper.width, 2) + Math.pow(paper.height, 2))*0.7;
     const midpoint = {x: (paper.x+paper.width*0.5), y: (paper.y+paper.height*0.5)};
     const distX = (midpoint.x - bubbleX);
     const distY = (midpoint.y - bubbleY);
     const distance = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
     maxPaperDistance = Math.max(
-      distance + diag,
+      distance,
       maxPaperDistance);
   });
-  const ratio = bubbleRadius/(maxPaperDistance);
+  const ratio = (bubbleRadius - diag)/(maxPaperDistance);
   papers.forEach((paper) => {
     let distance = Math.sqrt((bubbleX - paper.x)*(bubbleX - paper.x) + (bubbleY - paper.y)*(bubbleY - paper.y));
     moveToCoord(paper, bubbleX, bubbleY, ratio*distance);
@@ -94,7 +96,7 @@ function  startForceSim(store) {
           const paperCollisionRadius = Math.sqrt(Math.pow(store.paperWidth,2) + Math.pow(store.paperHeight,2))*0.8;
           let papersInArea = store.papersStore.entitiesInArea(area);
 
-          movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius*0.6);
+          // movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius*3.);
 
           let papersForceSim = forceSimulation()
             // .alphaMin(alphaMin)
@@ -102,11 +104,12 @@ function  startForceSim(store) {
             // .alpha(1)
             .alphaDecay(0.5)
             .force("collision", forceCollide(paperCollisionRadius))
-            .force("center", forceCenter(bubbleX, bubbleY))
+            // .force("center", forceCenter(bubbleX, bubbleY))
+            .force("bubble", bubbleForce(bubbleX, bubbleY, bubbleRadius))
             .on('end', () => {
-              if(!areInBubble(papersInArea, bubbleX, bubbleY, bubbleRadius)) {
-                movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius);
-              }
+              // if(!areInBubble(papersInArea, bubbleX, bubbleY, bubbleRadius)) {
+              //   movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius);
+              // }
               counter += 1;
               if(counter === store.data.areas.length) {
                 store.bubblesStore.saveAllCoordsToOriginalCoords();
