@@ -18,3 +18,8 @@ img#close-button {
     float: right;
     margin-right: 5px;
 }
+
+.btn-danger { border-color: $okm-red; background-color: white; color: $okm-red}
+.btn-danger:hover { border-color: white; background-color: $okm-red; color: white }
+.btn-danger:active { border-color: white; background-color: $okm-red; color: white }
+.btn-danger:focus { border-color: white; background-color: $okm-red; color: white }
