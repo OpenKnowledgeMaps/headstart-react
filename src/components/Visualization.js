@@ -12,7 +12,6 @@ const Visualization =
           <Chart store={store}/>
           <List store={store}/>
         </div>
-        <InfoModal store={store}/>
       </div>
     )
   );
