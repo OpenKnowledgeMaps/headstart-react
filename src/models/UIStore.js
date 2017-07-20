@@ -44,7 +44,8 @@ class UIStore {
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
       displayList: true,
-      showInfoModal: false
+      showInfoModal: false,
+      sortOption: null
     });
   }
 
