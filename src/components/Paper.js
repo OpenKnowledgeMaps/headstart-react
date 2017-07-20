@@ -2,12 +2,24 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandlers/PaperEvents';
 
-
 const Paper =
   observer(
     ({store, paper}) =>{
+
       let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_, zoomed} = paper;
 
+      // Split author names and turn their names around
+      const displayAuthors = paper.authors
+        .split(';')
+        .map((author) => {
+          const names = author.split(',');
+          return names[1] + ' ' + names[0];
+          })
+        .reduce((names, name) => names + ', ' + name, '').slice(2);
+
+      const title = paper.title;
+
+      // Caculate enlarged width so it fits in the svg
       while (
         ((x_ + w_) < store.svgWidth) &&
         ((y_ + h_) < store.svgHeight) &&
@@ -17,17 +29,8 @@ const Paper =
         h_ += 1.33;
       }
 
-      const authors = paper.authors.split(';');
-      let correctedAuthors = authors.map((author) => {
-        let names = author.split(',');
-        return names[1] + ' ' + names[0];
-      });
-      let displayAuthors = correctedAuthors[0];
-      if (authors.length > 2) displayAuthors = correctedAuthors[0] + ', ' + correctedAuthors[1];
-      const title = paper.title;
-
+      // CSS and svg stuff
       const textClassName = paper.selected ? 'large highlightable' : 'highlightable';
-
       const pathD = 'M ' + x_ + ' ' + y_ +
                     ' h ' + (0.9*w_) +
                     ' l ' + (0.1*w_) + ' ' + (0.1*h_) +
@@ -35,17 +38,17 @@ const Paper =
                     ' h ' + (-w_) +
                     ' v ' + (-h_);
       const pathClassName = paper.clicked ? 'framed' : 'unframed';
-
       const dogearPath = "M " + (x_ + 0.9*w_) + ' ' + y_ + " v " + (0.1*h_) + " h " + (0.1*w_);
-
       let displayStyle = {display: "block"};
       if (store.papersStore.hasSelectedEntities && !paper.selected) {
         displayStyle.display = "none";
       }
+      const openAccessStyle = paper.oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
+      const readersHeight = 0.25*h_ > 15 ? 15 : 0.25*h_;
+      const metadataStyle = {height: paper.selected ?  (h_ - 15) + "px" : ((0.75*h_) + "px"), width: (0.9*w_) + "px"};
+      const readersDivStyle = {height: readersHeight + "px", width: w_ + "px", marginBottom: paper.selected ? "3px" : "0px"};
+      const citationsFontSize = (zoomed || paper.selected) ? "11px" : "8px";
 
-      let readersDivStyle = {height: "15px", width: w_ + "px", marginTop: "3px"};
-
-      let openAccessStyle = paper.oa ? {display: "inline", height: "20px", marginTop: "10px"} : {display: "none"};
       // TODO hyphenate title
       return (
         <g
@@ -78,9 +81,9 @@ const Paper =
           >
             <div className="paper_holder">
 
-              <div className="metadata">
-                <div id="icons">
-                  <p id="open-access-logo" style={openAccessStyle} className={textClassName}>&#xf09c;</p>
+              <div className="metadata" style={metadataStyle}>
+                <div id="icons" style={openAccessStyle}>
+                  <p id="open-access-logo" className={textClassName}>&#xf09c;</p>
                 </div>
                 <p id="title" className={textClassName}>{title}</p>
                 <p id="details" className={textClassName}>{displayAuthors}</p>
@@ -89,16 +92,16 @@ const Paper =
                     {paper.published_in}
                     <span className="pubyear">{paper.year}</span>
                   </span>
-                  </p>
+                </p>
 
               </div>
 
               <div className="readers" style={readersDivStyle}>
-              <p id="readers" className={textClassName}>
-                <span id="num-readers">{paper.readers}</span>
-                <span className="readers_entity"> citations</span>
-              </p>
-            </div>
+                <p id="readers" className={textClassName}>
+                  <span id="num-readers">{paper.readers}</span>
+                  <span className="readers_entity" style={{fontSize: citationsFontSize}}> citations</span>
+                </p>
+              </div>
 
             </div>
           </foreignObject>

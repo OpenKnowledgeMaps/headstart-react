@@ -42,7 +42,11 @@ function  startForceSim(store) {
           let bubbleX = bubble.x - store.bubbleCenterOffset;
           let bubbleY = bubble.y - store.bubbleCenterOffset;
           let bubbleRadius = bubble.r;
-          const paperCollisionRadius = Math.sqrt(Math.pow(store.paperWidth,2) + Math.pow(store.paperHeight,2))*0.6;
+          const paperCollisionRadius =
+            Math.sqrt(
+              Math.pow(store.papersStore.entities[0].width,2) +
+              Math.pow(store.papersStore.entities[0].height,2))
+            *0.6;
           let papersInArea = store.papersStore.entitiesInArea(area);
 
           movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius);

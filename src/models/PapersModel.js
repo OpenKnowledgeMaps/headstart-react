@@ -1,6 +1,8 @@
 import {extendObservable, autorun} from 'mobx';
 import PaperModel from './PaperModel';
 import GroupedSVGEntities from './GroupedSVGEntities';
+import {extent} from 'd3-array';
+import {scalePow} from 'd3-scale';
 
 class PapersModel extends GroupedSVGEntities {
   constructor(initialState) {
@@ -22,8 +24,27 @@ class PapersModel extends GroupedSVGEntities {
       set listVisiblePapers(papers) {
         this.entities.forEach((paper) => paper.listvisibel = false);
         papers.forEach((paper) => paper.listvisible = true);
-      }
+      },
 
+      get readersExtent() {
+        return extent(this.entities.map((entity) => entity.readers))
+      },
+
+      minPaperDiameter : 40,
+      maxPaperDiameter : 60,
+      paperHeightToWidthRatio: 1.33333
+    });
+    this.setScaledPaperDimensions();
+  }
+
+  setScaledPaperDimensions() {
+    const paperScale = scalePow().exponent(0.5).domain(this.readersExtent).range([this.minPaperDiameter, this.maxPaperDiameter]);
+    this.entities.forEach((paper) => {
+      const diameter = paperScale(paper.readers);
+      const width = Math.sqrt(Math.pow(diameter, 2)/(1 + Math.pow(this.paperHeightToWidthRatio, 2)));
+      const height = width*this.paperHeightToWidthRatio;
+      paper.width = paper.orig_width = width;
+      paper.height = paper.orig_height = height;
     });
   }
 
@@ -32,7 +53,7 @@ class PapersModel extends GroupedSVGEntities {
   }
 
   onWindowResize(previousSVGWidth, svgWidth) {
-    this.recalculateCoords(svgWidth/previousSVGWidth);
+    this.recalculateCoords(svgWidth / previousSVGWidth);
   }
 
   recalculateCoords(factor) {

@@ -11,8 +11,6 @@ class UIStore {
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
 
-    this.minimalSVGSize = 700;
-    this.minimalListSize = 300;
     this.subtitleHeight = 100;
     const chartSize = this.getChartSize(window.innerHeight, window.innerWidth);
     this.previousSVGSize = chartSize.SVGSize;
