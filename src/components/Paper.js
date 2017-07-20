@@ -18,14 +18,16 @@ const Paper =
       while (
         ((x_ + w_) < store.svgWidth) &&
         ((y_ + h_) < store.svgHeight) &&
-        zoomed && (w_ < store.svgWidth*0.5) &&
+        zoomed &&
+        (w_ < store.svgWidth*0.5) &&
         (h_ < store.svgHeight*0.5)) {
         w_ += 1;
         h_ += 1.33;
       }
 
       // CSS and svg stuff
-      const textClassName = paper.selected ? 'large highlightable' : 'highlightable';
+      let textClassName = paper.selected ? 'large highlightable' : 'highlightable';
+      if (zoomed) textClassName = 'larger';
       const pathD = 'M ' + x_ + ' ' + y_ +
                     ' h ' + (0.9*w_) +
                     ' l ' + (0.1*w_) + ' ' + (0.1*h_) +
