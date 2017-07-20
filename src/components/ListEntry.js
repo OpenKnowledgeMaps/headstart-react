@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { onListClick } from '../models/ListEvents';
+import {transformAuthors} from './Helpers';
 
 /* eslint-disable jsx-a11y/href-no-hash */
 
@@ -8,8 +9,9 @@ const ListEntry =
   observer(
     ({store, paper}) => {
 
-      const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 75);
+      const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 300) + '...';
       const openAccessLogoStyle = paper.oa ? {display: 'inline'} : {display: 'none'};
+      const authors = transformAuthors(paper.authors);
 
       return (
         <div className="list_entry">
@@ -18,7 +20,7 @@ const ListEntry =
 
             <div className="list_title" onClick={onListClick.bind(this, paper, store)}>
               <span id="open-access-logo_list" style={openAccessLogoStyle}>open access <span className="outlink_symbol">&#xf09c;</span></span>
-              <a href="#" id="paper_list_title" className="highlightable">{paper.title}</a>
+              <a href="#" id="paper_list_title" className="highlightable"> {paper.title}</a>
             </div>
 
             <div className="list_links">
@@ -27,10 +29,10 @@ const ListEntry =
             </div>
 
             <div className="list_details highlightable">
-              <span className="list_authors">{paper.authors}</span>
+              <span className="list_authors">{authors}</span>
               <span className="list_in"> in </span>
               <span className="list_published_in">{paper.published_in}</span>
-              <span className="list_pubyear">{paper.year}</span>
+              <span className="list_pubyear"> ({paper.year})</span>
             </div>
 
           </div>
