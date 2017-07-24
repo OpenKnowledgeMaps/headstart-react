@@ -4,23 +4,22 @@ import PapersModel from './PapersModel';
 import BubblesModel from './BubblesModel';
 
 class UIStore {
-  constructor(domainStore) {
+  constructor(domainStore, initSize) {
     let papersStore = new PapersModel(domainStore.papersObject);
     let bubblesStore = new BubblesModel(domainStore.bubblesObject);
     this.isZoomed = false;
     this.papersStore = papersStore;
     this.bubblesStore = bubblesStore;
 
-    this.subtitleHeight = 100;
-    const chartSize = this.getChartSize(window.innerHeight, window.innerWidth);
-    this.previousSVGSize = chartSize.SVGSize;
-    this.previousListSize = chartSize.listSize;
+    this.previousSVGSize = initSize - 65;
+    this.previousListSize = initSize - 65;
 
     extendObservable(this, {
       data : { areas: domainStore.areasObject },
+      progress : 0,
       svgWidth: this.previousSVGSize,
       svgHeight: this.previousSVGSize,
-      subtitleHeight: 100,
+      subtitleHeight: 65,
       listWidth: this.previousListSize,
       forceSimParameters: {
         manyBodyForceStrength: 1000,
@@ -31,8 +30,8 @@ class UIStore {
         centerYForceStrength: 0.5,
       },
       paperZoomFactor: 2.,
-      paperListHeight: window.innerHeight,
-      paperExplorerHeight: "50px",
+      paperListHeight: this.previousSVGSize + 65 - 113,
+      paperExplorerHeight: "113px",
       bubbleCenterOffset: 0,
       paperWidth: 30,
       paperHeight: 40,
@@ -47,6 +46,8 @@ class UIStore {
       showInfoModal: false,
       sortOption: null
     });
+
+    this.initCoords(this.svgWidth);
   }
 
     disposer()
@@ -72,6 +73,13 @@ class UIStore {
         }
       });
     }
+
+  getVisColOrWindowWidth(size) {
+    // const headstartContainer = window.document.querySelector(".vis-col");
+    // const newSize = (window.innerHeight < headstartContainer.clientWidth ? window.innerHeight : headstartContainer.clientWidth) - this.subtitleHeight;
+    this.previousSVGSize = size;
+    this.previousListSize = size;
+  }
 
   updateZoomState(node) {
     this.zoomFactor = this.svgWidth * 0.5 / node.orig_r;
@@ -133,20 +141,18 @@ class UIStore {
   }
   
   getChartSize(width) {
-    let SVGSize = window.innerHeight < width ? window.innerHeight : width;
-    let listSize = 100;
-    return {SVGSize: SVGSize, listSize: listSize}
+    let SVGSize = (window.innerHeight < width ? window.innerHeight : width) - this.subtitleHeight;
+    return SVGSize;
   }
   
   updateChartSize(width, check) {
     if (!check) {
-      let {SVGSize: newSVGSize, listSize: newListSize} = this.getChartSize(width);
+      let newSVGSize = this.getChartSize(width);
       this.previousSVGSize = this.svgWidth;
       this.previousListSize = this.listWidth;
       this.svgWidth = newSVGSize;
       this.svgHeight = newSVGSize;
-      this.listWidth = newListSize;
-      this.paperListHeight = newSVGSize - this.paperExplorerHeight;
+      this.paperListHeight = newSVGSize + this.subtitleHeight - 113;
       this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
       this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
       this.updateCoords();

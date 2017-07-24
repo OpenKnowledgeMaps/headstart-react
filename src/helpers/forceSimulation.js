@@ -24,11 +24,10 @@ function movePapersIntoBubble(papers, bubbleX, bubbleY, bubbleRadius) {
   });
 }
 
-function  startForceSim(store) {
+function  startForceSim(store, callback) {
     let counter = 0;
     let bubbleCollisionForce = forceCollide(store.forceSimParameters.collisionForceRadius);
     bubbleCollisionForce.radius((node) => node.r*1.05);
-    store.initCoords(store.svgWidth);
     forceSimulation()
       .nodes(store.bubblesStore.entities)
       .alphaMin(store.forceSimParameters.bubblesAlphaMin)
@@ -56,14 +55,11 @@ function  startForceSim(store) {
             .alphaDecay(0.5)
             .force("collision", forceCollide(paperCollisionRadius))
             .force("bubble", bubbleForce(bubbleX, bubbleY, bubbleRadius))
+            .on('tick', () => {store.progress += (100/150.);})
             .on('end', () => {
               counter += 1;
               if(counter === store.data.areas.length) {
-                store.bubblesStore.saveAllCoordsToOriginalCoords();
-                store.papersStore.saveAllCoordsToOriginalCoords();
-                const headstartContainer = window.document.querySelector(".vis-col");
-                store.updateChartSize(headstartContainer.clientWidth, store.forceSimIsDone);
-                store.forceSimIsDone = true;
+                callback(store);
               }
             });
 
@@ -72,13 +68,3 @@ function  startForceSim(store) {
 }
 
 export {startForceSim};
-
-
-
-
-
-/// ALTERNATIVE PAPERLAYOUT
-//
-
-//
-//

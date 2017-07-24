@@ -14,13 +14,10 @@ const List = observer(class List extends React.Component {
   }
 
   componentDidMount() {
-    this.store.paperListHeight = document.querySelector(".vis-col").clientHeight - document.querySelector("#explorer_header").clientHeight + "px";
-    this.store.paperExplorerHeight = document.querySelector("#explorer_header").clientHeight;
-    this.papersListStyle = {height: this.store.paperListHeight, display: "block"};
   }
 
   render() {
-    this.papersListStyle = {height: this.store.paperListHeight, display: "block"};
+    this.papersListStyle = {height: this.store.paperListHeight + 'px', display: "block"};
     const showHideLabel = this.props.store.displayList ? "Hide list" : "Show list";
     const showHideIcon = this.props.store.displayList ? "▼" : "▼";
     this.papersListStyle.display = this.props.store.displayList ? "block" : "none";

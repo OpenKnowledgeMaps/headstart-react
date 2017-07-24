@@ -1,4 +1,4 @@
-import {extendObservable, autorun} from 'mobx';
+import {extendObservable} from 'mobx';
 import PaperModel from './PaperModel';
 import GroupedSVGEntities from './GroupedSVGEntities';
 import {extent} from 'd3-array';
@@ -64,12 +64,6 @@ class PapersModel extends GroupedSVGEntities {
       entity.orig_height = entity.orig_height * factor;
       entity.orig_fontsize = entity.orig_fontsize * factor;
     });
-  }
-
-  disposer() {
-    autorun(() => {
-    });
-
   }
 }
 
