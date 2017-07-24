@@ -23,7 +23,7 @@ const Chart = observer(class Chart extends React.Component {
 
       <SubTitle store={this.props.store}/>
 
-      <div id="headstart-chart" style={{border:"#000 2px solid"}}>
+      <div id="headstart-chart">
         <svg
           width={this.props.store.svgWidth}
           height={this.props.store.svgHeight}
