@@ -48,7 +48,9 @@ class DomainStore {
           y: entry.y[0],
           meanx: bubble.x,
           meany: bubble.y,
-          oa: (entry.pmcid === '') ? false : true,
+          oa: !(entry.pmcid === ''),
+          oa_link: "http://www.ncbi.nlm.nih.gov/pmc/articles/" + entry.pmcid,
+          oa_link_pdf: !(entry.pmcid === '') ? "http://www.ncbi.nlm.nih.gov/pmc/articles/" + entry.pmcid + "/pdf/" : '',
           readers: parseInt(entry.readers, 10)
         });
     });

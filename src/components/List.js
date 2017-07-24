@@ -35,7 +35,6 @@ const List = observer(class List extends React.Component {
 
 
             <div id="explorer_options" className="row">
-
               <Filter store={this.props.store}/>
               <SortButtons store={this.props.store}/>
             </div>

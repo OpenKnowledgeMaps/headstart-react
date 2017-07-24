@@ -93,6 +93,26 @@ img#close-button {
   background-color: #E55137;
   color: white; }
 
+.btn-info {
+  border-color: #2C3E52;
+  background-color: white;
+  color: #2C3E52; }
+
+.btn-info:hover {
+  border-color: white;
+  background-color: #2C3E52;
+  color: white; }
+
+.btn-info:active {
+  border-color: white;
+  background-color: #2C3E52;
+  color: white; }
+
+.btn-info:focus {
+  border-color: white;
+  background-color: #2C3E52;
+  color: white; }
+
 /* Create a very small input group*/
 .input-group-xs .form-control, .input-group-xs .input-group-addon, .input-group-xs .input-group-btn > .btn {
   height: 22px;

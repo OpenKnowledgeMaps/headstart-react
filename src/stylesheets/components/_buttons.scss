@@ -23,3 +23,8 @@ img#close-button {
 .btn-danger:hover { border-color: white; background-color: $okm-red; color: white }
 .btn-danger:active { border-color: white; background-color: $okm-red; color: white }
 .btn-danger:focus { border-color: white; background-color: $okm-red; color: white }
+
+.btn-info { border-color: $okm-blue; background-color: white; color: $okm-blue}
+.btn-info:hover { border-color: white; background-color: $okm-blue; color: white }
+.btn-info:active { border-color: white; background-color: $okm-blue; color: white }
+.btn-info:focus { border-color: white; background-color: $okm-blue; color: white }
