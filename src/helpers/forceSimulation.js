@@ -25,28 +25,49 @@ function movePapersIntoBubble(papers, bubbleX, bubbleY, bubbleRadius) {
 }
 
 function  startForceSim(store, callback) {
+    const {
+      collisionForceRadius,
+      bubblesAlphaMin,
+      manyBodyForceStrength
+    } = store.config.forceSimParameters;
+    const {
+      svgWidth,
+      svgHeight
+    } = store;
+    let {
+      areas,
+      bubblesStore,
+      papersStore
+    } = store;
+
     let counter = 0;
-    let bubbleCollisionForce = forceCollide(store.forceSimParameters.collisionForceRadius);
-    bubbleCollisionForce.radius((node) => node.r*1.05);
+
+    const bubbleCollisionForce = forceCollide(collisionForceRadius)
+      .radius((node) => node.r*1.05);
+    const bubbleManyBodyForce = forceManyBody()
+      .strength(manyBodyForceStrength);
+    const bubbleCenterForce = forceCenter(svgWidth * 0.5, svgHeight * 0.5);
+
     forceSimulation()
-      .nodes(store.bubblesStore.entities)
-      .alphaMin(store.forceSimParameters.bubblesAlphaMin)
-      .force("charge", forceManyBody().strength(store.forceSimParameters.manyBodyForceStrength))
-      .force("center", forceCenter(store.svgWidth * 0.5, store.svgHeight * 0.5))
+      .nodes(bubblesStore.entities)
+      .alphaMin(bubblesAlphaMin)
+      .force("charge", bubbleManyBodyForce)
+      .force("center", bubbleCenterForce)
       .force("collision", bubbleCollisionForce)
       .on('end', () => {
 
-        store.data.areas.forEach((area) => {
-          const bubble = store.bubblesStore.entities.find((node) => node.area === area);
-          let bubbleX = bubble.x - store.bubbleCenterOffset;
-          let bubbleY = bubble.y - store.bubbleCenterOffset;
+        areas.forEach((area) => {
+          const bubble = bubblesStore.entities.find((node) => node.area === area);
+          let bubbleX = bubble.x;
+          let bubbleY = bubble.y;
           let bubbleRadius = bubble.r;
           const paperCollisionRadius =
             Math.sqrt(
-              Math.pow(store.papersStore.entities[0].width,2) +
-              Math.pow(store.papersStore.entities[0].height,2))
+              Math.pow(papersStore.entities[0].width,2) +
+              Math.pow(papersStore.entities[0].height,2))
             *0.6;
-          let papersInArea = store.papersStore.entitiesInArea(area);
+
+          let papersInArea = papersStore.entitiesInArea(area);
 
           movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius);
 
@@ -58,7 +79,7 @@ function  startForceSim(store, callback) {
             .on('tick', () => {store.progress += (100/150.);})
             .on('end', () => {
               counter += 1;
-              if(counter === store.data.areas.length) {
+              if(counter === areas.length) {
                 callback(store);
               }
             });

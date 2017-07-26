@@ -9,12 +9,13 @@ import 'font-awesome/css/font-awesome.css';
 import './stylesheets/main.css';
 import { startForceSim } from './helpers/forceSimulation';
 import {ProgressBar} from 'react-bootstrap';
-import {observer} from 'mobx-react'
+import {observer} from 'mobx-react';
+import config from './config';
 
 let domainStore = window.domainStore = new DomainStore(pubmedPayload);
 domainStore.populateObjects();
 
-let uiStore = new UIStore(domainStore, 900);
+let uiStore = new UIStore(domainStore, 900, config);
 uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
 uiStore.papersStore.saveAllCoordsToOriginalCoords();
 uiStore.disposer();

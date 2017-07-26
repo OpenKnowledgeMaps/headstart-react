@@ -10,18 +10,23 @@ function sortOptionsHandle(event, store) {
 
 const SortButtons = observer(class List extends React.Component {
   componentDidMount() {
-    this.props.store.sortOption = 'readers';
+    const {store} = this.props;
+    const {sortOptions} = store.config;
+    store.sortOption = Object.keys(sortOptions)[0];
   }
 
   render() {
+    const {store} = this.props;
+    const {sortOptions} = store.config;
     return (
       <div className="" id="sort_container" style={{display: "block"}}>
         <span id="sortby">sort by:</span>
         <ToggleButtonGroup bsSize="small" type="radio" name="sortbyoptions" defaultValue={1} >
-          <ToggleButton value={1} data-key="readers" onClick={(e) => sortOptionsHandle(e, this.props.store)}>citations</ToggleButton>
-          <ToggleButton value={2} data-key="title" onClick={(e) => sortOptionsHandle(e, this.props.store)}>title</ToggleButton>
-          <ToggleButton value={3} data-key="authors" onClick={(e) => sortOptionsHandle(e, this.props.store)}>authors</ToggleButton>
-          <ToggleButton value={4} data-key="year" onClick={(e) => sortOptionsHandle(e, this.props.store)}>year</ToggleButton>
+          {Object.entries(sortOptions).map((entry, index) => {
+            return (
+              <ToggleButton value={index+1} data-key={entry[0]} onClick={(e) => sortOptionsHandle(e, store)}>{entry[1]}</ToggleButton>
+            );
+          })}
         </ToggleButtonGroup>
       </div>
     );
