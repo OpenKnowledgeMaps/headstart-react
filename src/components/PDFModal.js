@@ -40,7 +40,7 @@ const PDFModal = class PDFModal extends React.Component
           </Modal.Header>
           <Modal.Body style={{width: "100%"}}>
             {/*<span id="spinner-iframe" className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>*/}
-            <iframe id="pdf_iframe" className="block" src={this.props.link} frameBorder="0" style={{width: "100%", height: window.innerHeight - 200}}></iframe>
+            <iframe id="pdf_iframe" className="block" src={this.props.link} frameBorder="0" style={{width: "100%", height: window.innerHeight - 200}} title="PDF"></iframe>
             {/*<div id="status"></div>*/}
           </Modal.Body>
           <Modal.Footer>
