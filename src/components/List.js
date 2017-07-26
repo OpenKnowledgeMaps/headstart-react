@@ -20,6 +20,7 @@ const List = observer(class List extends React.Component {
     this.papersListStyle = {height: this.store.paperListHeight + 'px', display: "block"};
     const showHideLabel = this.props.store.displayList ? "Hide list" : "Show list";
     const showHideIcon = this.props.store.displayList ? "▼" : "▼";
+    const sortButtons =  this.props.store.displayList ? <SortButtons store={this.props.store}/> : '';
     this.papersListStyle.display = this.props.store.displayList ? "block" : "none";
     return (
       <div className="list-col">
@@ -36,7 +37,7 @@ const List = observer(class List extends React.Component {
 
             <div id="explorer_options" className="row">
               <Filter store={this.props.store}/>
-              <SortButtons store={this.props.store}/>
+              {sortButtons}
             </div>
 
 
