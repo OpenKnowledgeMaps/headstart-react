@@ -13,7 +13,7 @@ const ListEntry =
       const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 300) + '...';
       const openAccessLogoStyle = paper.oa ? {display: 'inline'} : {display: 'none'};
       const authors = (paper.authors);
-      const htmlLink = <Button bsStyle="info" bsSize="xsmall" href={paper.oa_link} target="_blank"> HTML <span id="htmlbutton">&#xf05a;</span></Button>;
+      const htmlLink = <Button bsStyle="info" bsSize="xsmall" href={paper.oa_link} target="_blank"> HTML <span className="outlink_symbol">&#xf08e;</span></Button>;
       const pdfLink = paper.oa ? <PDFModal link={paper.oa_link_pdf}/> : '';
       let titleLink =
         <div className="list_title" onClick={onListClick.bind(this, paper, store)}>
