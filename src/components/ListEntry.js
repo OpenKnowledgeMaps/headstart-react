@@ -16,17 +16,19 @@ const ListEntry =
       const authors = transformAuthors(paper.authors);
       const htmlLink = <Button bsStyle="info" bsSize="xsmall" href={paper.oa_link} target="_blank"> HTML <span id="htmlbutton">&#xf05a;</span></Button>;
       const pdfLink = paper.oa ? <PDFModal link={paper.oa_link_pdf}/> : '';
-
+      let titleLink =
+        <div className="list_title" onClick={onListClick.bind(this, paper, store)}>
+          <span id="open-access-logo_list" style={openAccessLogoStyle}>open access <span
+            className="outlink_symbol">&#xf09c;</span></span>
+          <a href="#" id="paper_list_title" className="highlightable"> {paper.title}</a>
+        </div>;
 
       return (
         <div className="list_entry">
 
           <div className="list_metadata">
 
-            <div className="list_title" onClick={onListClick.bind(this, paper, store)}>
-              <span id="open-access-logo_list" style={openAccessLogoStyle}>open access <span className="outlink_symbol">&#xf09c;</span></span>
-              <a href="#" id="paper_list_title" className="highlightable"> {paper.title}</a>
-            </div>
+            {titleLink}
 
             <div className="list_links">
               {htmlLink}

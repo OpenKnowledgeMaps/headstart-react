@@ -1,7 +1,11 @@
 function onListClick(paper, store) {
-  store.papersStore.clickedEntity = paper;
-  store.papersStore.selectedArea = paper.area;
-  store.bubblesStore.selectedArea = paper.area;
+  if (paper.clicked)
+    window.open(paper.oa_link, "_blank");
+  else {
+    store.papersStore.clickedEntity = paper;
+    store.papersStore.selectedArea = paper.area;
+    store.bubblesStore.selectedArea = paper.area;
+  }
 }
 
 function toggleList(store) {
