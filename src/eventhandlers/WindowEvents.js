@@ -97,7 +97,8 @@ optimizedResize.add(function() {
 
   function actualResizeHandler() {
     const headstartContainer = window.document.querySelector(".vis-col");
-    const newSize = (window.innerHeight - 10 < headstartContainer.clientWidth ? window.innerHeight - 10 : headstartContainer.clientWidth);
+    store.paperExplorerHeight = window.document.querySelector("#explorer_header").clientHeight;
+    const newSize = headstartContainer.clientWidth;
     store.updateChartSize(newSize);
   }
 

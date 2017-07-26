@@ -24,7 +24,7 @@ const SortButtons = observer(class List extends React.Component {
         <ToggleButtonGroup bsSize="small" type="radio" name="sortbyoptions" defaultValue={1} >
           {Object.entries(sortOptions).map((entry, index) => {
             return (
-              <ToggleButton value={index+1} data-key={entry[0]} onClick={(e) => sortOptionsHandle(e, store)}>{entry[1]}</ToggleButton>
+              <ToggleButton value={index+1} key={index} data-key={entry[0]} onClick={(e) => sortOptionsHandle(e, store)}>{entry[1]}</ToggleButton>
             );
           })}
         </ToggleButtonGroup>

@@ -129,8 +129,8 @@ class UIStore {
 
   getChartSize(width) {
     let SVGSize =
-      (window.innerHeight < width ? window.innerHeight : width) -
-      this.subtitleHeight;
+      (window.innerHeight - 75 < width ? window.innerHeight - 75 : width);
+    console.log(SVGSize, window.innerHeight);
     return SVGSize;
   }
 
@@ -140,7 +140,7 @@ class UIStore {
       this.previousSVGSize = this.svgWidth;
       this.svgWidth = newSVGSize;
       this.svgHeight = newSVGSize;
-      this.paperListHeight = newSVGSize + this.subtitleHeight - 113;
+      this.paperListHeight = newSVGSize + this.subtitleHeight - this.paperExplorerHeight;
       this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
       this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
       this.updateCoords();
