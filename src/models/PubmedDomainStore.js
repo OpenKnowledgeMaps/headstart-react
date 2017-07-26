@@ -10,7 +10,6 @@ class PubmedDomainStore extends DomainStore {
           return names[1] + ' ' + names[0];
       })
       .reduce((names, name) => names + ', ' + name, '').slice(2));
-    console.log(auth);
     return auth;
   }
 
