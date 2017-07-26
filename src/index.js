@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {observer} from 'mobx-react';
+
 import App from './components/App';
 import UIStore from './models/UIStore';
 import pubmedPayload from './static/cool_pubmed';
-import DomainStore from './models/domainStore';
+import { startForceSim } from './helpers/forceSimulation';
+import {ProgressBar} from 'react-bootstrap';
+import DomainStoreFactory from './models/DomainStoreFactory';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import './stylesheets/main.css';
-import { startForceSim } from './helpers/forceSimulation';
-import {ProgressBar} from 'react-bootstrap';
-import {observer} from 'mobx-react';
 import config from './config';
 
-let domainStore = window.domainStore = new DomainStore(pubmedPayload);
+const domainStoreModel = DomainStoreFactory(config.service);
+let domainStore = window.domainStore = new domainStoreModel(pubmedPayload);
 domainStore.populateObjects();
 
 let uiStore = new UIStore(domainStore, 900, config);

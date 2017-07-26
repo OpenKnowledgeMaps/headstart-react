@@ -2,7 +2,6 @@ import React from 'react';
 import PDFModal from './PDFModal';
 import { observer } from 'mobx-react';
 import { onListClick } from '../models/ListEvents';
-import {transformAuthors} from './Helpers';
 import {Button} from 'react-bootstrap';
 
 /* eslint-disable jsx-a11y/href-no-hash */
@@ -13,7 +12,7 @@ const ListEntry =
 
       const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 300) + '...';
       const openAccessLogoStyle = paper.oa ? {display: 'inline'} : {display: 'none'};
-      const authors = transformAuthors(paper.authors);
+      const authors = (paper.authors);
       const htmlLink = <Button bsStyle="info" bsSize="xsmall" href={paper.oa_link} target="_blank"> HTML <span id="htmlbutton">&#xf05a;</span></Button>;
       const pdfLink = paper.oa ? <PDFModal link={paper.oa_link_pdf}/> : '';
       let titleLink =

@@ -7,7 +7,7 @@ const SubTitle =
     ({store}) => {
 
       let subtitle =
-        <h4> Overview of 'topic' based on {store.papersStore.entities.length} 'service' articles&nbsp;&nbsp;
+        <h4> Overview of <span id="search-term-unique">{store.topic}</span> based on {store.papersStore.entities.length} {store.config.serviceNameString} articles&nbsp;&nbsp;
           <Modal />
         </h4>;
       if (store.bubblesStore.hasSelectedEntities)

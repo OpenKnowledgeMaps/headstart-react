@@ -29,7 +29,8 @@ class UIStore {
       translationVecY: 0,
       searchString: "",
       displayList: true,
-      sortOption: null
+      sortOption: null,
+      topic: 'cool'
     });
 
     this.initCoords(this.svgWidth);

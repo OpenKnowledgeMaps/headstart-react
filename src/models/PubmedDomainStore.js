@@ -1,11 +1,17 @@
-// TODO integrate transport layer to get data from backend
+import DomainStore from './DomainStore';
 
-class DomainStore {
-  constructor(payload) {
-    this.payload = payload;
-    this.bubblesObject = [];
-    this.papersObject = [];
-    this.areasObject = [];
+class PubmedDomainStore extends DomainStore {
+  transformAuthors(authors) {
+    const auth = (authors
+      .split(';')
+      .map(
+        (author) => {
+          const names = author.split(',');
+          return names[1] + ' ' + names[0];
+      })
+      .reduce((names, name) => names + ', ' + name, '').slice(2));
+    console.log(auth);
+    return auth;
   }
 
   populateObjects() {
@@ -40,7 +46,7 @@ class DomainStore {
         {
           title: entry.title,
           area: entry.area,
-          authors: entry.authors,
+          authors: this.transformAuthors(entry.authors),
           published_in: entry.published_in,
           paper_abstract: entry.paper_abstract,
           year: entry.year,
@@ -57,4 +63,4 @@ class DomainStore {
   }
 }
 
-export default DomainStore;
+export default PubmedDomainStore;

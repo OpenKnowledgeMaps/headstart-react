@@ -1,5 +1,7 @@
 const config =
   {
+    service: 'pubmed',
+    serviceNameString: 'PubMed',
     sortOptions: {readers: 'citations', authors: 'authors', title: 'title', year: 'year'},
     forceSimParameters: {
       manyBodyForceStrength: 1000,

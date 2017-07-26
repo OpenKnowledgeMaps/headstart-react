@@ -1,13 +1,3 @@
-function transformAuthors(authors) {
-  return (authors
-    .split(';')
-    .map((author) => {
-      const names = author.split(',');
-      return names[1] + ' ' + names[0];
-    })
-    .reduce((names, name) => names + ', ' + name, '').slice(2));
-}
-
 function hasSubstring(listEntry, searchString) {
   let containsSubstring = false;
   const searchStringsLowerCase = searchString.toLowerCase().split(' ');
@@ -34,4 +24,4 @@ function hasSubstring(listEntry, searchString) {
   return containsSubstring;
 }
 
-export {transformAuthors, hasSubstring};
+export {hasSubstring};

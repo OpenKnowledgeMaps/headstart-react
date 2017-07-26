@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandlers/PaperEvents';
-import {transformAuthors} from './Helpers';
 
 const Paper =
   observer(
@@ -10,7 +9,7 @@ const Paper =
       let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_, zoomed} = paper;
 
       // Split author names and turn their names around
-      const displayAuthors = transformAuthors(paper.authors);
+      const displayAuthors = (paper.authors);
 
       const title = paper.title;
 
