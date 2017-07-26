@@ -131,7 +131,6 @@ class UIStore {
   getChartSize(width) {
     let SVGSize =
       (window.innerHeight - 75 < width ? window.innerHeight - 75 : width);
-    console.log(SVGSize, window.innerHeight);
     return SVGSize;
   }
 
