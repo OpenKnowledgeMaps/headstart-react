@@ -46,6 +46,14 @@ class GroupedSVGEntities {
         });
       },
 
+      get activeArea() {
+        const activeEntity = this.entities.find((entity) => entity.selected);
+        if (activeEntity !== undefined && activeEntity.hasOwnProperty('area'))
+          return activeEntity.area;
+        else
+          return '';
+      },
+
       set selectedArea(area) {
         this.entitiesOutsideArea(area).forEach((entity) => {
           entity.selected = false;

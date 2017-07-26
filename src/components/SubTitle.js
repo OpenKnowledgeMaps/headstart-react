@@ -5,12 +5,17 @@ import Modal from './InfoModal';
 const SubTitle =
   observer(
     ({store}) => {
+
+      let subtitle =
+        <h4> Overview of 'topic' based on {store.papersStore.entities.length} 'service' articles&nbsp;&nbsp;
+          <Modal />
+        </h4>;
+      if (store.bubblesStore.hasSelectedEntities)
+        subtitle = <h4><span id="area-bold">Area:</span> {store.bubblesStore.activeArea}</h4>
+
       return (
         <div id="subdiscipline_title">
-          <h4> Overview of 'topic' based on {store.papersStore.entities.length} 'service' articles&nbsp;&nbsp;
-            <Modal />
-
-          </h4>
+          {subtitle}
         </div>
       );
     }
