@@ -36,13 +36,14 @@ const Paper =
       const pathClassName = paper.clicked ? 'framed' : 'unframed';
       const dogearPath = "M " + (x_ + 0.9*w_) + ' ' + y_ + " v " + (0.1*h_) + " h " + (0.1*w_);
       let displayStyle = {display: "block"};
+      displayStyle.cursor = paper.selected ? "pointer" : "default";
       if (store.papersStore.hasSelectedEntities && !paper.selected) {
         displayStyle.display = "none";
       }
       const openAccessStyle = paper.oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
-      const readersHeight = 0.25*h_ > 15 ? 15 : 0.25*h_;
-      const metadataStyle = {height: paper.selected ?  (h_ - 15) + "px" : ((0.75*h_) + "px"), width: (0.9*w_) + "px"};
-      const readersDivStyle = {height: readersHeight + "px", width: w_ + "px", marginBottom: paper.selected ? "3px" : "0px"};
+      const readersHeight = paper.selected ? 15 : 0.24*h_;
+      const metadataStyle = {height: paper.selected ?  (h_ - 20) + "px" : ((0.75*h_) + "px"), width: (0.9*w_) + "px"};
+      const readersDivStyle = {height: readersHeight + "px", width: w_ + "px", marginBottom: paper.selected ? "3px" : "0px", marginTop: paper.selected ? "5px" : "0px"};
       const citationsFontSize = (zoomed || paper.selected) ? "11px" : "8px";
 
       // TODO hyphenate title
@@ -84,9 +85,8 @@ const Paper =
                 <p id="title" className={textClassName}>{title}</p>
                 <p id="details" className={textClassName}>{displayAuthors}</p>
                 <p id="in" className={textClassName}>in
-                  <span className={textClassName}>
-                    {paper.published_in}
-                    <span className="pubyear">{paper.year}</span>
+                  <span className={textClassName}>{paper.published_in}
+                    <span className="pubyear"> ({paper.year})</span>
                   </span>
                 </p>
 

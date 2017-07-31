@@ -79,6 +79,7 @@ function  startForceSim(store, callback) {
             .on('tick', () => {store.progress += (100/150.);})
             .on('end', () => {
               counter += 1;
+              movePapersIntoBubble(papersInArea, bubbleX, bubbleY, bubbleRadius);
               if(counter === areas.length) {
                 callback(store);
               }

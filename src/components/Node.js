@@ -9,7 +9,7 @@ const Node =
       let circleStyle = {fillOpacity: "0.8"};
       if (store.bubblesStore.hasSelectedEntities) {
         circleClassName = (node.selected) ? "zoom_selected" : "zoom_unselected";
-        circleStyle.fillOpacity = "0.1";
+        circleStyle.fillOpacity = (node.selected) ? "1." : "0.1";
       } else {
         circleClassName = node.active ? "zoom_selected" : "area";
       }
