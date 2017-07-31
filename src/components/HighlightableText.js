@@ -29,8 +29,8 @@ const HighlightableText =
   observer(
     ({highlightStrings, value}) =>{
       const stringList = highlightPartsOfString(highlightStrings, value);
-      return <span>{stringList.map((entry) => {
-        return entry[1] ? <span style={{backgroundColor: 'yellow'}}>{entry[0]}</span> : entry[0]
+      return <span>{stringList.map((entry, index) => {
+        return entry[1] ? <span key={index} style={{backgroundColor: 'yellow'}}>{entry[0]}</span> : entry[0]
       })}</span>
     });
 

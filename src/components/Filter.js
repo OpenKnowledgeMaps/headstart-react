@@ -27,8 +27,11 @@ const Filter = observer(class Filter extends React.Component {
   }
 
   render() {
+    const glyphicon = (this.state.currentValue !== '') ?
+      <Glyphicon id='searchclear' glyph="remove-circle" onClick={this.clearSearch.bind(this)} style={{display: this.state.displayClearButton}}/>
+      : '';
     return (
-      <div className="" id="filter_container">
+      <div className="" id="filter_container" style={{width: '187px', height: "30px"}}>
         <form>
           <FormGroup>
               <FormControl
@@ -38,10 +41,10 @@ const Filter = observer(class Filter extends React.Component {
                 placeholder="Search..."
                 onChange={this.handleChange.bind(this)}
               />
-                <Glyphicon id='searchclear' glyph="remove-circle" onClick={this.clearSearch.bind(this)} style={{display: this.state.displayClearButton}}/>
           </FormGroup>
 
         </form>
+            {glyphicon}
       </div>
 
     );
