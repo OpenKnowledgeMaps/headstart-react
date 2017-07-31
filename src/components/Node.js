@@ -14,7 +14,10 @@ const Node =
       } else {
         circleClassName = node.active ? "zoom_selected" : "area";
       }
-      let {x: x_, y: y_, r: r_} = node;
+      let {x: x_, y: y_, r: r_, orig_x, orig_y, orig_r} = node;
+      x_ = store.zoomFactor*orig_x + store.translationVecX;
+      y_ = store.zoomFactor*orig_y + store.translationVecY;
+      r_ = store.zoomFactor*orig_r;
 
       let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", textAlign: "center", width: 2*r_ + "px"};
       if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
