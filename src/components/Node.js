@@ -1,5 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react';
+import HighlightableText from './HighlightableText';
 import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../eventhandlers/BubbleEvents';
 
 const Node =
@@ -20,7 +21,7 @@ const Node =
         areaTitleStyle.display = "none";
       }
 
-
+      const highlightStrings = store.searchString.split(' ');
       return (
         <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}
            onMouseLeave={onBubbleMouseLeave.bind(this, store)}
@@ -44,7 +45,9 @@ const Node =
             className="headstart"
           >
             <div id="area_title" style={areaTitleStyle}>
-                <h2 className="highlightable">{node.area}</h2>
+                <h2 className="highlightable">
+                  <HighlightableText highlightStrings={highlightStrings} value={node.area} />
+                  </h2>
             </div>
           </foreignObject>
         </g>

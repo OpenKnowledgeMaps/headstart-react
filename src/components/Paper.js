@@ -2,6 +2,9 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandlers/PaperEvents';
 
+import HighlightableText from './HighlightableText';
+
+
 const Paper =
   observer(
     ({store, paper}) =>{
@@ -46,6 +49,10 @@ const Paper =
       const readersDivStyle = {height: readersHeight + "px", width: w_ + "px", marginBottom: paper.selected ? "3px" : "0px", marginTop: paper.selected ? "5px" : "0px"};
       const citationsFontSize = (zoomed || paper.selected) ? "11px" : "8px";
 
+
+
+      const highlightStrings = store.searchString.split(' ');
+
       // TODO hyphenate title
       return (
         <g
@@ -82,11 +89,11 @@ const Paper =
                 <div id="icons" style={openAccessStyle}>
                   <p id="open-access-logo" className={textClassName}>&#xf09c;</p>
                 </div>
-                <p id="title" className={textClassName}>{title}</p>
-                <p id="details" className={textClassName}>{displayAuthors}</p>
+                <p id="title" className={textClassName}><HighlightableText highlightStrings={highlightStrings} value={title}/></p>
+                <p id="details" className={textClassName}><HighlightableText highlightStrings={highlightStrings} value={displayAuthors}/></p>
                 <p id="in" className={textClassName}>in
-                  <span className={textClassName}>{paper.published_in}
-                    <span className="pubyear"> ({paper.year})</span>
+                  <span className={textClassName}><HighlightableText highlightStrings={highlightStrings} value={paper.published_in}/>
+                    <span className="pubyear"> (<HighlightableText highlightStrings={highlightStrings} value={paper.year} />)</span>
                   </span>
                 </p>
 
