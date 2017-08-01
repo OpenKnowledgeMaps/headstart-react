@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import {FormGroup, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
+import {FormGroup, FormControl, Glyphicon } from 'react-bootstrap';
 
 const Filter = observer(class Filter extends React.Component {
   constructor() {

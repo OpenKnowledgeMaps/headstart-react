@@ -1,5 +1,6 @@
-import { extendObservable, autorun } from "mobx";
+import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
+import { timer } from 'd3-timer';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 
@@ -13,6 +14,7 @@ class UIStore {
     this.bubblesStore = new BubblesModel(bubblesObject);
     this.previousSVGSize = initSize - 65;
     this.isZoomed = false;
+    this.lock = false;
 
     extendObservable(this, {
       areas: areasObject,
@@ -36,40 +38,66 @@ class UIStore {
     this.initCoords(this.svgWidth);
   }
 
-  disposer() {
-    autorun(() => {
-      if (
-        this.papersStore.hasSelectedEntities ||
-        this.bubblesStore.hasSelectedEntities
-      ) {
-        this.isZoomed = true;
-        let node = this.bubblesStore.selectedEntities;
-        if (node.length > 0) {
-          this.updateZoomState(node[0], this);
+  updateZoomState({orig_r, orig_x, orig_y}, node2) {
+    const hasNode2 = (node2 !== undefined);
+    const mid = this.svgWidth * 0.5;
+    const startx = hasNode2 ? node2.orig_x : mid;
+    const starty = hasNode2 ? node2.orig_y : mid;
+    const startz = this.zoomFactor;
+    const z = mid / (orig_r*1.05);
+    const x = orig_x;
+    const y = orig_y;
+    this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
+  }
+
+  updateZoomState2(z, x, y) {
+    this.zoomFactor = z;
+    this.translationVecX = this.svgWidth * 0.5 - z*x;
+    this.translationVecY = this.svgHeight * 0.5 - z*y;
+  }
+
+  updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
+    if(!this.lock) {
+      this.lock = true;
+      let startz = startz_;
+      let startx = startx_;
+      let starty = starty_;
+
+      const stepsize = 10.;
+      const targetz = z;
+      const targetx = x;
+      const targety = y;
+      const incrementz = (targetz - startz)/stepsize;
+      const incrementx = (targetx - startx)/stepsize;
+      const incrementy = (targety - starty)/stepsize;
+      let t = timer(elapsed => {
+        if (
+          (Math.abs(targetx - startx) < 0.1) &&
+          (Math.abs(targety - starty) < 0.1) &&
+          (Math.abs(targetz - startz) < 0.1)
+        ) {
+          t.stop();
+          this.lock = false;
+          if (typeof  callback === 'function') callback();
         }
-      } else if (
-        !(
-          this.papersStore.hasSelectedEntities &&
-          this.bubblesStore.hasSelectedEntities
-        ) &&
-        this.isZoomed === true
-      ) {
-        this.isZoomed = false;
-        this.resetZoomState(this);
-      }
-    });
+        if (Math.abs(targetz - startz) > 0.1) startz += incrementz;
+        if (Math.abs(targety - starty) > 0.1) starty += incrementy;
+        if (Math.abs(targetx - startx) > 0.1) startx += incrementx;
+        this.updateZoomState2(startz, startx, starty);
+      });
+    }
   }
 
-  updateZoomState(node) {
-    this.zoomFactor = this.svgWidth * 0.5 / (node.orig_r*1.3);
-    this.translationVecX = this.svgWidth * 0.5 - this.zoomFactor * node.orig_x;
-    this.translationVecY = this.svgHeight * 0.5 - this.zoomFactor * node.orig_y;
+  unselectAll() {
+
   }
 
-  resetZoomState() {
-    this.zoomFactor = 1;
-    this.translationVecX = 0;
-    this.translationVecY = 0;
+  resetZoomState(callback) {
+    const mid = this.svgWidth*0.5;
+    const zf = this.zoomFactor;
+    const nodex = this.bubblesStore.selectedEntities[0].orig_x;
+    const nodey = this.bubblesStore.selectedEntities[0].orig_y;
+    this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
   }
 
   initCoords(range) {

@@ -21,7 +21,6 @@ domainStore.populateObjects();
 let uiStore = new UIStore(domainStore, 900, config);
 uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
 uiStore.papersStore.saveAllCoordsToOriginalCoords();
-uiStore.disposer();
 
 const PBar = observer(({store}) => {
   const progress = store.progress;

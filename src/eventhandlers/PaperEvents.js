@@ -19,6 +19,8 @@ function onPaperClick(store, paper) {
     } else {
       store.bubblesStore.selectedArea = paper.area;
       store.papersStore.selectedArea = paper.area;
+      store.updateZoomState(store.bubblesStore.selectedEntities[0])
+      store.isZoomed = true;
     }
   }
 }

@@ -19,6 +19,16 @@ const Chart = observer(class Chart extends React.Component {
   }
 
   render() {
+    const { hasSelectedEntities, hasHoverEntities} = this.props.store.papersStore;
+    const flaglessPapers = hasSelectedEntities ? '' :
+      <Papers store={this.props.store} papers={this.props.store.papersStore.flaglessPapers}/>;
+    const activePapers = hasSelectedEntities ? '' :
+      <Papers store={this.props.store} papers={this.props.store.papersStore.activeEntities}/>;
+    const selectedPapers = !hasSelectedEntities ? '' :
+      <Papers store={this.props.store} papers={this.props.store.papersStore.selectedEntities}/>;
+    const hoverPapers = !hasHoverEntities ? '' :
+      <Papers store={this.props.store} papers={this.props.store.papersStore.hoveredEntity}/>;
+
     return (<div className="vis-col">
 
       <SubTitle store={this.props.store}/>
@@ -33,11 +43,11 @@ const Chart = observer(class Chart extends React.Component {
         >
           <g id="chart_canvas">
             <rect width={this.props.store.svgWidth} height={this.props.store.svgHeight}/>
-            <Papers store={this.props.store} papers={this.props.store.papersStore.flaglessPapers}/>
+            {flaglessPapers}
             <Nodes store={this.props.store} nodes={this.props.store.bubblesStore}/>
-            <Papers store={this.props.store} papers={this.props.store.papersStore.activeEntities}/>
-            <Papers store={this.props.store} papers={this.props.store.papersStore.selectedEntities}/>
-            <Papers store={this.props.store} papers={this.props.store.papersStore.hoveredEntity}/>
+            {activePapers}
+            {selectedPapers}
+            {hoverPapers}
           </g>
         </svg>
       </div>
