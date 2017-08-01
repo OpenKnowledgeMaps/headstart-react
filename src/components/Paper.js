@@ -8,8 +8,13 @@ import HighlightableText from './HighlightableText';
 const Paper =
   observer(
     ({store, paper}) =>{
-
-      let {x: x_, y: y_, width: w_, height: h_, fontsize: fs_, zoomed} = paper;
+      const {zoomFactor, translationVecX, translationVecY} = store;
+      const {orig_x, orig_y, orig_width, orig_height, orig_fontsize, zoomed} = paper;
+      let x_ =  zoomFactor  *  orig_x + translationVecX;
+      let y_ =  zoomFactor  *  orig_y + translationVecY;
+      let w_ =  zoomFactor  *  orig_width;
+      let h_ =  zoomFactor  *  orig_height;
+      let fs_ = zoomFactor  *  orig_fontsize;
 
       // Split author names and turn their names around
       const displayAuthors = (paper.authors);

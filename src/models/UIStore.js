@@ -46,7 +46,6 @@ class UIStore {
         let node = this.bubblesStore.selectedEntities;
         if (node.length > 0) {
           this.updateZoomState(node[0], this);
-          this.updateCoords();
         }
       } else if (
         !(
@@ -57,35 +56,14 @@ class UIStore {
       ) {
         this.isZoomed = false;
         this.resetZoomState(this);
-        this.updateCoords();
       }
     });
   }
 
   updateZoomState(node) {
-    this.zoomFactor = this.svgWidth * 0.5 / node.orig_r;
+    this.zoomFactor = this.svgWidth * 0.5 / (node.orig_r*1.3);
     this.translationVecX = this.svgWidth * 0.5 - this.zoomFactor * node.orig_x;
     this.translationVecY = this.svgHeight * 0.5 - this.zoomFactor * node.orig_y;
-  }
-
-  updateCoords() {
-    const zoomFactor = this.zoomFactor;
-    const translationVecX = this.translationVecX;
-    const translationVecY = this.translationVecY;
-
-    this.papersStore.entities.forEach(paper => {
-      paper.x = zoomFactor * paper.orig_x + translationVecX;
-      paper.y = zoomFactor * paper.orig_y + translationVecY;
-      paper.width = zoomFactor * paper.orig_width;
-      paper.height = zoomFactor * paper.orig_height;
-      paper.fontsize = zoomFactor * paper.orig_fontsize;
-    });
-
-    this.bubblesStore.entities.forEach(node => {
-      node.x = this.zoomFactor * node.orig_x + this.translationVecX;
-      node.y = this.zoomFactor * node.orig_y + this.translationVecY;
-      node.r = this.zoomFactor * node.orig_r;
-    });
   }
 
   resetZoomState() {
@@ -129,8 +107,7 @@ class UIStore {
   }
 
   getChartSize(width) {
-    let SVGSize =
-      (window.innerHeight - 75 < width ? window.innerHeight - 75 : width);
+    let SVGSize =  width;
     return SVGSize;
   }
 
@@ -143,7 +120,6 @@ class UIStore {
       this.paperListHeight = newSVGSize + this.subtitleHeight - this.paperExplorerHeight;
       this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
       this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
-      this.updateCoords();
     }
   }
 }
