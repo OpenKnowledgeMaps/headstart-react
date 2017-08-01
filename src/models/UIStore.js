@@ -63,17 +63,18 @@ class UIStore {
       let startx = startx_;
       let starty = starty_;
 
-      const stepsize = 10.;
+      const stepCount = 10;
+      const translationStepcount = stepCount;
       const targetz = z;
       const targetx = x;
       const targety = y;
-      const incrementz = (targetz - startz)/stepsize;
-      const incrementx = (targetx - startx)/stepsize;
-      const incrementy = (targety - starty)/stepsize;
+      const incrementz = (targetz - startz)/stepCount;
+      const incrementx = (targetx - startx)/translationStepcount;
+      const incrementy = (targety - starty)/translationStepcount;
       let t = timer(elapsed => {
         if (
-          (Math.abs(targetx - startx) < 0.1) &&
-          (Math.abs(targety - starty) < 0.1) &&
+          (Math.abs(targetx - startx) < 0.2) &&
+          (Math.abs(targety - starty) < 0.2) &&
           (Math.abs(targetz - startz) < 0.1)
         ) {
           t.stop();

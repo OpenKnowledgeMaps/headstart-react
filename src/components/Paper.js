@@ -35,14 +35,14 @@ const Paper =
       // CSS and svg stuff
       let textClassName = paper.selected ? 'large highlightable' : 'highlightable';
       if (zoomed) textClassName = 'larger';
-      const pathD = 'M ' + x_ + ' ' + y_ +
+      const pathD = 'M ' + 0 + ' ' + 0 +
                     ' h ' + (0.9*w_) +
                     ' l ' + (0.1*w_) + ' ' + (0.1*h_) +
                     ' v ' + (0.9*h_) +
                     ' h ' + (-w_) +
                     ' v ' + (-h_);
       const pathClassName = paper.clicked ? 'framed' : 'unframed';
-      const dogearPath = "M " + (x_ + 0.9*w_) + ' ' + y_ + " v " + (0.1*h_) + " h " + (0.1*w_);
+      const dogearPath = "M " + (0 + 0.9*w_) + ' ' + 0 + " v " + (0.1*h_) + " h " + (0.1*w_);
       let displayStyle = {display: "block"};
       displayStyle.cursor = paper.selected ? "pointer" : "default";
       if (store.papersStore.hasSelectedEntities && !paper.selected) {
@@ -53,7 +53,7 @@ const Paper =
       const metadataStyle = {height: paper.selected ?  (h_ - 20) + "px" : ((0.75*h_) + "px"), width: (0.9*w_) + "px"};
       const readersDivStyle = {height: readersHeight + "px", width: w_ + "px", marginBottom: paper.selected ? "3px" : "0px", marginTop: paper.selected ? "5px" : "0px"};
       const citationsFontSize = (zoomed || paper.selected) ? "11px" : "8px";
-
+      const translateString = "translate(" + x_ + " " + y_ + ")";
 
 
       const highlightStrings = store.searchString.split(' ');
@@ -66,6 +66,7 @@ const Paper =
           onClick={onPaperClick.bind(this, store, paper)}
           className="paper"
           style={displayStyle}
+          transform={translateString}
         >
 
           <path
@@ -76,13 +77,11 @@ const Paper =
           </path>
 
           <path
-            className="dogear"
-            d={dogearPath}>
-          </path>
+          className="dogear"
+          d={dogearPath}>
+        </path>
 
           <foreignObject
-            x={x_}
-            y={y_}
             width={w_}
             height={h_}
             fontSize={fs_}
