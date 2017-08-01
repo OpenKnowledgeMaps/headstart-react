@@ -51,9 +51,9 @@ class UIStore {
   }
 
   updateZoomState2(z, x, y) {
-    this.zoomFactor = z;
     this.translationVecX = this.svgWidth * 0.5 - z*x;
     this.translationVecY = this.svgHeight * 0.5 - z*y;
+    this.zoomFactor = z;
   }
 
   updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
@@ -87,10 +87,6 @@ class UIStore {
         this.updateZoomState2(startz, startx, starty);
       });
     }
-  }
-
-  unselectAll() {
-
   }
 
   resetZoomState(callback) {

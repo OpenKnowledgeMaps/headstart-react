@@ -2,7 +2,6 @@ import React from 'react';
 
 import Paper from './Paper';
 import {observer} from 'mobx-react';
-import {hasSubstring} from './Helpers';
 
 const Papers =
   observer(
@@ -10,11 +9,10 @@ const Papers =
       return (
         <g>
           {papers
-            .filter((paper) => hasSubstring(paper, store.searchString))
-            .map((paper, index) =>
+            .map((paper) =>
               <Paper
                 store={store}
-                key={index}
+                key={paper.id}
                 paper={paper}
               />)}
         </g>);

@@ -1,43 +1,20 @@
-/**
- * Created by rbachleitner on 5/24/17.
- */
-
 import React from 'react';
 
-import Node from './Node';
+import NodesList from './NodesList';
 import {observer} from 'mobx-react';
 
 const Nodes =
   observer(
     ({ store, nodes }) =>
       {
-        let entities = nodes.entities;
+      const flagLessNodes = nodes.entities.filter((node) => !(node.selected || node.active));
+      const activeNodes = nodes.activeEntities;
+      const selectedNodes = nodes.selectedEntities;
       return (
         <g>
-          {nodes.entities.filter((node) => !(node.selected || node.active)).map((node, index) =>
-            <Node           key={node.id}
-                            id={node.id}
-                            node={node}
-                            nodes={entities}
-                            store={store}
-            />
-          )};
-          {nodes.activeEntities.map((node, index) =>
-          <Node           key={node.id}
-                          id={node.id}
-                          node={node}
-                          nodes={entities}
-                          store={store}
-          />
-          )};
-          {nodes.selectedEntities.map((node, index) =>
-            <Node           key={node.id}
-                            id={node.id}
-                            node={node}
-                            nodes={entities}
-                            store={store}
-            />
-          )};
+          <NodesList store={store} nodes={flagLessNodes}/>
+          <NodesList store={store} nodes={activeNodes}/>
+          <NodesList store={store} nodes={selectedNodes}/>
         </g>);
       }
 );

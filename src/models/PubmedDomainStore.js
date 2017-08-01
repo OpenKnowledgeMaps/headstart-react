@@ -39,10 +39,12 @@ class PubmedDomainStore extends DomainStore {
       bubble.r = bubble.readers;
     });
 
+    id = 0;
     this.payload.forEach((entry) => {
       let bubble = this.bubblesObject.find((bubble) => bubble.area === entry.area);
       this.papersObject.push(
         {
+          id: id,
           title: entry.title,
           area: entry.area,
           authors: this.transformAuthors(entry.authors),
@@ -58,6 +60,7 @@ class PubmedDomainStore extends DomainStore {
           oa_link_pdf: !(entry.pmcid === '') ? "https://www.ncbi.nlm.nih.gov/pmc/articles/" + entry.pmcid + "/pdf/" : '',
           readers: parseInt(entry.readers, 10)
         });
+      id++;
     });
   }
 }

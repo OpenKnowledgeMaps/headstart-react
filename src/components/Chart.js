@@ -4,6 +4,7 @@ import Papers from './Papers';
 import SubTitle from './SubTitle';
 import {observer} from 'mobx-react';
 import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
+import {hasSubstring} from './Helpers';
 import addWindowResizer from '../eventhandlers/WindowEvents';
 
 const Chart = observer(class Chart extends React.Component {
@@ -13,38 +14,48 @@ const Chart = observer(class Chart extends React.Component {
   }
   componentDidMount() {
     const headstartContainer = window.document.querySelector(".vis-col");
-    const newSize = (window.innerHeight - 10 < headstartContainer.clientWidth ? window.innerHeight - 10 : headstartContainer.clientWidth);
+    const newSize = headstartContainer.clientWidth;
     this.store.updateChartSize(newSize, false);
     addWindowResizer(this.store);
   }
 
   render() {
+    let {
+      flaglessPapers : flaglessPapers_,
+      activeEntities : activeEntities_,
+      selectedEntities : selectedEntities_,
+      hoveredEntity : hoveredEntity_,
+    } = this.props.store.papersStore;
+    const { searchString, svgWidth, svgHeight, bubblesStore } = this.props.store;
+    const store = this.props.store;
+
     const { hasSelectedEntities, hasHoverEntities} = this.props.store.papersStore;
+
     const flaglessPapers = hasSelectedEntities ? '' :
-      <Papers store={this.props.store} papers={this.props.store.papersStore.flaglessPapers}/>;
+      <Papers store={store} papers={flaglessPapers_.filter((paper) => hasSubstring(paper, searchString))}/>;
     const activePapers = hasSelectedEntities ? '' :
-      <Papers store={this.props.store} papers={this.props.store.papersStore.activeEntities}/>;
+      <Papers store={store} papers={activeEntities_.filter((paper) => hasSubstring(paper, searchString))}/>;
     const selectedPapers = !hasSelectedEntities ? '' :
-      <Papers store={this.props.store} papers={this.props.store.papersStore.selectedEntities}/>;
+      <Papers store={store} papers={selectedEntities_.filter((paper) => hasSubstring(paper, searchString))}/>;
     const hoverPapers = !hasHoverEntities ? '' :
-      <Papers store={this.props.store} papers={this.props.store.papersStore.hoveredEntity}/>;
+      <Papers store={store} papers={hoveredEntity_.filter((paper) => hasSubstring(paper, searchString))}/>;
 
     return (<div className="vis-col">
 
-      <SubTitle store={this.props.store}/>
+      <SubTitle store={store}/>
 
       <div id="headstart-chart">
         <svg
-          width={this.props.store.svgWidth}
-          height={this.props.store.svgHeight}
+          width={svgWidth}
+          height={svgHeight}
           id="chart-svg"
-          onClick={onSVGClick.bind(this, this.props.store)}
-          onMouseOver={onSVGMouseOver.bind(this, this.props.store)}
+          onClick={onSVGClick.bind(this, store)}
+          onMouseOver={onSVGMouseOver.bind(this, store)}
         >
           <g id="chart_canvas">
-            <rect width={this.props.store.svgWidth} height={this.props.store.svgHeight}/>
+            <rect width={svgWidth} height={svgHeight}/>
             {flaglessPapers}
-            <Nodes store={this.props.store} nodes={this.props.store.bubblesStore}/>
+            <Nodes store={store} nodes={bubblesStore}/>
             {activePapers}
             {selectedPapers}
             {hoverPapers}
