@@ -6,13 +6,14 @@ function onSVGClick(store) {
     const nodeSelected = bubblesStore.hasSelectedEntities;
     if (!hoveringBubble && !hoveringPaper && nodeSelected) {
       if (store.isZoomed) {
+        let node = store.bubblesStore.selectedEntities[0];
+        bubblesStore.selectedArea = null;
+        papersStore.selectedArea = null;
+        papersStore.clickedEntity = null;
+        papersStore.listVisiblePapers = store.papersStore.entities;
         store.resetZoomState(() => {
-          bubblesStore.selectedArea = null;
-          papersStore.selectedArea = null;
-          papersStore.clickedEntity = null;
-          papersStore.listVisiblePapers = store.papersStore.entities;
           store.isZoomed = false;
-        });
+        }, node);
       }
     }
   }

@@ -2,6 +2,8 @@ const config =
   {
     service: 'pubmed',
     serviceNameString: 'PubMed',
+    showList: true,
+    showBubbles: true,
     sortOptions: {readers: 'citations', authors: 'authors', title: 'title', year: 'year'},
     forceSimParameters: {
       manyBodyForceStrength: 1000,

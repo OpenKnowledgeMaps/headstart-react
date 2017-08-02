@@ -9,17 +9,21 @@ function onBubbleClick(store, node) {
       store.isZoomed = true;
     }
   }
+  if (node.selected) {
+    store.papersStore.clickedEntity = null;
+  }
 }
 
-function onBubbleDoubleClick(store)
+function onBubbleDoubleClick(store, node)
 {
+  // event.preventDefault();
   if (store.forceSimIsDone && store.isZoomed) {
+      store.bubblesStore.selectedArea = null;
+      store.papersStore.selectedArea = null;
+      store.papersStore.listVisiblePapers = store.papersStore.entities;
       store.resetZoomState(() => {
-        store.bubblesStore.selectedArea = null;
-        store.papersStore.selectedArea = null;
-        store.papersStore.listVisiblePapers = store.papersStore.entities;
         store.isZoomed = false;
-      });
+      }, node);
   }
 }
 

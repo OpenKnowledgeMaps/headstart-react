@@ -5,6 +5,10 @@ function onListClick(paper, store) {
     store.papersStore.clickedEntity = paper;
     store.papersStore.selectedArea = paper.area;
     store.bubblesStore.selectedArea = paper.area;
+    if (!store.isZoomed) {
+      store.updateZoomState(store.bubblesStore.selectedEntities[0]);
+      store.isZoomed = true;
+    }
   }
 }
 

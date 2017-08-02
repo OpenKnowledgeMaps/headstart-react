@@ -1,6 +1,7 @@
 import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
 import { timer } from 'd3-timer';
+import { easePolyInOut, easeElasticInOut, easeBounceInOut, easeBackInOut } from 'd3-ease';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 
@@ -57,43 +58,35 @@ class UIStore {
   }
 
   updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
-    if(!this.lock) {
-      this.lock = true;
-      let startz = startz_;
-      let startx = startx_;
-      let starty = starty_;
+    const midx = this.svgWidth*0.5;
+    const midy = this.svgHeight*0.5;
 
-      const stepCount = 10;
-      const translationStepcount = stepCount;
-      const targetz = z;
-      const targetx = x;
-      const targety = y;
-      const incrementz = (targetz - startz)/stepCount;
-      const incrementx = (targetx - startx)/translationStepcount;
-      const incrementy = (targety - starty)/translationStepcount;
-      let t = timer(elapsed => {
-        if (
-          (Math.abs(targetx - startx) < 0.2) &&
-          (Math.abs(targety - starty) < 0.2) &&
-          (Math.abs(targetz - startz) < 0.1)
-        ) {
-          t.stop();
-          this.lock = false;
-          if (typeof  callback === 'function') callback();
-        }
-        if (Math.abs(targetz - startz) > 0.1) startz += incrementz;
-        if (Math.abs(targety - starty) > 0.1) starty += incrementy;
-        if (Math.abs(targetx - startx) > 0.1) startx += incrementx;
-        this.updateZoomState2(startz, startx, starty);
-      });
-    }
+    const duration = 1000;
+    let ratio = 0.;
+    let t = timer(elapsed => {
+      ratio = (elapsed/duration) > 1 ? 1. : elapsed/duration;
+      const easeFactor = easePolyInOut(ratio, 1.2);
+      const newz = (1 - easeFactor)*startz_ + easeFactor*z;
+      const newy = (1 - easeFactor)*starty_ + easeFactor*y;
+      const newx = (1 - easeFactor)*startx_ + easeFactor*x;
+
+      this.translationVecX = midx - newz*newx;
+      this.translationVecY = midy - newz*newy;
+      this.zoomFactor = newz;
+      // this.updateZoomState2(startz, startx, starty);
+
+      if ( elapsed > duration ) {
+        t.stop();
+        if (typeof  callback === 'function') callback();
+      }
+    });
   }
 
-  resetZoomState(callback) {
+  resetZoomState(callback, node) {
     const mid = this.svgWidth*0.5;
     const zf = this.zoomFactor;
-    const nodex = this.bubblesStore.selectedEntities[0].orig_x;
-    const nodey = this.bubblesStore.selectedEntities[0].orig_y;
+    const nodex = node.orig_x;
+    const nodey = node.orig_y;
     this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
   }
 
