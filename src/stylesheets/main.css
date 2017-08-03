@@ -178,7 +178,15 @@ img#close-button {
     .headstart circle.area {
       fill: white;
       fill-opacity: .9; }
-  .headstart #area_title_object div {
+  .headstart #area_title_object div.outerDiv {
+    position: static;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    word-break: break-word;
+    background-color: transparent; }
+  .headstart #area_title_object div.innerDiv {
     width: 100%;
     height: 100%;
     margin: 0;

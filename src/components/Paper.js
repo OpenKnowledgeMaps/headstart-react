@@ -40,9 +40,9 @@ const Paper =
 
       // Caculate enlarged width so it fits in the svg
       while (
+        zoomed &&
         ((x_ + w_) < svgWidth) &&
         ((y_ + h_) < svgHeight) &&
-        zoomed &&
         (w_ < svgWidth*0.5) &&
         (h_ < svgHeight*0.5)) {
         w_ += 1;

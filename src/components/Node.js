@@ -21,10 +21,12 @@ const Node =
       let y_ = zoomFactor * orig_y + translationVecY;
       let r_ = zoomFactor * orig_r;
 
-      let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", textAlign: "center", width: 2*r_ + "px"};
+      const sqrtOfTwo = Math.sqrt(2);
+      let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", width: 2*r_/sqrtOfTwo, height: 2*r_/sqrtOfTwo};
       if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
         areaTitleStyle.display = "none";
       }
+      const translateString = "translate(" + x_ + " " + y_ + ")";
 
       const highlightStrings = store.searchString.split(' ');
       return (
@@ -33,26 +35,29 @@ const Node =
            onClick={onBubbleClick.bind(this, store, node)}
            onDoubleClick={onBubbleDoubleClick.bind(this, store, node)}
            className="bubble_frame"
+           transform={translateString}
         >
           <circle
             className={circleClassName}
             r={r_}
-            cx={x_}
-            cy={y_}
+            cx={0}
+            cy={0}
             style={circleStyle}
           />
           <foreignObject
-            x={x_ - r_}
-            y={y_ - 24}
-            width={2*r_}
-            height={0.33*r_}
+            x={0 - r_/sqrtOfTwo}
+            y={0 - r_/sqrtOfTwo}
+            width={2*r_/sqrtOfTwo}
+            height={2*r_/sqrtOfTwo}
             id="area_title_object"
             className="headstart"
           >
-            <div id="area_title" style={areaTitleStyle}>
-                <h2 className="highlightable">
-                  <HighlightableText highlightStrings={highlightStrings} value={node.area} />
-                  </h2>
+            <div className="outerDiv">
+              <div id="area_title" style={areaTitleStyle} className="innerDiv">
+                  <h2 className="highlightable">
+                    <HighlightableText highlightStrings={highlightStrings} value={node.area.slice(0,61)} />
+                    </h2>
+              </div>
             </div>
           </foreignObject>
         </g>
