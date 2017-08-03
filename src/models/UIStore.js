@@ -1,7 +1,7 @@
 import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
 import { timer } from 'd3-timer';
-import { easePolyInOut, easeElasticInOut, easeBounceInOut, easeBackInOut } from 'd3-ease';
+import { easePolyInOut } from 'd3-ease';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 
@@ -61,7 +61,7 @@ class UIStore {
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
 
-    const duration = 1000;
+    const duration = this.config.zoomDuration;
     let ratio = 0.;
     let t = timer(elapsed => {
       ratio = (elapsed/duration) > 1 ? 1. : elapsed/duration;

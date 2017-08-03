@@ -13,13 +13,14 @@ const Node =
         circleStyle.fillOpacity = (node.selected) ? "1." : "0.1";
       } else {
         circleClassName = node.active ? "zoom_selected" : "area";
+        circleStyle.fillOpacity = (node.active || node.selected) ? "1." : "0.8";
       }
       const {orig_x, orig_y, orig_r} = node;
       const {zoomFactor, translationVecX, translationVecY} = store;
 
-      let x_ = zoomFactor * orig_x + translationVecX;
-      let y_ = zoomFactor * orig_y + translationVecY;
-      let r_ = zoomFactor * orig_r;
+      const x_ = zoomFactor * orig_x + translationVecX;
+      const y_ = zoomFactor * orig_y + translationVecY;
+      const r_ = zoomFactor * orig_r;
 
       const sqrtOfTwo = Math.sqrt(2);
       let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", width: 2*r_/sqrtOfTwo, height: 2*r_/sqrtOfTwo};

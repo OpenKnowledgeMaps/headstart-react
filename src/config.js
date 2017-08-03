@@ -4,6 +4,7 @@ const config =
     serviceNameString: 'PubMed',
     showList: true,
     showBubbles: true,
+    zoomDuration: 1000,
     sortOptions: {readers: 'citations', authors: 'authors', title: 'title', year: 'year'},
     forceSimParameters: {
       manyBodyForceStrength: 1000,

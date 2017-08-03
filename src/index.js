@@ -12,6 +12,7 @@ import DomainStoreFactory from './models/DomainStoreFactory';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import './stylesheets/main.css';
+import './index.css';
 import config from './config';
 
 const domainStoreModel = DomainStoreFactory(config.service);

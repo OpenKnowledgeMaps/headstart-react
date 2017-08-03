@@ -50,28 +50,39 @@ const Paper =
       }
 
       // CSS and svg stuff
-      let textClassName = selected ? 'large highlightable' : 'highlightable';
-      if (zoomed) textClassName = 'larger';
+      let textClassName = 'highlightable';
       const pathD = 'M ' + 0 + ' ' + 0 +
                     ' h ' + (0.9*w_) +
                     ' l ' + (0.1*w_) + ' ' + (0.1*h_) +
                     ' v ' + (0.9*h_) +
                     ' h ' + (-w_) +
                     ' v ' + (-h_);
-      const pathClassName = clicked ? 'framed' : 'unframed';
-      const dogearPath = "M " + (0 + 0.9*w_) + ' ' + 0 + " v " + (0.1*h_) + " h " + (0.1*w_);
-      let displayStyle = {display: "block"};
-      displayStyle.cursor = selected ? "pointer" : "default";
-      if (papersStore.hasSelectedEntities && !selected) {
-        displayStyle.display = "none";
+      let pathClassName = clicked ? 'framed' : 'unframed';
+      let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
+
+      let dogearPath = "M " + (0 + 0.9*w_) + ' ' + 0 + " v " + (0.1*h_) + " h " + (0.1*w_);
+      let displayStyle = {display: "block", cursor : "default"};
+      let metadataStyle = {height: (0.75*h_) + "px", width: (0.9*w_) + "px"};
+      let readersDivStyle = {height: 0.24*h_ + "px", width: w_ + "px", marginBottom: "0px", marginTop: "0px"};
+      let citationsFontSize = "8px";
+      let translateString = "translate(" + x_ + " " + y_ + ")";
+      let highlightStrings = searchString.split(' ');
+
+      if (selected) {
+        textClassName = 'large highlightable';
+        displayStyle.cursor = "pointer";
+        metadataStyle.height = (h_ - 20) + "px";
+        readersDivStyle.height = 15 + "px";
+        readersDivStyle.marginBottom = '3px';
+        readersDivStyle.marginTop = '5px';
+        citationsFontSize = '11px';
+      } else {
+        if (papersStore.hasSelectedEntities) displayStyle.display = "none";
       }
-      const openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
-      const readersHeight = selected ? 15 : 0.24*h_;
-      const metadataStyle = {height: selected ?  (h_ - 20) + "px" : ((0.75*h_) + "px"), width: (0.9*w_) + "px"};
-      const readersDivStyle = {height: readersHeight + "px", width: w_ + "px", marginBottom: selected ? "3px" : "0px", marginTop: selected ? "5px" : "0px"};
-      const citationsFontSize = (zoomed || selected) ? "11px" : "8px";
-      const translateString = "translate(" + x_ + " " + y_ + ")";
-      const highlightStrings = searchString.split(' ');
+      if (zoomed) {
+        textClassName = 'larger';
+        citationsFontSize = '11px';
+      }
 
       return (
         <g
