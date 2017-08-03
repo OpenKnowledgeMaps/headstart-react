@@ -27,7 +27,7 @@ const ListEntry =
             <HighlightableText highlightStrings={highlightStrings} value={paper.title}/></a>
         </div>;
 
-      const preview = paper.clicked ?
+      const preview = (paper.clicked && paper.oa)?
         <PDFPreviewModal link={paper.oa_link_pdf}/> : '';
 
       return (
