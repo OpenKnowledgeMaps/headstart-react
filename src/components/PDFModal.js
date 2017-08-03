@@ -25,6 +25,7 @@ const PDFModal = class PDFModal extends React.Component
   {
     let viewer = process.env.PUBLIC_URL + "/pdfjs-hypothesis/web/viewer.html";
     viewer = viewer + "?file=" + process.env.PUBLIC_URL + '/mockpdf.pdf';
+
     return (
       <div style={{display: "block"}}>
         <Button
@@ -38,17 +39,15 @@ const PDFModal = class PDFModal extends React.Component
         </Button>
 
 
-        <Modal show={this.state.showModal} onHide={this.close.bind(this)} bsSize="large" aria-labelledby="contained-modal-title-lg">
-          <Modal.Header closeButton>
+        <Modal show={this.state.showModal} onHide={this.close.bind(this)} bsSize="large" aria-labelledby="contained-modal-title-lg" id="iframe_modal">
+          <Modal.Header style={{ paddingBottom: '0px', borderBottom: '0px' }}>
+            <button className="btn btn-default pull-right" onClick={this.close.bind(this)}>&times;</button>
           </Modal.Header>
           <Modal.Body style={{width: "100%"}}>
             {/*<span id="spinner-iframe" className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>*/}
             <iframe id="pdf_iframe" className="block" src={viewer} frameBorder="0" style={{width: "100%", height: window.innerHeight - 200}} title="PDF"></iframe>
             {/*<div id="status"></div>*/}
           </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.close.bind(this)}>Close</Button>
-          </Modal.Footer>
         </Modal>
       </div>
     );
