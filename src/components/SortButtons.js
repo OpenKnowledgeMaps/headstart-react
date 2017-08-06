@@ -21,10 +21,10 @@ const SortButtons = observer(class List extends React.Component {
     return (
       <div className="" id="sort_container" style={{display: "block"}}>
         <span id="sortby">sort by:</span>
-        <ToggleButtonGroup bsSize="small" type="radio" name="sortbyoptions" defaultValue={1} >
+        <ToggleButtonGroup type="radio" name="sortbyoptions" defaultValue={1} id="sort-buttons" bsSize="sm">
           {Object.entries(sortOptions).map((entry, index) => {
             return (
-              <ToggleButton value={index+1} key={index} data-key={entry[0]} onClick={(e) => sortOptionsHandle(e, store)}>{entry[1]}</ToggleButton>
+              <ToggleButton bsSize="sm" value={index+1} key={index} data-key={entry[0]} onClick={(e) => sortOptionsHandle(e, store)}>{entry[1]}</ToggleButton>
             );
           })}
         </ToggleButtonGroup>

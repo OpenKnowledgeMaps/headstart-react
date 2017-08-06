@@ -33,13 +33,14 @@ const Filter = observer(class Filter extends React.Component {
     return (
       <div className="" id="filter_container" style={{width: '187px', height: "30px"}}>
         <form>
-          <FormGroup>
+          <FormGroup bsSize="sm">
               <FormControl
                 type="text"
                 id="searchinput"
                 value={this.state.currentValue}
                 placeholder="Search..."
                 onChange={this.handleChange.bind(this)}
+                bsSize="sm"
               />
           </FormGroup>
 
