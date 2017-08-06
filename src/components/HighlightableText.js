@@ -21,7 +21,7 @@ function highlightPartsOfString(highlightStrings, value) {
       lastIndex = index[1];
     }
   });
-  if (lastIndex < value.length - 1) returnString.push([value.slice(lastIndex, value.length - 1), false]);
+  if (lastIndex < value.length) returnString.push([value.slice(lastIndex, value.length), false]);
   return returnString;
 }
 
