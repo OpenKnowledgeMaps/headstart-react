@@ -22,6 +22,22 @@ const List = observer(class List extends React.Component {
     const showHideIcon = this.props.store.displayList ? "▼" : "▼";
     const sortButtons =  this.props.store.displayList ? <SortButtons store={this.props.store}/> : '';
     this.papersListStyle.display = this.props.store.displayList ? "block" : "none";
+
+    let filteredPapers = this.store.papersStore.entities
+      .filter((paper) => (this.store.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
+      .filter((paper) => hasSubstring(paper, this.store.searchString));
+
+    if (this.store.sortOption !== null)
+    {
+      switch (this.store.sortOption) {
+        case 'readers' : filteredPapers = filteredPapers.sort((a, b) => (a[this.store.sortOption] > b[this.store.sortOption] ? -1 : 1)); break;
+        case 'authors' : filteredPapers = filteredPapers.sort((a, b) => (a[this.store.sortOption] < b[this.store.sortOption] ? -1 : 1)); break;
+        case 'title' : filteredPapers = filteredPapers.sort((a, b) => (a[this.store.sortOption] < b[this.store.sortOption] ? -1 : 1)); break;
+        case 'year' : filteredPapers = filteredPapers.sort((a, b) => (a[this.store.sortOption] > b[this.store.sortOption] ? -1 : 1)); break;
+        default : throw 'Cant find sortOption'; break;
+      }
+    }
+
     return (
       <div className="list-col">
         <div id="list_exporer">
@@ -43,10 +59,7 @@ const List = observer(class List extends React.Component {
 
           </div>
           <div id="papers_list" className="col-xs-12" style={this.papersListStyle}>
-            {this.store.papersStore.entities
-              .filter((paper) => (this.store.papersStore.entities.some((paper) => paper.clicked) ? paper.clicked : paper.listvisible) === true)
-              .filter((paper) => hasSubstring(paper, this.store.searchString))
-              .sort((a, b) => (a[this.store.sortOption] > b[this.store.sortOption] ? -1 : 1))
+            {filteredPapers
               .map((paper, index) =>
                 <ListEntry store={this.store}  paper={paper} key={index}/>
               )}
