@@ -14,15 +14,17 @@ const ListEntry =
 
       const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 300) + '...';
       const listEntryClassName = paper.clicked ? "list_entry_full" : "list_entry";
-      const openAccessLogoStyle = paper.oa ? {display: 'inline'} : {display: 'none'};
+      const openAccessLogo = paper.oa ?
+        <span id="open-access-logo_list">open access <span
+          className="outlink_symbol">&#xf09c;</span></span> : '';
       const authors = (paper.authors);
       const htmlLink = <Button bsStyle="info" bsSize="xsmall" href={paper.oa_link} target="_blank"> HTML <span className="outlink_symbol">&#xf08e;</span></Button>;
       const pdfLink = paper.oa ? <PDFModal link={paper.oa_link_pdf}/> : '';
+      const listTitleClass = paper.oa ? 'list_title oa' : 'list_title';
       const highlightStrings = store.searchString.split(' ');
       let titleLink =
-        <div className="list_title" onClick={onListClick.bind(this, paper, store)}>
-          <span id="open-access-logo_list" style={openAccessLogoStyle}>open access <span
-            className="outlink_symbol">&#xf09c;</span></span>
+        <div className={listTitleClass} onClick={onListClick.bind(this, paper, store)}>
+          {openAccessLogo}&nbsp;
           <a href="#" id="paper_list_title" className="highlightable">
             <HighlightableText highlightStrings={highlightStrings} value={paper.title}/></a>
         </div>;
@@ -50,7 +52,7 @@ const ListEntry =
                 <span className="list_in"> in </span>
                 <span className="list_published_in">{paper.published_in}</span>
                 <span className="list_pubyear">
-                  (<HighlightableText highlightStrings={highlightStrings} value={paper.year} />)
+                  &nbsp;(<HighlightableText highlightStrings={highlightStrings} value={paper.year} />)
                 </span>
               </div>
 
@@ -69,7 +71,7 @@ const ListEntry =
             </div>
 
             <div className="list_readers">
-              <span className="num_readers">{paper.readers}</span> <span className="list_readers_entity">readers</span>&nbsp;
+              <span className="num_readers">{paper.readers}</span> <span className="list_readers_entity">{store.config.sortOptions['readers']}</span>&nbsp;
             </div>
 
         </div>
