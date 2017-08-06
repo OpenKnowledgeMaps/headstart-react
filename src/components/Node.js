@@ -28,8 +28,19 @@ const Node =
         areaTitleStyle.display = "none";
       }
       const translateString = "translate(" + x_ + " " + y_ + ")";
+      function calcTitleFontSize() {
+        if (store.svgWidth <= 650) {
+          return "12px";
+        } else if (store.svgWidth <= 1050) {
+          return "14px";
+        } else {
+          return "16px";
+        }
+      }
 
       const highlightStrings = store.searchString.split(' ');
+
+      const areaName = (node.area.length > 55) ? node.area.slice(0,55) + "..." : node.area;
       return (
         <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}
            onMouseLeave={onBubbleMouseLeave.bind(this, store)}
@@ -55,8 +66,8 @@ const Node =
           >
             <div className="outerDiv">
               <div id="area_title" style={areaTitleStyle} className="innerDiv">
-                  <h2 className="highlightable">
-                    <HighlightableText highlightStrings={highlightStrings} value={node.area.slice(0,61)} />
+                  <h2 className="highlightable" style={{fontSize: calcTitleFontSize()}}>
+                    <HighlightableText highlightStrings={highlightStrings} value={areaName} />
                     </h2>
               </div>
             </div>
