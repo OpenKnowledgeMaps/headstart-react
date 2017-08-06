@@ -133,13 +133,21 @@ class UIStore {
     if (!check) {
       let newSVGSize = this.getChartSize(width);
       this.previousSVGSize = this.svgWidth;
+      const prevX = this.svgWidth*0.5;
+      const prevY = this.svgHeight*0.5;
       this.svgWidth = newSVGSize;
       this.svgHeight = newSVGSize;
+      const midX = this.svgWidth * 0.5;
+      const midY = this.svgHeight * 0.5;
+      this.translationVecX *= midX/prevX;
+      this.translationVecY *= midY/prevY;
       this.paperListHeight = newSVGSize + this.subtitleHeight - this.paperExplorerHeight;
       this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
       this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
     }
   }
+
+  // updateTranslationVectors()
 }
 
 export default UIStore;
