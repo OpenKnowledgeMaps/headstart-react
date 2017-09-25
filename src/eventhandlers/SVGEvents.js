@@ -11,9 +11,10 @@ function onSVGClick(store) {
         papersStore.selectedArea = null;
         papersStore.clickedEntity = null;
         papersStore.listVisiblePapers = store.papersStore.entities;
-        store.resetZoomState(() => {
-          store.isZoomed = false;
-        }, node);
+        // store.resetZoomState(() => {
+        //   store.isZoomed = false;
+        // }, node);
+        store.isZoomed = false;
       }
     }
   }

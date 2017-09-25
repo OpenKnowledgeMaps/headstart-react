@@ -27,10 +27,10 @@ const PDFModal = class PDFModal extends React.Component
     viewer = viewer + "?file=" + process.env.PUBLIC_URL + '/mockpdf.pdf';
 
     return (
-      <div style={{display: "block"}}>
+      <div style={{display: "inline"}}>
         <Button
           bsStyle="danger"
-          bsSize="xsmall"
+          bsSize="small"
           onClick={this.open.bind(this)}
           className="link2 pdf-link"
           componentClass="a"

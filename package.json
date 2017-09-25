@@ -7,10 +7,11 @@
     "d3": "^4.9.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
-    "mobx": "^3.1.10",
+    "mobx": "^3.2.2",
     "mobx-react": "^4.1.8",
+    "node-sass-chokidar": "0.0.3",
     "react": "^15.5.4",
-    "react-bootstrap": "^0.31.1",
+    "react-bootstrap": "^0.31.2",
     "react-dom": "^15.5.4"
   },
   "devDependencies": {

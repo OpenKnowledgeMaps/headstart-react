@@ -16,21 +16,21 @@
 
 .vis-col {
   display: inline-block;
-  width: 50%;
+  width: 60%;
   /*background-color: #f5f7f7;*/ }
 
 .list-col {
   display: inline-block;
-  width: 50%;
+  width: 40%;
   vertical-align: top;
   float: right; }
 
 @media screen and (max-width: 900px) {
   .vis-col {
     width: 70%; }
+
   .list-col {
     width: 29%; } }
-
 #spinner {
   display: table-cell;
   vertical-align: middle;
@@ -48,13 +48,11 @@
     -webkit-transform: rotate(0deg); }
   to {
     -webkit-transform: rotate(360deg); } }
-
 @keyframes spin {
   from {
     transform: scale(1) rotate(0deg); }
   to {
     transform: scale(1) rotate(360deg); } }
-
 /* Clear button in input form */
 #searchclear {
   position: relative;
@@ -71,6 +69,11 @@
 img#close-button {
   float: right;
   margin-right: 5px; }
+
+.btn-group, .btn-group-vertical {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle; }
 
 .btn-danger {
   border-color: #E55137;
@@ -657,13 +660,11 @@ img#close-button {
     .headstart .modal .glyphicon-refresh-animate {
       animation: spin .7s infinite linear;
       -webkit-animation: spin2 .7s infinite linear; }
-
 @-webkit-keyframes spin2 {
   from {
     -webkit-transform: rotate(0deg); }
   to {
     -webkit-transform: rotate(360deg); } }
-
 @keyframes spin {
   from {
     transform: scale(1) rotate(0deg); }
@@ -688,3 +689,5 @@ img#close-button {
     font-size: 20px;
     background-color: white;
     border: 5px solid #2d3e52; }
+
+/*# sourceMappingURL=main.css.map */

@@ -18,7 +18,7 @@ const ListEntry =
         <span id="open-access-logo_list">open access <span
           className="outlink_symbol">&#xf09c;</span></span> : '';
       const authors = (paper.authors);
-      const htmlLink = <Button bsStyle="info" bsSize="xsmall" href={paper.oa_link} target="_blank"> HTML <span className="outlink_symbol">&#xf08e;</span></Button>;
+      const htmlLink = <Button bsStyle="info" bsSize="small" href={paper.oa_link} target="_blank"> HTML <span className="outlink_symbol">&#xf08e;</span></Button>;
       const pdfLink = paper.oa ? <PDFModal link={paper.oa_link_pdf}/> : '';
       const listTitleClass = paper.oa ? 'list_title oa' : 'list_title';
       const highlightStrings = store.searchString.split(' ');
