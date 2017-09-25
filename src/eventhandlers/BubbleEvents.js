@@ -4,7 +4,7 @@ function onBubbleClick(store, node) {
     store.bubblesStore.selectedArea = node.area;
     store.papersStore.selectedArea = node.area;
     store.papersStore.clickedEntity = null;
-    // store.updateZoomState(node, prevNode);
+    store.updateZoomState(node, prevNode);
     if (!store.isZoomed) {
       store.isZoomed = true;
     }

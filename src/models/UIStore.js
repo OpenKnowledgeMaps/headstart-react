@@ -1,6 +1,8 @@
 import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
-import { timer } from 'd3-timer';
+import { interval } from 'd3-timer';
+import { transition } from 'd3-transition';
+import { select } from 'd3-selection';
 import { easePolyInOut } from 'd3-ease';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
@@ -39,7 +41,7 @@ class UIStore {
     this.initCoords(this.svgWidth);
   }
 
-  updateZoomState({orig_r, orig_x, orig_y}, node2) {
+  updateZoomState({orig_r, orig_x, orig_y, id}, node2) {
     const hasNode2 = (node2 !== undefined);
     const mid = this.svgWidth * 0.5;
     const startx = hasNode2 ? node2.orig_x : mid;
@@ -48,13 +50,28 @@ class UIStore {
     const z = mid / (orig_r*1.05);
     const x = orig_x;
     const y = orig_y;
-    this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
+    this.updateZoomState2(z, x, y, orig_r, id);
   }
 
-  updateZoomState2(z, x, y) {
-    this.translationVecX = this.svgWidth * 0.5 - z*x;
-    this.translationVecY = this.svgHeight * 0.5 - z*y;
-    this.zoomFactor = z;
+  updateZoomState2(z, x, y, r, id) {
+    const midx = this.svgWidth*0.5;
+    const midy = this.svgHeight*0.5;
+    const transX = midx - z*x;
+    const transY = midy - z*y;
+
+    // add d3 transition here
+    let bubbleTransition = transition().duration(750);
+    let bubble = select("#node" + id);
+    let circle = bubble.select("circle");
+    bubble
+      .transition(bubbleTransition)
+      .attr("transform", "translate("+ midx +" " + midy +")")
+      .on("end", () => {
+        this.translationVecX = transX;
+        this.translationVecY = transY;
+        this.zoomFactor = z;
+      });
+    circle.transition(bubbleTransition).attr("r", z*r);
   }
 
   updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
@@ -63,7 +80,7 @@ class UIStore {
 
     const duration = this.config.zoomDuration;
     let ratio = 0.;
-    let t = timer(elapsed => {
+    let t = interval(elapsed => {
       ratio = (elapsed/duration) > 1 ? 1. : elapsed/duration;
       const easeFactor = easePolyInOut(ratio, 1.2);
       const newz = (1 - easeFactor)*startz_ + easeFactor*z;
@@ -79,7 +96,7 @@ class UIStore {
         t.stop();
         if (typeof  callback === 'function') callback();
       }
-    });
+    }, 50);
   }
 
   resetZoomState(callback, node) {
@@ -87,7 +104,7 @@ class UIStore {
     const zf = this.zoomFactor;
     const nodex = node.orig_x;
     const nodey = node.orig_y;
-    this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
+    this.updateZoomState2(1., mid, mid, nodex, nodey, zf, callback);
   }
 
   initCoords(range) {
