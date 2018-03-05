@@ -8,6 +8,11 @@ function sortOptionsHandle(event, store) {
     store.sortOption = event.target.dataset.key;
 }
 
+/**
+ * SortButtons component
+ * Renders a group of buttons;
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | {new(): List}}
+ */
 const SortButtons = observer(class List extends React.Component {
   componentDidMount() {
     const {store} = this.props;

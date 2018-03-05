@@ -4,7 +4,10 @@ import top100 from '../static/top100.png';
 import textSimliarity from '../static/textsimilarity.png';
 import headstartSearch from '../static/headstart-search.png';
 
-const InfoModal = class InfoModal extends React.Component
+/**
+ * Renders the "What's this?" button, opens a modal when clicked.
+ */
+class InfoModal extends React.Component
 {
   constructor()
   {

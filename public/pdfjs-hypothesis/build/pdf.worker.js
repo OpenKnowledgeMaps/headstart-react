@@ -3715,7 +3715,7 @@ var Catalog = (function CatalogClosure() {
           var kids = currentNode.get('Kids');
           assert(isArray(kids), 'page dictionary kids object is not an array');
           if (!checkAllKids && count === kids.length) {
-            // Nodes that don't have the page have been skipped and this is the
+            // Bubbles that don't have the page have been skipped and this is the
             // bottom of the tree which means the page requested must be a
             // descendant of this pages node. Ideally we would just resolve the
             // promise with the page ref here, but there is the case where more

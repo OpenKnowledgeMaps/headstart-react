@@ -1,6 +1,13 @@
+/**
+ * Helper function that looks through a listEntry;
+ * @param listEntry
+ * @param searchString
+ * @returns {boolean}
+ */
 function hasSubstring(listEntry, searchString) {
   let containsSubstring = false;
   const searchStringsLowerCase = searchString.toLowerCase().split(' ');
+  // TODO make this configurable or determine in another way, remove hardcoded attributes
   const attributesToLookFor = ['title', 'area', 'authors', 'paper_abstract', 'year'];
   let substringsFoundList = [];
 

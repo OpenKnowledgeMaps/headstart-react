@@ -3,6 +3,11 @@ import React from 'react';
 import Paper from './Paper';
 import {observer} from 'mobx-react';
 
+/**
+ * Papers Component
+ * Takes an array of PaperModels and renders Paper components.
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({store: *, papers: *}))}
+ */
 const Papers =
   observer(
     ({store, papers}) => {

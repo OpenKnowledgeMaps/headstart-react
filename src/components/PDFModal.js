@@ -1,7 +1,11 @@
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap';
 
-const PDFModal = class PDFModal extends React.Component
+/**
+ * Renders a Button that opens a pdf preview modal;
+ * @type {PDFModal}
+ */
+class PDFModal extends React.Component
 {
   constructor()
   {

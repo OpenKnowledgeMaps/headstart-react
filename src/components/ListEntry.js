@@ -8,10 +8,16 @@ import {Button} from 'react-bootstrap';
 
 /* eslint-disable jsx-a11y/href-no-hash */
 
+/**
+ * ListEntry component
+ * Sets content and styling of a list entry according to state and renders it;
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({store?: *, paper?: *}))}
+ */
 const ListEntry =
   observer(
     ({store, paper}) => {
 
+      // TODO clear this mess up
       const abstract = paper.clicked ? paper.paper_abstract : paper.paper_abstract.slice(0, 300) + '...';
       const listEntryClassName = paper.clicked ? "list_entry_full" : "list_entry";
       const openAccessLogo = paper.oa ?

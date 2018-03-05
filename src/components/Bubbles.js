@@ -1,9 +1,14 @@
 import React from 'react';
 
-import NodesList from './NodesList';
+import NodesList from './BubblesList';
 import {observer} from 'mobx-react';
 
-const Nodes =
+/**
+ * Bubbles component
+ * Puts Bubbles into 3 categories to render them to the svg in the correct order.
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({store: *, nodes: *}))}
+ */
+const Bubbles =
   observer(
     ({ store, nodes }) =>
       {
@@ -19,4 +24,4 @@ const Nodes =
       }
 );
 
-export default Nodes;
+export default Bubbles;

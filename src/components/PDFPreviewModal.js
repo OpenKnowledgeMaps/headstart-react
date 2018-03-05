@@ -1,7 +1,12 @@
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap';
 
-const PDFPreviewModal = class PDFPreviewModal extends React.Component
+/**
+ * Renders a PDF preview in a selected List Entry.
+ * Opens PDF Modal when clicked.
+ * @type {PDFPreviewModal}
+ */
+class PDFPreviewModal extends React.Component
 {
   constructor()
   {

@@ -1,15 +1,17 @@
 import React from 'react';
-import Node from './Node';
+import Bubble from './Bubble';
 import {observer} from 'mobx-react';
 
-const NodesList =
+
+// Renders an array of Bubbles as Bubble Components
+const BubblesList =
   observer(
     ({ store, nodes }) =>
     {
       return (
         <g>
           {nodes.map((node) =>
-            <Node           key={node.id}
+            <Bubble         key={node.id}
                             id={node.id}
                             node={node}
                             nodes={nodes}
@@ -20,4 +22,4 @@ const NodesList =
     }
   );
 
-export default NodesList;
+export default BubblesList;

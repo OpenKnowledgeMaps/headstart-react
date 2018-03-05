@@ -1,5 +1,10 @@
 import DomainStore from './DomainStore';
 
+/**
+ * The Pubmed DomainStore
+ * Implementations of DomainStore prepare
+ * 3 Objects for UIStore, starting from a backend payload
+ */
 class PubmedDomainStore extends DomainStore {
   transformAuthors(authors) {
     const auth = (authors

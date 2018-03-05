@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import Visualization from './Visualization';
 
-
+/**
+ * Top level Component of this project.
+ * Wraps Visualization component, passes uiStore along.
+ */
 class App extends Component {
     componentDidMount() {
     }

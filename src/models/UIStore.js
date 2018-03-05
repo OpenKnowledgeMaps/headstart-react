@@ -5,8 +5,12 @@ import { easePolyInOut } from 'd3-ease';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 
+/**
+ * The UI Store
+ * UI Store is the single source of truth for the state of the UI.
+ */
 class UIStore {
-  constructor(domainStore, initSize, config) {
+  constructor(domainStore, config, initSize = 900) {
     const { papersObject, bubblesObject, areasObject } = domainStore;
 
     this.config = config;
@@ -17,6 +21,8 @@ class UIStore {
     this.isZoomed = false;
     this.lock = false;
 
+    // extendObservable tells MobX that these members of UIStore are observable.
+    // When an observable is changed, all observers are updated automatically.
     extendObservable(this, {
       areas: areasObject,
       progress: 0,

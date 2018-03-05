@@ -1,5 +1,10 @@
 // TODO integrate transport layer to get data from backend
 
+/**
+ * A DomainStore
+ * Implementations of DomainStore prepare
+ * 3 Objects for UIStore, starting from a backend payload
+ */
 class DomainStore {
   constructor(payload) {
     this.payload = payload;

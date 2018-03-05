@@ -4,7 +4,12 @@ import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandle
 
 import HighlightableText from './HighlightableText';
 
-
+/**
+ * Paper component.
+ * Renders a Paper SVG element from a PaperModel.
+ * Also contains math for the actual coordinate of the Paper on the Chart.
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({store?: *, paper?: *}))}
+ */
 const Paper =
   observer(
     ({store, paper}) =>{
@@ -33,45 +38,53 @@ const Paper =
         year
       } = paper;
 
-      let x_ =  zoomFactor  *  orig_x + translationVecX;
-      let y_ =  zoomFactor  *  orig_y + translationVecY;
-      let w_ =  zoomFactor  *  orig_width;
-      let h_ =  zoomFactor  *  orig_height;
+      // Actual coordinates and dimensions for the Paper is calculated from the
+      // orig_ prefixed values
+      // zoomFactor & translationVecX,Y are set by the zoom state
+      let x =  zoomFactor  *  orig_x + translationVecX;
+      let y =  zoomFactor  *  orig_y + translationVecY;
+      let w =  zoomFactor  *  orig_width;
+      let h =  zoomFactor  *  orig_height;
 
-      // Caculate enlarged width so it fits in the svg
+      // Caculate enlarged paper dimensions so paper stays within svg
+      // when paper is hovered in zoomed-in visualization state
+      // TODO zoomed flag should be renamed hovered
       while (
         zoomed &&
-        ((x_ + w_) < svgWidth) &&
-        ((y_ + h_) < svgHeight) &&
-        (w_ < svgWidth*0.5) &&
-        (h_ < svgHeight*0.5)) {
-        w_ += 1;
-        h_ += 1.33;
+        ((x + w) < svgWidth) &&
+        ((y + h) < svgHeight) &&
+        (w < svgWidth*0.5) &&
+        (h < svgHeight*0.5)) {
+        w += 1;
+        h += 1.33;
       }
 
-      // CSS and svg stuff
+      // The messy part
+      // Creates SVG paths
+      // Adds css classes/other styles according to visualization state
+      // TODO extract parts of it to functions, define css classes instead of manually styling them here
       let textClassName = 'highlightable';
       const pathD = 'M ' + 0 + ' ' + 0 +
-                    ' h ' + (0.9*w_) +
-                    ' l ' + (0.1*w_) + ' ' + (0.1*h_) +
-                    ' v ' + (0.9*h_) +
-                    ' h ' + (-w_) +
-                    ' v ' + (-h_);
+                    ' h ' + (0.9*w) +
+                    ' l ' + (0.1*w) + ' ' + (0.1*h) +
+                    ' v ' + (0.9*h) +
+                    ' h ' + (-w) +
+                    ' v ' + (-h);
       let pathClassName = clicked ? 'framed' : 'unframed';
       let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
 
-      let dogearPath = "M " + (0 + 0.9*w_) + ' ' + 0 + " v " + (0.1*h_) + " h " + (0.1*w_);
+      let dogearPath = "M " + (0 + 0.9*w) + ' ' + 0 + " v " + (0.1*h) + " h " + (0.1*w);
       let displayStyle = {display: "block", cursor : "default"};
-      let metadataStyle = {height: (0.75*h_) + "px", width: (0.9*w_) + "px"};
-      let readersDivStyle = {height: 0.24*h_ + "px", width: w_ + "px", marginBottom: "0px", marginTop: "0px"};
+      let metadataStyle = {height: (0.75*h) + "px", width: (0.9*w) + "px"};
+      let readersDivStyle = {height: 0.24*h + "px", width: w + "px", marginBottom: "0px", marginTop: "0px"};
       let citationsFontSize = "8px";
-      let translateString = "translate(" + x_ + " " + y_ + ")";
+      let translateString = "translate(" + x + " " + y + ")";
       let highlightStrings = searchString.split(' ');
 
       if (selected) {
         textClassName = 'large highlightable';
         displayStyle.cursor = "pointer";
-        metadataStyle.height = (h_ - 20) + "px";
+        metadataStyle.height = (h - 20) + "px";
         readersDivStyle.height = 15 + "px";
         readersDivStyle.marginBottom = '3px';
         readersDivStyle.marginTop = '5px';
@@ -107,8 +120,8 @@ const Paper =
         </path>
 
           <foreignObject
-            width={w_}
-            height={h_}
+            width={w}
+            height={h}
             style={{"overflow":"hidden"}}
           >
             <div className="paper_holder">
@@ -117,11 +130,18 @@ const Paper =
                 <div id="icons" style={openAccessStyle}>
                   <p id="open-access-logo" className={textClassName}>&#xf09c;</p>
                 </div>
-                <p id="title" className={textClassName}><HighlightableText highlightStrings={highlightStrings} value={title}/></p>
-                <p id="details" className={textClassName}><HighlightableText highlightStrings={highlightStrings} value={displayAuthors}/></p>
+                <p id="title" className={textClassName}>
+                  <HighlightableText highlightStrings={highlightStrings} value={title}/>
+                </p>
+                <p id="details" className={textClassName}>
+                  <HighlightableText highlightStrings={highlightStrings} value={displayAuthors}/>
+                </p>
                 <p id="in" className={textClassName}>in
-                  <span className={textClassName}><HighlightableText highlightStrings={highlightStrings} value={published_in}/>
-                    <span className="pubyear"> (<HighlightableText highlightStrings={highlightStrings} value={year} />)</span>
+                  <span className={textClassName}>
+                    <HighlightableText highlightStrings={highlightStrings} value={published_in}/>
+                    <span className="pubyear">
+                      (<HighlightableText highlightStrings={highlightStrings} value={year} />)
+                    </span>
                   </span>
                 </p>
 

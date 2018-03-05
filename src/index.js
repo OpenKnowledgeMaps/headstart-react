@@ -6,7 +6,6 @@ import App from './components/App';
 import UIStore from './models/UIStore';
 import pubmedPayload from './static/cool_pubmed';
 import { startForceSim } from './helpers/forceSimulation';
-import {ProgressBar} from 'react-bootstrap';
 import DomainStoreFactory from './models/DomainStoreFactory';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -15,28 +14,33 @@ import './stylesheets/main.css';
 import './index.css';
 import config from './config';
 
+// main entry point for the app
+
+/*
+ * DomainStore is responsible for getting data from the backend
+ * and doing any data transformations that are still necessary at that point.
+ * For each supported backend endpoint, DomainStoreFactory creates the
+ * correct DomainStore subclass.
+ */
 const domainStoreModel = DomainStoreFactory(config.service);
 let domainStore = window.domainStore = new domainStoreModel(pubmedPayload);
 domainStore.populateObjects();
 
-let uiStore = new UIStore(domainStore, 900, config);
+/*
+ * UIStore holds all of the the application state.
+ */
+let uiStore = new UIStore(domainStore, config);
 uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
 uiStore.papersStore.saveAllCoordsToOriginalCoords();
 
-const PBar = observer(({store}) => {
-  const progress = store.progress;
-  return <ProgressBar now={progress}/>
-}
+/*
+ * Takes the results of backend clustering
+ * and calculates the paper & bubble layout using the d3 force simulation methods;
+ * When done, render the App component to a div with ID root.
+ * uiStore is passed down the component hierarchy as a prop to all components that need the
+ * application state.
+ */
+ReactDOM.render(
+  <App store={uiStore}/>,
+  document.getElementById('root')
 );
-
-ReactDOM.render(<PBar store={uiStore}/>, document.getElementById('root'));
-
-startForceSim(uiStore, (store) => {
-  uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
-  uiStore.papersStore.saveAllCoordsToOriginalCoords();
-  uiStore.forceSimIsDone = true;
-  ReactDOM.render(
-    <App store={store}/>,
-    document.getElementById('root')
-  );
-});

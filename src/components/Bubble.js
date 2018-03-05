@@ -3,9 +3,16 @@ import {observer} from 'mobx-react';
 import HighlightableText from './HighlightableText';
 import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../eventhandlers/BubbleEvents';
 
-const Node =
+/**
+ * Bubble component
+ * Sets Bubble coordinates/dimensions and other styling according to state
+ * Binds eventlisteners to bubbles
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({node?: *, store?: *}))}
+ */
+const Bubble =
   observer(
     ({node, store}) => {
+      // TODO remove all magical numbers and make styling clearer through classes/external definitions
       let circleClassName = null;
       let circleStyle = {fillOpacity: "0.8"};
       if (store.bubblesStore.hasSelectedEntities) {
@@ -28,14 +35,11 @@ const Node =
         areaTitleStyle.display = "none";
       }
       const translateString = "translate(" + x_ + " " + y_ + ")";
-      function calcTitleFontSize() {
-        if (store.svgWidth <= 650) {
-          return "12px";
-        } else if (store.svgWidth <= 1050) {
-          return "14px";
-        } else {
-          return "16px";
-        }
+      let titleFontSize = "16px";
+      if (store.svgWidth <= 650) {
+        titleFontSize = "12px";
+      } else if (store.svgWidth <= 1050) {
+        titleFontSize = "14px";
       }
 
       const highlightStrings = store.searchString.split(' ');
@@ -66,7 +70,7 @@ const Node =
           >
             <div className="outerDiv">
               <div id="area_title" style={areaTitleStyle} className="innerDiv">
-                  <h2 className="highlightable" style={{fontSize: calcTitleFontSize()}}>
+                  <h2 className="highlightable" style={{fontSize: titleFontSize}}>
                     <HighlightableText highlightStrings={highlightStrings} value={areaName} />
                     </h2>
               </div>
@@ -76,4 +80,4 @@ const Node =
       );
     }
   );
-export default Node;
+export default Bubble;

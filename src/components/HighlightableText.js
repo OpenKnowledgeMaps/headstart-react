@@ -1,6 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
+/**
+ * Looks for substrings in string value that match elements of
+ * highlightStrings;
+ * Returns an Array of substrings of value and whether they should be highlighted.
+ * @param highlightStrings - list of strings to be looked for
+ * @param value - string that should be searched
+ * @returns {Array}
+ */
 function highlightPartsOfString(highlightStrings, value) {
   let indices = [];
   const value_ = value.toLowerCase();
@@ -25,6 +33,13 @@ function highlightPartsOfString(highlightStrings, value) {
   return returnString;
 }
 
+/**
+ * Renders a string and highlights substrings that match a list of strings;
+ * @param {string} value - The string to be highlighted and rendered
+ * @param {Array} highlightStrings - An array of strings. For each string in this Array matching substrings are found
+ * in param value and highlighted
+ * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({highlightStrings?: *, value?: *}))}
+ */
 const HighlightableText =
   observer(
     ({highlightStrings, value}) =>{
