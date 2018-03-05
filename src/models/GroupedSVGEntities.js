@@ -1,26 +1,39 @@
-/**
- * Created by rbachleitner on 7/3/17.
- */
-
 import {extendObservable, autorun} from 'mobx';
 
+/**
+ * Class GroupedSVGEntities is a container, representing a group of things in our SVG e.g. Bubbles or Papers
+ * and manages the flags selected, active, hover, listvisible and clicked for them;
+ */
 class GroupedSVGEntities {
+  /**
+   * Initializes the container with a list;
+   * @param initialState - A list of objects (e.g. from the DomainStore)
+   * @param EntityModel - The model we want to use (e.g. PaperModel/BubbleModel)
+   */
   constructor(initialState, EntityModel) {
     let entities = [];
     initialState.forEach((entity) => {
       entities.push(new EntityModel(entity));
     });
+
+    //MobX getters and setters
     extendObservable(this, {
       entities: entities,
 
+      // An entity is selected if it is associated with a selected Area
+      // e.g. when a bubble or paper is clicked and zoomed in on, it's
+      // area becomes selected
       get selectedEntities() {
         return this.entities.filter((entity) => entity.selected) || [];
       },
 
+      // An entity is active if it is associated with an active Area
+      // e.g. when hovering over a bubble the bubble's area is active
       get activeEntities() {
         return this.entities.filter((entity) => entity.active) || [];
       },
 
+      // hoverEntities are elements that are hovered
       get hoverEntities() {
         return this.entities.filter((entity) => entity.hover) || [];
       },
@@ -99,14 +112,6 @@ class GroupedSVGEntities {
     if (area !== null) return this.entities.filter((entity) => entity.area !== area);
     return this.entities;
   }
-
-  disposer() {
-    autorun(() => {
-    });
-
-  }
 }
-
-// let papersModel = window.papersModel = new PapersModel(data);
 
 export default GroupedSVGEntities;

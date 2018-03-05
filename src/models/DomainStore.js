@@ -14,7 +14,6 @@ class DomainStore {
   }
 
   populateObjects() {
-
     let id = 0;
     this.payload.forEach((entry) => {
 

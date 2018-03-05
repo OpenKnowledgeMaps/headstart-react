@@ -4,9 +4,14 @@ import GroupedSVGEntities from './GroupedSVGEntities';
 import {extent} from 'd3-array';
 import {scalePow} from 'd3-scale';
 
+/**
+ * PapersModel manages the list of bubbles in the visualization;
+ */
 class PapersModel extends GroupedSVGEntities {
   constructor(initialState) {
     super(initialState, PaperModel);
+
+    // MobX getters and setters / observables
     extendObservable(this, {
 
       get flaglessPapers() {
@@ -22,7 +27,7 @@ class PapersModel extends GroupedSVGEntities {
       },
 
       set listVisiblePapers(papers) {
-        this.entities.forEach((paper) => paper.listvisibel = false);
+        this.entities.forEach((paper) => paper.listvisible = false);
         papers.forEach((paper) => paper.listvisible = true);
       },
 
@@ -30,6 +35,7 @@ class PapersModel extends GroupedSVGEntities {
         return extent(this.entities.map((entity) => entity.readers))
       },
 
+      // TODO extract this to configuration
       minPaperDiameter : 40,
       maxPaperDiameter : 60,
       paperHeightToWidthRatio: 1.33333
@@ -37,6 +43,9 @@ class PapersModel extends GroupedSVGEntities {
     this.setScaledPaperDimensions();
   }
 
+  /**
+   * Initializes paper width and paper height proportional to the number of readers a paper has
+   */
   setScaledPaperDimensions() {
     const paperScale = scalePow().exponent(0.5).domain(this.readersExtent).range([this.minPaperDiameter, this.maxPaperDiameter]);
     this.entities.forEach((paper) => {
@@ -48,14 +57,27 @@ class PapersModel extends GroupedSVGEntities {
     });
   }
 
+  /**
+   * Save coordinates of all papers to the orig_ prefixed members
+   */
   saveAllCoordsToOriginalCoords() {
     this.entities.forEach((entity) => entity.saveCoordsToOriginalCoords());
   }
 
+  /**
+   * Adjust all paper coordinates and dimensions to a new window size
+   * @param previousSVGWidth - the previous SVG size
+   * @param svgWidth - the new SVG size
+   */
+  // TODO not sure if necessary since it only wraps recalculateCoords for now
   onWindowResize(previousSVGWidth, svgWidth) {
     this.recalculateCoords(svgWidth / previousSVGWidth);
   }
 
+  /**
+   * Multiply all coordinates and dimensions by factor
+   * @param factor - A scaling factor
+   */
   recalculateCoords(factor) {
     this.entities.forEach((entity) => {
       entity.orig_x = entity.orig_x * factor;
@@ -66,7 +88,5 @@ class PapersModel extends GroupedSVGEntities {
     });
   }
 }
-
-// let papersModel = window.papersModel = new PapersModel(data);
 
 export default PapersModel;

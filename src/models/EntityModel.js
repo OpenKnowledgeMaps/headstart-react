@@ -5,8 +5,11 @@
  * Created by rbachleitner on 6/29/17.
  */
 
-import {extendObservable, autorun} from 'mobx';
+import {extendObservable} from 'mobx';
 
+/**
+ * EntityModel represents a single thing in our visualization e.g. a paper or a bubble
+ */
 class EntityModel {
   constructor(entity) {
     if (!entity.hasOwnProperty('active')) entity.active = false;
@@ -15,10 +18,6 @@ class EntityModel {
     if (!entity.hasOwnProperty('clicked')) entity.clicked = false;
     if (!entity.hasOwnProperty('area')) entity.area = "Default Area";
     extendObservable(this, entity);
-  }
-
-  disposer() {
-    autorun(() => console.log("entity autorun "));
   }
 }
 

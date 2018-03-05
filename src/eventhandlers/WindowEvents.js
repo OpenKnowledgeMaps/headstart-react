@@ -1,3 +1,8 @@
+/**
+ * This function initializes a throttled window resize event;
+ * The actual resize logic is at the bottom of the file;
+ * @param store - The UI Store;
+ */
 function addWindowResizer(store) {
 (function() {
   var throttle = function(type, name, obj) {
@@ -14,13 +19,11 @@ function addWindowResizer(store) {
     obj.addEventListener(type, func);
   };
 
-  /* init - you can init any event */
   throttle("resize", "optimizedResize");
 })();
 
 // handle event
 window.addEventListener("optimizedResize", function() {
-  // console.log("Resource conscious resize callback!");
 });
 
 var optimizedResize = (function() {
@@ -73,11 +76,6 @@ var optimizedResize = (function() {
   }
 }());
 
-// start process
-optimizedResize.add(function() {
-  // console.log('Resource conscious resize callback!')
-});
-
 (function() {
 
   window.addEventListener("resize", resizeThrottler, false);
@@ -95,7 +93,12 @@ optimizedResize.add(function() {
     }
   }
 
+  /**
+   * This is the actual visualization resizing logic;
+   * Adjusts the size of the SVG container and the list;
+   */
   function actualResizeHandler() {
+    console.log("DEBUG");
     const headstartContainer = window.document.querySelector(".vis-col");
     store.paperExplorerHeight = window.document.querySelector("#explorer_header").clientHeight;
     const newSize = headstartContainer.clientWidth;

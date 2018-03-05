@@ -1,3 +1,13 @@
+/**
+ * This force function makes bubbles act as gravitational centers
+ * for papers during a force simulation;
+ * Papers are attracted to a bubble as long as they are not completely within their
+ * bubble's radius;
+ * @param x - The bubbles x coordinate
+ * @param y - The bubbles y coordinate
+ * @param r - The bubbles r coordinate
+ * @returns {force}
+ */
 export default function bubbleForce(x, y, r) {
     var nodes;
 

@@ -24,6 +24,12 @@ function movePapersIntoBubble(papers, bubbleX, bubbleY, bubbleRadius) {
   });
 }
 
+/**
+ * Starts the force Simulation that determines
+ * the layout of bubbles and papers
+ * @param store - The UI Store
+ * @param callback - A callback function. Called when the simulation is done
+ */
 function  startForceSim(store, callback) {
     const {
       collisionForceRadius,
@@ -42,6 +48,7 @@ function  startForceSim(store, callback) {
 
     let counter = 0;
 
+    // TODO extract magic number 1.05
     const bubbleCollisionForce = forceCollide(collisionForceRadius)
       .radius((node) => node.r*1.05);
     const bubbleManyBodyForce = forceManyBody()
@@ -61,6 +68,7 @@ function  startForceSim(store, callback) {
           let bubbleX = bubble.x;
           let bubbleY = bubble.y;
           let bubbleRadius = bubble.r;
+          // TODO extract magic number 0.6
           const paperCollisionRadius =
             Math.sqrt(
               Math.pow(papersStore.entities[0].width,2) +

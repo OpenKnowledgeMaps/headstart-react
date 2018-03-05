@@ -1,6 +1,14 @@
 import EntityModel from './EntityModel';
 
+/**
+ * The BubbleModel class represents a single bubble in the visualization;
+ * Subclass of EntityModel
+ */
 class BubbleModel extends EntityModel {
+  /**
+   * Initializes a BubbleModel;
+   * @param node
+   */
   constructor(node) {
     if(!(node.hasOwnProperty('orig_x'))) node.orig_x = 0.;
     if(!(node.hasOwnProperty('orig_y'))) node.orig_y = 0.;
@@ -20,7 +28,12 @@ class BubbleModel extends EntityModel {
     super(node);
   }
 
-
+  /**
+   * x, y & r are used as the actual coords of a bubble and subject to change;
+   * orig_x, orig_y and orig_r are treated as the original 'position' in the layout
+   * as determined by the force simulation and remain unchanged after the initial
+   * calculation;
+   */
   saveCoordsToOriginalCoords() {
     this.orig_x = this.x;
     this.orig_y = this.y;

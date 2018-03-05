@@ -1,3 +1,10 @@
+/**
+ * When hovering over a paper:
+ * Checks whether the vis is in a zoomed in state;
+ * If yes, sets zoomedPaper flag to this paper;
+ * @param store
+ * @param paper
+ */
 function onPaperMouseEnter(store, paper) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = paper;
@@ -5,6 +12,10 @@ function onPaperMouseEnter(store, paper) {
   store.papersStore.hoveredEntity = paper;
 }
 
+/**
+ * Resets zoomedPaper flag for papersStore
+ * @param store
+ */
 function onPaperMouseLeave(store) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = null;
@@ -12,6 +23,12 @@ function onPaperMouseLeave(store) {
   store.papersStore.hoveredEntity = null;
 }
 
+/**
+ * In zoomed in state: selects paper;
+ * In zoomed out state: zooms in on bubble;
+ * @param store
+ * @param paper
+ */
 function onPaperClick(store, paper) {
   if (store.forceSimIsDone) {
     if (store.isZoomed) {

@@ -1,3 +1,9 @@
+/**
+ * Checks whether a clicked Bubble should be zoomed in on.
+ * If yes, update state.
+ * @param store - The UI store
+ * @param node - The clicked Bubble
+ */
 function onBubbleClick(store, node) {
   if (store.forceSimIsDone && !node.selected) {
     let prevNode = store.bubblesStore.selectedEntities[0];
@@ -14,9 +20,15 @@ function onBubbleClick(store, node) {
   }
 }
 
+/**
+ * Checks whether a double clicked Bubble should
+ * trigger zooming out; If yes, sets bubble/paper flags &
+ * resets zoom state
+ * @param store - The UI Store
+ * @param node - The double clicked bubble
+ */
 function onBubbleDoubleClick(store, node)
 {
-  // event.preventDefault();
   if (store.forceSimIsDone && store.isZoomed) {
       store.bubblesStore.selectedArea = null;
       store.papersStore.selectedArea = null;
@@ -27,6 +39,11 @@ function onBubbleDoubleClick(store, node)
   }
 }
 
+/**
+ * Modifies state according to which bubble/paper the user hovers over;
+ * @param store - The UI store
+ * @param node - The hovered over bubble
+ */
 function onBubbleMouseEnter(store, node) {
   if (store.forceSimIsDone) {
     store.bubblesStore.hoveredEntity = node;
@@ -38,6 +55,10 @@ function onBubbleMouseEnter(store, node) {
   }
 }
 
+/**
+ * Resets the hoveredEntity flag
+ * @param store - The UI Store
+ */
 function onBubbleMouseLeave(store) {
   if (store.forceSimIsDone) {
     store.bubblesStore.hoveredEntity = null;

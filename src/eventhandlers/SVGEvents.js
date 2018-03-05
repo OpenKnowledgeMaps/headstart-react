@@ -1,3 +1,7 @@
+/**
+ * If vis is in zoomed-in state, zooms out and resets all flags;
+ * @param store - The UI Store;
+ */
 function onSVGClick(store) {
   let {bubblesStore, papersStore, forceSimIsDone} = store;
   if (forceSimIsDone) {
@@ -19,6 +23,12 @@ function onSVGClick(store) {
   }
 }
 
+/**
+ * Resets active Flags on papersStore and bubblsStore
+ * @param bubblesStore - The bubblesStore
+ * @param papersStore - The papersStore
+ * @param forceSimIsDone - The UI Store's forceSimIsDone flag
+ */
 function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone}) {
   if (forceSimIsDone) {
     if (!papersStore.hasHoverEntities &&

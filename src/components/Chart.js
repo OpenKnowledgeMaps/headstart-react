@@ -44,7 +44,7 @@ const Chart = observer(
     });
     const headstartContainer = window.document.querySelector(".vis-col");
     const newSize = headstartContainer.clientWidth;
-    this.props.store.updateChartSize(newSize, false);
+    this.props.store.updateChartSize(newSize);
     addWindowResizer(this.props.store);
   }
 

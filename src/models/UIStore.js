@@ -7,9 +7,16 @@ import BubblesModel from "./BubblesModel";
 
 /**
  * The UI Store
- * UI Store is the single source of truth for the state of the UI.
+ * The UI Store is the single source of truth for the state of the UI.
  */
 class UIStore {
+  /**
+   * Initializes the UIStore with the papers, bubbles and areas Object as determined by a DomainStore instance
+   * and according to a configuration config;
+   * @param domainStore - A domainStore instance
+   * @param config - A configuration
+   * @param initSize - The initial size to which the Visualization should be initialized
+   */
   constructor(domainStore, config, initSize = 900) {
     const { papersObject, bubblesObject, areasObject } = domainStore;
 
@@ -45,6 +52,14 @@ class UIStore {
     this.initCoords(this.svgWidth);
   }
 
+  /**
+   * Get start coords and target coords for a zoom transition
+   * and call updateZoomStateAnimated to carry out the transition;
+   * @param orig_r - the original radius of the target bubble;
+   * @param orig_x - the original x coord of the target bubble;
+   * @param orig_y - the original y coord of the target bubble;
+   * @param node2 - the starting node of the zoom animation;
+   */
   updateZoomState({orig_r, orig_x, orig_y}, node2) {
     const hasNode2 = (node2 !== undefined);
     const mid = this.svgWidth * 0.5;
@@ -57,12 +72,33 @@ class UIStore {
     this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
   }
 
+  /**
+   * Directly set zoom state to desired midpoint and zoomfactor;
+   * @param z - the zoom factor
+   * @param x - the desired x coordinate
+   * @param y - the desired y coordinate
+   */
   updateZoomState2(z, x, y) {
     this.translationVecX = this.svgWidth * 0.5 - z*x;
     this.translationVecY = this.svgHeight * 0.5 - z*y;
     this.zoomFactor = z;
   }
 
+  /**
+   * Carries out the transition from state points
+   * startx_, start_y, startz_ to z, x, y.
+   * Uses d3-timer to update the state in an animated fashion.
+   * The configured zoomDuration determines the duration of the transition,
+   * during which easeFactor goes from 0 to 1 and the state point consequently from its
+   * start values to its end values.
+   * @param z - The desired zoom factor;
+   * @param x - The x coordinate of the desired bubble;
+   * @param y - The y coordinate of the desired bubble;
+   * @param startx_- The starting x coordinate;
+   * @param starty_- The starting y coordinate;
+   * @param startz_- The starting zoom factor;
+   * @param callback - A callback function;
+   */
   updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
@@ -88,6 +124,12 @@ class UIStore {
     });
   }
 
+
+  /**
+   * Returns the visualization to the original 'zoomed-out' state;
+   * @param callback - A callback function;
+   * @param node - The node which is currently centered and zoomed in;
+   */
   resetZoomState(callback, node) {
     const mid = this.svgWidth*0.5;
     const zf = this.zoomFactor;
@@ -96,6 +138,12 @@ class UIStore {
     this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
   }
 
+  /**
+   * Determines the maximal and minimal coordinates (as determined by the backend)
+   * and maps them to a range;
+   * Maps the bubble radius to the relative amount of total reader count of the papers in a bubble.
+   * @param range - The range on which coordinate calculations should be based on.
+   */
   initCoords(range) {
     const max = Math.max(
       Math.max(...this.papersStore.entities.map(entity => entity.x)),
@@ -112,6 +160,8 @@ class UIStore {
       ...this.bubblesStore.entities.map(entity => entity.readers)
     );
     let scale = scaleLinear().domain([min, max]).range([0, range]);
+
+    //TODO radiusScale range should be configurable (extract magic numbers 11 & 6)
     let radiusScale = scaleLinear()
       .domain([minReaders, maxReaders])
       .range([range / 11, range / 6]);
@@ -130,30 +180,26 @@ class UIStore {
     });
   }
 
-  getChartSize(width) {
-    let SVGSize =  width;
-    return SVGSize;
-  }
-
+  /**
+   * Takes a width and adjusts coordinates of bubbles/papers and size of svg accordingly
+   * @param width - The desired visualization width
+   * @param check
+   */
   updateChartSize(width, check) {
-    if (!check) {
-      let newSVGSize = this.getChartSize(width);
-      this.previousSVGSize = this.svgWidth;
-      const prevX = this.svgWidth*0.5;
-      const prevY = this.svgHeight*0.5;
-      this.svgWidth = newSVGSize;
-      this.svgHeight = newSVGSize;
-      const midX = this.svgWidth * 0.5;
-      const midY = this.svgHeight * 0.5;
-      this.translationVecX *= midX/prevX;
-      this.translationVecY *= midY/prevY;
-      this.paperListHeight = newSVGSize + this.subtitleHeight - this.paperExplorerHeight;
-      this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
-      this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
-    }
+    let newSVGSize = width;
+    this.previousSVGSize = this.svgWidth;
+    const prevX = this.svgWidth*0.5;
+    const prevY = this.svgHeight*0.5;
+    this.svgWidth = newSVGSize;
+    this.svgHeight = newSVGSize;
+    const midX = this.svgWidth * 0.5;
+    const midY = this.svgHeight * 0.5;
+    this.translationVecX *= midX/prevX;
+    this.translationVecY *= midY/prevY;
+    this.paperListHeight = newSVGSize + this.subtitleHeight - this.paperExplorerHeight;
+    this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
+    this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
   }
-
-  // updateTranslationVectors()
 }
 
 export default UIStore;
