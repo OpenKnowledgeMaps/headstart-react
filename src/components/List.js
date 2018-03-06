@@ -2,7 +2,7 @@ import React from 'react';
 import ListEntry from './ListEntry';
 import Filter from './Filter';
 import SortButtons from './SortButtons';
-import {toggleList} from '../models/ListEvents';
+import {toggleList} from '../eventhandlers/ListEvents';
 import { observer } from 'mobx-react';
 import { hasSubstring } from './Helpers';
 

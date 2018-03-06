@@ -3,7 +3,7 @@ import PDFModal from './PDFModal';
 import PDFPreviewModal from './PDFPreviewModal';
 import HighlightableText from './HighlightableText';
 import { observer } from 'mobx-react';
-import { onListClick } from '../models/ListEvents';
+import { onListClick } from '../eventhandlers/ListEvents';
 import {Button} from 'react-bootstrap';
 
 /* eslint-disable jsx-a11y/href-no-hash */
