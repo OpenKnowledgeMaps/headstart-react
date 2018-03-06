@@ -98,11 +98,7 @@ var optimizedResize = (function() {
    * Adjusts the size of the SVG container and the list;
    */
   function actualResizeHandler() {
-    console.log("DEBUG");
-    const headstartContainer = window.document.querySelector(".vis-col");
-    store.paperExplorerHeight = window.document.querySelector("#explorer_header").clientHeight;
-    const newSize = headstartContainer.clientWidth;
-    store.updateChartSize(newSize);
+    store.updateDimensions();
   }
 
 }());

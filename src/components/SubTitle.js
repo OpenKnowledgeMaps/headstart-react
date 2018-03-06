@@ -17,7 +17,7 @@ const SubTitle =
 
       let subtitle =
         <h4> Overview of&nbsp;
-          <span id="search-term-unique">{store.topic}</span>f&nbsp;
+          <span id="search-term-unique">{store.topic}</span>&nbsp;
           based on&nbsp;
           {store.papersStore.entities.length} {store.config.serviceNameString} articles&nbsp;&nbsp;
           <Modal />

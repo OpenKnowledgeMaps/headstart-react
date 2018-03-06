@@ -15,16 +15,16 @@ class UIStore {
    * and according to a configuration config;
    * @param domainStore - A domainStore instance
    * @param config - A configuration
-   * @param initSize - The initial size to which the Visualization should be initialized
+   * @param initWidth - The initial size to which the Visualization should be initialized
    */
-  constructor(domainStore, config, initSize = 900) {
+  constructor(domainStore, config, initWidth = 900, initHeight = 900) {
     const { papersObject, bubblesObject, areasObject } = domainStore;
 
     this.config = config;
 
     this.papersStore = new PapersModel(papersObject);
     this.bubblesStore = new BubblesModel(bubblesObject);
-    this.previousSVGSize = initSize - 65;
+    this.previousSVGSize = Math.min(initWidth, initHeight);
     this.isZoomed = false;
     this.lock = false;
 
@@ -33,12 +33,12 @@ class UIStore {
     extendObservable(this, {
       areas: areasObject,
       progress: 0,
-      svgWidth: this.previousSVGSize,
-      svgHeight: this.previousSVGSize,
+      svgWidth: initWidth,
+      svgHeight: initHeight - 65,
       subtitleHeight: 65,
       paperExplorerHeight: 113,
       paperListHeight:
-        this.previousSVGSize + this.subtitleHeight - this.paperExplorerHeight,
+        initHeight - this.paperExplorerHeight,
       forceSimIsDone: false,
       zoomFactor: 1,
       translationVecX: 0,
@@ -48,8 +48,8 @@ class UIStore {
       sortOption: null,
       topic: 'cool'
     });
-
-    this.initCoords(this.svgWidth);
+    console.log("DEBUG UIStore svgWidth", this.svgWidth, this.svgHeight);
+    this.initCoords(this.previousSVGSize);
   }
 
   /**
@@ -181,24 +181,37 @@ class UIStore {
   }
 
   /**
+   * Gets window dimensions and updates Chart accordingly
+   */
+  updateDimensions() {
+    const headstartContainer = window.document.querySelector(".vis-col");
+    const newSize = headstartContainer.clientWidth;
+    this.paperExplorerHeight = window.document.querySelector("#explorer_header").clientHeight;
+    const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    this.paperListHeight = h - this.paperExplorerHeight;
+    this.updateChartSize(newSize, newSize);
+  }
+
+  /**
    * Takes a width and adjusts coordinates of bubbles/papers and size of svg accordingly
    * @param width - The desired visualization width
+   * @param height - The desired visualiztion height
    * @param check
    */
-  updateChartSize(width, check) {
-    let newSVGSize = width;
+  updateChartSize(width, height) {
+    let newSVGSize = Math.min(width,height);
     this.previousSVGSize = this.svgWidth;
-    const prevX = this.svgWidth*0.5;
+    const prevX = this.svgHeight*0.5;
     const prevY = this.svgHeight*0.5;
-    this.svgWidth = newSVGSize;
-    this.svgHeight = newSVGSize;
-    const midX = this.svgWidth * 0.5;
+    this.svgWidth = width;
+    this.svgHeight = height;
+    const midX = this.svgHeight * 0.5;
     const midY = this.svgHeight * 0.5;
     this.translationVecX *= midX/prevX;
     this.translationVecY *= midY/prevY;
-    this.paperListHeight = newSVGSize + this.subtitleHeight - this.paperExplorerHeight;
     this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
     this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
+    console.log("DEBUG updateChartSize ", width, height)
   }
 }
 

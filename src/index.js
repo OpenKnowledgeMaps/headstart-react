@@ -11,7 +11,6 @@ import DomainStoreFactory from './models/DomainStoreFactory';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
 import './stylesheets/main.css';
-import './index.css';
 import config from './config';
 
 // main entry point for the app
@@ -29,7 +28,9 @@ domainStore.populateObjects();
 /*
  * UIStore holds all of the the application state.
  */
-let uiStore = new UIStore(domainStore, config);
+const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+let uiStore = new UIStore(domainStore, config, w*0.6, h);
 uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
 uiStore.papersStore.saveAllCoordsToOriginalCoords();
 

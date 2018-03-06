@@ -42,9 +42,7 @@ const Chart = observer(
       this.props.store.papersStore.saveAllCoordsToOriginalCoords();
       this.props.store.forceSimIsDone = true;
     });
-    const headstartContainer = window.document.querySelector(".vis-col");
-    const newSize = headstartContainer.clientWidth;
-    this.props.store.updateChartSize(newSize);
+    this.props.store.updateDimensions();
     addWindowResizer(this.props.store);
   }
 

@@ -16,12 +16,12 @@
 
 .vis-col {
   display: inline-block;
-  width: 50%;
+  width: 60%;
   /*background-color: #f5f7f7;*/ }
 
 .list-col {
   display: inline-block;
-  width: 50%;
+  width: 40%;
   vertical-align: top;
   float: right; }
 
