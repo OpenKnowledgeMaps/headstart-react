@@ -14,6 +14,15 @@ import { hasSubstring } from './Helpers';
  * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | List}
  */
 const List = observer(class List extends React.Component {
+
+  /** TODO
+   * Inline styles in the render function should be either
+   * a) extracted and incorporated in the SASS stylesheets (src/stylesheets)
+   *    as classes
+   * b) extracted to a Javascript Object that belongs specifically to this
+   *    Component. e.g. let componentStyles = { div: { margin: "0 0 30px" } }
+   *    which we could use like <div style={componentStyles.div}> ... </div>
+   */
   render() {
     let papersListStyle = {
       height: this.props.store.paperListHeight + 'px',
@@ -24,6 +33,8 @@ const List = observer(class List extends React.Component {
     const sortButtons =  this.props.store.displayList ? <SortButtons store={this.props.store}/> : '';
 
     // Filter papers according to search string and according to whether a Paper is selected in the vis or not
+    // TODO the first filter expression is hard to understand
+    // TODO filtering two times in inefficient
     let filteredPapers = this.props.store.papersStore.entities
       .filter((paper) =>
         (this.props.store.papersStore.entities

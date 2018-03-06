@@ -13,6 +13,13 @@ const Bubble =
   observer(
     ({node, store}) => {
       // TODO remove all magical numbers and make styling clearer through classes/external definitions
+      /** TODO
+       * Inline styles in the render function should be either
+       * a) extracted and incorporated in the SASS stylesheets (src/stylesheets)
+       * b) extracted to a Javascript Object that belongs specifically to this
+       *    Component. e.g. let infoModalStyles = { div: { margin: "0 0 30px" } }
+       *    which we could use like <div style={infoModalStyles.div}> ... </div>
+       */
       let circleClassName = null;
       let circleStyle = {fillOpacity: "0.8"};
       if (store.bubblesStore.hasSelectedEntities) {

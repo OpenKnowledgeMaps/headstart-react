@@ -35,6 +35,13 @@ const Filter = observer(
       this.setState({currentValue: ''});
     }
 
+    /** TODO
+     * Inline styles in the render function should be either
+     * a) extracted and incorporated in the SASS stylesheets (src/stylesheets)
+     * b) extracted to a Javascript Object that belongs specifically to this
+     *    Component. e.g. let infoModalStyles = { div: { margin: "0 0 30px" } }
+     *    which we could use like <div style={infoModalStyles.div}> ... </div>
+     */
     render() {
       const glyphicon = (this.state.currentValue !== '') ?
         <Glyphicon id='searchclear' glyph="remove-circle" onClick={this.clearSearch.bind(this)} style={{display: this.state.displayClearButton}}/>
