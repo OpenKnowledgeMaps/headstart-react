@@ -22,10 +22,10 @@ function addWindowResizer(store) {
   throttle("resize", "optimizedResize");
 })();
 
-// handle event
-window.addEventListener("optimizedResize", function() {
-});
-
+// // handle event
+// window.addEventListener("optimizedResize", function() {
+// });
+// eslint-disable-next-line
 var optimizedResize = (function() {
 
   var callbacks = [],

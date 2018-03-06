@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {observer} from 'mobx-react';
 
 import App from './components/App';
 import UIStore from './models/UIStore';
 import pubmedPayload from './static/cool_pubmed';
-import { startForceSim } from './helpers/forceSimulation';
 import DomainStoreFactory from './models/DomainStoreFactory';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -30,7 +28,7 @@ domainStore.populateObjects();
  */
 const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-let uiStore = new UIStore(domainStore, config, w*0.6, h);
+let uiStore = new UIStore(domainStore, config, w, h);
 uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
 uiStore.papersStore.saveAllCoordsToOriginalCoords();
 

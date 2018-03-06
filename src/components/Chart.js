@@ -2,23 +2,11 @@ import React from 'react';
 import Nodes from './Bubbles';
 import Papers from './Papers';
 import SubTitle from './SubTitle';
-import loadingSVG from '../static/loading.svg';
-import {ProgressBar} from 'react-bootstrap';
 import {observer} from 'mobx-react';
 import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
 import {hasSubstring} from './Helpers';
 import addWindowResizer from '../eventhandlers/WindowEvents';
 import {startForceSim} from "../helpers/forceSimulation";
-
-/*
- * Shows a progress bar while the layout calculation is
- * finishing;
- */
-const PBar = observer(({store}) => {
-    const progress = store.progress;
-    return <ProgressBar now={progress}/>
-  }
-);
 
 /**
  * The Chart component.

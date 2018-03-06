@@ -1,4 +1,4 @@
-import {extendObservable, autorun} from 'mobx';
+import {extendObservable} from 'mobx';
 
 /**
  * Class GroupedSVGEntities is a container, representing a group of things in our SVG e.g. Bubbles or Papers

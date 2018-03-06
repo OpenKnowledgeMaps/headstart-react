@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Modal} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 /**
  * Renders a PDF preview in a selected List Entry.
@@ -37,10 +37,8 @@ class PDFPreviewModal extends React.Component
 
   render()
   {
-    let displayTransbox = 'none';
     let viewer = process.env.PUBLIC_URL + "/pdfjs-hypothesis/web/viewer.html";
     viewer = viewer + "?file=" + process.env.PUBLIC_URL + '/mockpdf.pdf';
-    const closeButton = <button className="btn btn-default pull-right">&times;</button>;
     return (
       <div style={{display: "block"}}>
         <div

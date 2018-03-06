@@ -24,7 +24,7 @@ class UIStore {
 
     this.papersStore = new PapersModel(papersObject);
     this.bubblesStore = new BubblesModel(bubblesObject);
-    this.previousSVGSize = Math.min(initWidth, initHeight);
+    this.previousSVGSize = Math.min(initWidth*0.6, initHeight);
     this.isZoomed = false;
     this.lock = false;
 
@@ -33,7 +33,7 @@ class UIStore {
     extendObservable(this, {
       areas: areasObject,
       progress: 0,
-      svgWidth: initWidth,
+      svgWidth: initWidth*0.6,
       svgHeight: initHeight - 65,
       subtitleHeight: 65,
       paperExplorerHeight: 113,
@@ -48,7 +48,6 @@ class UIStore {
       sortOption: null,
       topic: 'cool'
     });
-    console.log("DEBUG UIStore svgWidth", this.svgWidth, this.svgHeight);
     this.initCoords(this.previousSVGSize);
   }
 
@@ -211,7 +210,6 @@ class UIStore {
     this.translationVecY *= midY/prevY;
     this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
     this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
-    console.log("DEBUG updateChartSize ", width, height)
   }
 }
 

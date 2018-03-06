@@ -38,6 +38,7 @@ const List = observer(class List extends React.Component {
         case 'authors' : filteredPapers = filteredPapers.sort((a, b) => (a[this.props.store.sortOption] < b[this.props.store.sortOption] ? -1 : 1)); break;
         case 'title' : filteredPapers = filteredPapers.sort((a, b) => (a[this.props.store.sortOption] < b[this.props.store.sortOption] ? -1 : 1)); break;
         case 'year' : filteredPapers = filteredPapers.sort((a, b) => (a[this.props.store.sortOption] > b[this.props.store.sortOption] ? -1 : 1)); break;
+        default: break;
       }
     }
 
