@@ -16,7 +16,17 @@ and you can play around with the app.
 
 You can run the test suite by running `npm test`.
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+## Deploying
+
+To build a production build run `npm run build`. 
+The bundled `html`/`css`/`js` files can be found in the `build` subdirectory.
+To deploy the application, serve the `build`-directory's contents via
+a server of your choice.
+
+Since there is no integration with the backend yet the site
+is just static files so far.
+ 
+TODO: Update deployment instructions once backend is integrated.
 
 ![Frontend Architecture](architecture.png "Frontend Architecture overview")
 
