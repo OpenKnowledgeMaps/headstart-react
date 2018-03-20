@@ -41,10 +41,7 @@ const Paper =
       // Actual coordinates and dimensions for the Paper is calculated from the
       // orig_ prefixed values
       // zoomFactor & translationVecX,Y are set by the zoom state
-      let x =  zoomFactor  *  orig_x + translationVecX;
-      let y =  zoomFactor  *  orig_y + translationVecY;
-      let w =  zoomFactor  *  orig_width;
-      let h =  zoomFactor  *  orig_height;
+      let {x, y, w, h} = paper.getZoomedCoords(zoomFactor, translationVecX, translationVecY);
 
       // Caculate enlarged paper dimensions so paper stays within svg
       // when paper is hovered in zoomed-in visualization state
@@ -103,6 +100,7 @@ const Paper =
           onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
           onClick={onPaperClick.bind(this, store, paper)}
           className="paper"
+          id={"paper"+paper.id}
           style={displayStyle}
           transform={translateString}
         >

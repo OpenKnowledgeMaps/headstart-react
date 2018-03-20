@@ -23,6 +23,14 @@ class PaperModel extends EntityModel {
     this.orig_x = this.x;
     this.orig_y = this.y;
   }
+
+  getZoomedCoords(zoomFactor = 1., translationVecX = 0., translationVecY = 0.) {
+    const x =  zoomFactor  *  this.orig_x + translationVecX;
+    const y =  zoomFactor  *  this.orig_y + translationVecY;
+    const w =  zoomFactor  *  this.orig_width;
+    const h =  zoomFactor  *  this.orig_height;
+    return {x, y, w, h};
+  }
 }
 
 export default PaperModel;

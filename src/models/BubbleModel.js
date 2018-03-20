@@ -39,6 +39,13 @@ class BubbleModel extends EntityModel {
     this.orig_y = this.y;
     this.orig_r = this.r;
   }
+
+  getZoomedCoords(zoomFactor, translationVecX, translationVecY) {
+    const x_ = zoomFactor * this.orig_x + translationVecX;
+    const y_ = zoomFactor * this.orig_y + translationVecY;
+    const r_ = zoomFactor * this.orig_r;
+    return {x_, y_, r_};
+  }
 }
 
 export default BubbleModel;

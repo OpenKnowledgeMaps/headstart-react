@@ -2,6 +2,8 @@ import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
 import { timer } from 'd3-timer';
 import { easePolyInOut } from 'd3-ease';
+import { selectAll, select } from 'd3-selection';
+import { transition } from 'd3-transition';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 
@@ -57,18 +59,20 @@ class UIStore {
    * @param orig_r - the original radius of the target bubble;
    * @param orig_x - the original x coord of the target bubble;
    * @param orig_y - the original y coord of the target bubble;
-   * @param node2 - the starting node of the zoom animation;
+   * @param originNode - the starting node of the zoom animation;
    */
-  updateZoomState({orig_r, orig_x, orig_y}, node2) {
-    const hasNode2 = (node2 !== undefined);
+  updateZoomState(targetNode, originNode) {
+    const {orig_r, orig_x, orig_y} = targetNode;
+    const hasNode2 = (originNode !== undefined);
     const mid = this.svgWidth * 0.5;
-    const startx = hasNode2 ? node2.orig_x : mid;
-    const starty = hasNode2 ? node2.orig_y : mid;
+    const startx = hasNode2 ? originNode.orig_x : mid;
+    const starty = hasNode2 ? originNode.orig_y : mid;
     const startz = this.zoomFactor;
     const z = mid / (orig_r*1.05);
     const x = orig_x;
     const y = orig_y;
-    this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
+    // this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
+    this.updateZoomStateD3({z, x, y}, {sz: startz, sx: startx, sy: starty}, targetNode);
   }
 
   /**
@@ -91,25 +95,37 @@ class UIStore {
    * @param r
    * @param id
    */
-  updateZoomStateD3(z, x, y, r, id) {
+  updateZoomStateD3(targetCoords) {
+    console.log("DEBUG update zoomstate d3");
+    const {z, x, y} = targetCoords;
+    // const {sz, sx, sy} = startCoords;
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
     const transX = midx - z*x;
     const transY = midy - z*y;
 
     // add d3 transition here
-    let bubbleTransition = transition().duration(750);
-    let bubble = select("#node" + id);
-    let circle = bubble.select("circle");
-    bubble
-      .transition(bubbleTransition)
-      .attr("transform", "translate("+ midx +" " + midy +")")
-      .on("end", () => {
-        this.translationVecX = transX;
-        this.translationVecY = transY;
-        this.zoomFactor = z;
-      });
-    circle.transition(bubbleTransition).attr("r", z*r);
+    let bubbleTransition = transition().duration(300);
+    this.bubblesStore.entities.forEach((entity) => {
+      const {x_, y_, r_} = entity.getZoomedCoords(z, transX, transY);
+      const bubble = select("#node"+entity.id);
+      const circle = select("#circle"+entity.id);
+      bubble.transition(bubbleTransition)
+        .attr("transform", "translate("+x_+" " + y_ +")");
+      circle.transition(bubbleTransition)
+        .attr("r", r_);
+    });
+    this.papersStore.entities.forEach((paper) => {
+      const {x, y, w, h} = paper.getZoomedCoords(z, transX, transY);
+      const domPaper = select("#paper"+paper.id);
+      domPaper.transition(bubbleTransition)
+        .attr("transform", "translate("+x+" "+y+")");
+    });
+    bubbleTransition.on("end", () => {
+      this.translationVecX = this.svgWidth * 0.5 - z*x;
+      this.translationVecY = this.svgHeight * 0.5 - z*y;
+      this.zoomFactor = z;
+    });
   }
 
   /**

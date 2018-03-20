@@ -7,13 +7,13 @@
 function onBubbleClick(store, node) {
   if (store.forceSimIsDone && !node.selected) {
     let prevNode = store.bubblesStore.selectedEntities[0];
-    store.bubblesStore.selectedArea = node.area;
-    store.papersStore.selectedArea = node.area;
-    store.papersStore.clickedEntity = null;
-    store.updateZoomState(node, prevNode);
+    store.updateZoomState(node,prevNode);
     if (!store.isZoomed) {
       store.isZoomed = true;
     }
+    store.bubblesStore.selectedArea = node.area;
+    store.papersStore.selectedArea = node.area;
+    store.papersStore.clickedEntity = null;
   }
   if (node.selected) {
     store.papersStore.clickedEntity = null;

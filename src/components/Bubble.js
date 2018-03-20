@@ -20,7 +20,7 @@ const Bubble =
        *    Component. e.g. let infoModalStyles = { div: { margin: "0 0 30px" } }
        *    which we could use like <div style={infoModalStyles.div}> ... </div>
        */
-      let circleClassName = null;
+      let circleClassName = "bubble_circle";
       let circleStyle = {fillOpacity: "0.8"};
       if (store.bubblesStore.hasSelectedEntities) {
         circleClassName = (node.selected) ? "zoom_selected" : "zoom_unselected";
@@ -32,9 +32,7 @@ const Bubble =
       const {orig_x, orig_y, orig_r} = node;
       const {zoomFactor, translationVecX, translationVecY} = store;
 
-      const x_ = zoomFactor * orig_x + translationVecX;
-      const y_ = zoomFactor * orig_y + translationVecY;
-      const r_ = zoomFactor * orig_r;
+      const { x_, y_, r_ } = node.getZoomedCoords(zoomFactor, translationVecX, translationVecY);
 
       const sqrtOfTwo = Math.sqrt(2);
       let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", width: 2*r_/sqrtOfTwo, height: 2*r_/sqrtOfTwo};
@@ -58,6 +56,7 @@ const Bubble =
            onClick={onBubbleClick.bind(this, store, node)}
            onDoubleClick={onBubbleDoubleClick.bind(this, store, node)}
            className="bubble_frame"
+           id={"node"+node.id}
            transform={translateString}
         >
           <circle
@@ -65,6 +64,7 @@ const Bubble =
             r={r_}
             cx={0}
             cy={0}
+            id={"circle"+node.id}
             style={circleStyle}
           />
           <foreignObject

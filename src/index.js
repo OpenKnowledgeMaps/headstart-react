@@ -29,6 +29,7 @@ domainStore.populateObjects();
 const w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 let uiStore = new UIStore(domainStore, config, w, h);
+window.store = uiStore;
 uiStore.bubblesStore.saveAllCoordsToOriginalCoords();
 uiStore.papersStore.saveAllCoordsToOriginalCoords();
 
