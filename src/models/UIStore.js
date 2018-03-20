@@ -84,6 +84,35 @@ class UIStore {
   }
 
   /**
+   * Use d3 to carry out zoom transition;
+   * @param z
+   * @param x
+   * @param y
+   * @param r
+   * @param id
+   */
+  updateZoomStateD3(z, x, y, r, id) {
+    const midx = this.svgWidth*0.5;
+    const midy = this.svgHeight*0.5;
+    const transX = midx - z*x;
+    const transY = midy - z*y;
+
+    // add d3 transition here
+    let bubbleTransition = transition().duration(750);
+    let bubble = select("#node" + id);
+    let circle = bubble.select("circle");
+    bubble
+      .transition(bubbleTransition)
+      .attr("transform", "translate("+ midx +" " + midy +")")
+      .on("end", () => {
+        this.translationVecX = transX;
+        this.translationVecY = transY;
+        this.zoomFactor = z;
+      });
+    circle.transition(bubbleTransition).attr("r", z*r);
+  }
+
+  /**
    * Carries out the transition from state points
    * startx_, start_y, startz_ to z, x, y.
    * Uses d3-timer to update the state in an animated fashion.
