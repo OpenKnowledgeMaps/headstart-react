@@ -20,7 +20,7 @@ const Bubble =
        *    Component. e.g. let infoModalStyles = { div: { margin: "0 0 30px" } }
        *    which we could use like <div style={infoModalStyles.div}> ... </div>
        */
-      let circleClassName = "bubble_circle";
+      let circleClassName = "";
       let circleStyle = {fillOpacity: "0.8"};
       if (store.bubblesStore.hasSelectedEntities) {
         circleClassName = (node.selected) ? "zoom_selected" : "zoom_unselected";
@@ -58,9 +58,10 @@ const Bubble =
            className="bubble_frame"
            id={"node"+node.id}
            transform={translateString}
+           ref={el => store.bubbleRefs[node.id] = el}
         >
           <circle
-            className={circleClassName}
+            className={"circle_frame " + circleClassName}
             r={r_}
             cx={0}
             cy={0}

@@ -46,15 +46,15 @@ const Paper =
       // Caculate enlarged paper dimensions so paper stays within svg
       // when paper is hovered in zoomed-in visualization state
       // TODO zoomed flag should be renamed hovered
-      while (
-        zoomed &&
-        ((x + w) < svgWidth) &&
-        ((y + h) < svgHeight) &&
-        (w < svgWidth*0.5) &&
-        (h < svgHeight*0.5)) {
-        w += 1;
-        h += 1.33;
-      }
+      // while (
+      //   zoomed &&
+      //   ((x + w) < svgWidth) &&
+      //   ((y + h) < svgHeight) &&
+      //   (w < svgWidth*0.5) &&
+      //   (h < svgHeight*0.5)) {
+      //   w += 1;
+      //   h += 1.33;
+      // }
 
       // The messy part
       // Creates SVG paths
@@ -103,6 +103,7 @@ const Paper =
           id={"paper"+paper.id}
           style={displayStyle}
           transform={translateString}
+          ref={el => store.paperRefs[paper.id] = el}
         >
 
           <path

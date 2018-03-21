@@ -7,6 +7,10 @@ import { transition } from 'd3-transition';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 
+function isFunction(functionToCheck) {
+  return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+}
+
 /**
  * The UI Store
  * The UI Store is the single source of truth for the state of the UI.
@@ -29,6 +33,10 @@ class UIStore {
     this.previousSVGSize = Math.min(initWidth*0.6, initHeight);
     this.isZoomed = false;
     this.lock = false;
+    this.paperRefs = {};
+    this.bubbleRefs = {};
+    this.papersStore.entities.forEach((entity) => this.paperRefs[entity.id] = null);
+    this.bubblesStore.entities.forEach((entity) => this.bubblesStore[entity.id] = null);
 
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
@@ -61,7 +69,7 @@ class UIStore {
    * @param orig_y - the original y coord of the target bubble;
    * @param originNode - the starting node of the zoom animation;
    */
-  updateZoomState(targetNode, originNode) {
+  updateZoomState(targetNode, originNode, callback) {
     const {orig_r, orig_x, orig_y} = targetNode;
     const hasNode2 = (originNode !== undefined);
     const mid = this.svgWidth * 0.5;
@@ -72,7 +80,7 @@ class UIStore {
     const x = orig_x;
     const y = orig_y;
     // this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
-    this.updateZoomStateD3({z, x, y}, {sz: startz, sx: startx, sy: starty}, targetNode);
+    this.updateZoomStateD3({z, x, y}, callback);
   }
 
   /**
@@ -95,7 +103,7 @@ class UIStore {
    * @param r
    * @param id
    */
-  updateZoomStateD3(targetCoords) {
+  updateZoomStateD3(targetCoords, callback) {
     console.log("DEBUG update zoomstate d3");
     const {z, x, y} = targetCoords;
     // const {sz, sx, sy} = startCoords;
@@ -105,11 +113,12 @@ class UIStore {
     const transY = midy - z*y;
 
     // add d3 transition here
-    let bubbleTransition = transition().duration(300);
+    let bubbleTransition = transition().duration(1500);
     this.bubblesStore.entities.forEach((entity) => {
       const {x_, y_, r_} = entity.getZoomedCoords(z, transX, transY);
-      const bubble = select("#node"+entity.id);
-      const circle = select("#circle"+entity.id);
+      console.log(x_, y_, r_);
+      const bubble = select(this.bubbleRefs[entity.id]);
+      const circle = bubble.select("circle");
       bubble.transition(bubbleTransition)
         .attr("transform", "translate("+x_+" " + y_ +")");
       circle.transition(bubbleTransition)
@@ -117,7 +126,8 @@ class UIStore {
     });
     this.papersStore.entities.forEach((paper) => {
       const {x, y, w, h} = paper.getZoomedCoords(z, transX, transY);
-      const domPaper = select("#paper"+paper.id);
+      // console.log(this.paperRefs[paper.id]);
+      const domPaper = select(this.paperRefs[paper.id]);
       domPaper.transition(bubbleTransition)
         .attr("transform", "translate("+x+" "+y+")");
     });
@@ -125,6 +135,8 @@ class UIStore {
       this.translationVecX = this.svgWidth * 0.5 - z*x;
       this.translationVecY = this.svgHeight * 0.5 - z*y;
       this.zoomFactor = z;
+      if (isFunction(callback))
+        callback();
     });
   }
 
@@ -174,12 +186,14 @@ class UIStore {
    * @param callback - A callback function;
    * @param node - The node which is currently centered and zoomed in;
    */
-  resetZoomState(callback, node) {
-    const mid = this.svgWidth*0.5;
-    const zf = this.zoomFactor;
-    const nodex = node.orig_x;
-    const nodey = node.orig_y;
-    this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
+  resetZoomState(callback) {
+    const midx = this.svgWidth*0.5;
+    const midy = this.svgHeight*0.5;
+    // const zf = this.zoomFactor;
+    // const nodex = node.orig_x;
+    // const nodey = node.orig_y;
+    this.updateZoomStateD3({z: 1.,x: midx,y: midy}, callback);
+    // this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
   }
 
   /**

@@ -5,18 +5,22 @@
  * @param node - The clicked Bubble
  */
 function onBubbleClick(store, node) {
-  if (store.forceSimIsDone && !node.selected) {
+  if (store.forceSimIsDone) {
     let prevNode = store.bubblesStore.selectedEntities[0];
-    store.updateZoomState(node,prevNode);
-    if (!store.isZoomed) {
-      store.isZoomed = true;
-    }
-    store.bubblesStore.selectedArea = node.area;
-    store.papersStore.selectedArea = node.area;
-    store.papersStore.clickedEntity = null;
-  }
-  if (node.selected) {
-    store.papersStore.clickedEntity = null;
+    store.updateZoomState(node, prevNode, () => {
+      console.log("DEBUG updatezoomstatecallback");
+      if (!node.selected) {
+        if (!store.isZoomed) {
+          store.isZoomed = true;
+        }
+        store.bubblesStore.selectedArea = node.area;
+        store.papersStore.selectedArea = node.area;
+        store.papersStore.clickedEntity = null;
+      }
+      else {
+        store.papersStore.clickedEntity = null;
+      }
+    });
   }
 }
 
