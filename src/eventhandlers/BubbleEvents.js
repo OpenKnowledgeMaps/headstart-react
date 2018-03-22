@@ -33,14 +33,14 @@ function onBubbleClick(store, node) {
  */
 function onBubbleDoubleClick(store, node)
 {
-  if (store.forceSimIsDone && store.isZoomed) {
-      store.bubblesStore.selectedArea = null;
-      store.papersStore.selectedArea = null;
-      store.papersStore.listVisiblePapers = store.papersStore.entities;
-      store.resetZoomState(() => {
-        store.isZoomed = false;
-      }, node);
-  }
+  // if (store.forceSimIsDone && store.isZoomed) {
+  //     store.bubblesStore.selectedArea = null;
+  //     store.papersStore.selectedArea = null;
+  //     store.papersStore.listVisiblePapers = store.papersStore.entities;
+  //     store.resetZoomState(() => {
+  //       store.isZoomed = false;
+  //     }, node);
+  // }
 }
 
 /**
@@ -49,14 +49,14 @@ function onBubbleDoubleClick(store, node)
  * @param node - The hovered over bubble
  */
 function onBubbleMouseEnter(store, node) {
-  if (store.forceSimIsDone) {
-    store.bubblesStore.hoveredEntity = node;
-    store.papersStore.hoveredEntity = null;
-    if (!store.bubblesStore.hasSelectedEntities) {
-      store.bubblesStore.activeArea = node.area;
-      store.papersStore.activeArea = node.area;
-    }
-  }
+  // if (store.forceSimIsDone) {
+  //   store.bubblesStore.hoveredEntity = node;
+  //   store.papersStore.hoveredEntity = null;
+  //   if (!store.bubblesStore.hasSelectedEntities) {
+  //     store.bubblesStore.activeArea = node.area;
+  //     store.papersStore.activeArea = node.area;
+  //   }
+  // }
 }
 
 /**
@@ -64,9 +64,9 @@ function onBubbleMouseEnter(store, node) {
  * @param store - The UI Store
  */
 function onBubbleMouseLeave(store) {
-  if (store.forceSimIsDone) {
-    store.bubblesStore.hoveredEntity = null;
-  }
+  // if (store.forceSimIsDone) {
+  //   store.bubblesStore.hoveredEntity = null;
+  // }
 }
 
 export {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick};

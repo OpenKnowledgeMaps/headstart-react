@@ -76,7 +76,7 @@ class UIStore {
     const startx = hasNode2 ? originNode.orig_x : mid;
     const starty = hasNode2 ? originNode.orig_y : mid;
     const startz = this.zoomFactor;
-    const z = mid / (orig_r*1.05);
+    const z = mid / (orig_r*2.);
     const x = orig_x;
     const y = orig_y;
     // this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
