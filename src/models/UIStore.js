@@ -198,13 +198,13 @@ class UIStore {
    * @param check
    */
   updateChartSize(width, height) {
-    let newSVGSize = Math.min(width,height);
+    let newSVGSize = width;
     this.previousSVGSize = this.svgWidth;
-    const prevX = this.svgHeight*0.5;
+    const prevX = this.svgWidth*0.5;
     const prevY = this.svgHeight*0.5;
     this.svgWidth = width;
     this.svgHeight = height;
-    const midX = this.svgHeight * 0.5;
+    const midX = this.svgWidth * 0.5;
     const midY = this.svgHeight * 0.5;
     this.translationVecX *= midX/prevX;
     this.translationVecY *= midY/prevY;
