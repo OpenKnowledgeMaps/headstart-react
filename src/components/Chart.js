@@ -24,16 +24,14 @@ const Chart = observer(
    * to the vis-col div's width;
    */
   componentDidMount() {
-    const { store } = this.props;
-    let { bubblesStore, papersStore, forceSimIsDone } = store;
     // TODO show indicator/spinner while layout is calculating ?
-    startForceSim(store, (store) => {
-      bubblesStore.saveAllCoordsToOriginalCoords();
-      papersStore.saveAllCoordsToOriginalCoords();
-      forceSimIsDone = true;
+    startForceSim(this.props.store, (store) => {
+      this.props.store.bubblesStore.saveAllCoordsToOriginalCoords();
+      this.props.store.papersStore.saveAllCoordsToOriginalCoords();
+      this.props.store.forceSimIsDone = true;
     });
-    store.updateDimensions();
-    addWindowResizer(store);
+    this.props.store.updateDimensions();
+    addWindowResizer(this.props.store);
   }
 
   /**
@@ -44,16 +42,16 @@ const Chart = observer(
    * @returns {*}
    */
   render() {
-    const { store } = this.props;
-    const { searchString, svgWidth, svgHeight, bubblesStore, papersStore } = store;
     let {
-      hasSelectedEntities,
-      hasHoverEntities,
       flaglessPapers,
       activeEntities,
       selectedEntities,
-      hoveredEntities
-    } = papersStore;
+      hoveredEntity,
+    } = this.props.store.papersStore;
+    const { hasSelectedEntities, hasHoverEntities} = this.props.store.papersStore;
+    const { searchString, svgWidth, svgHeight, bubblesStore } = this.props.store;
+    const store = this.props.store;
+
 
     // Filter papers according to the flags they have (hover/selected/active)
     // and the searchString;
@@ -66,7 +64,7 @@ const Chart = observer(
     const selectedPapers = !hasSelectedEntities ? '' :
       <Papers store={store} papers={selectedEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
     const hoverPapers = !hasHoverEntities ? '' :
-      <Papers store={store} papers={hoveredEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
+      <Papers store={store} papers={hoveredEntity.filter((paper) => hasSubstring(paper, searchString))}/>;
 
     return (
         <div className="vis-col">
