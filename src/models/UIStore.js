@@ -65,7 +65,7 @@ class UIStore {
     const startx = hasNode2 ? node2.orig_x : mid;
     const starty = hasNode2 ? node2.orig_y : mid;
     const startz = this.zoomFactor;
-    const z = mid / (orig_r*1.05);
+    const z = mid / (orig_r*1.9);
     const x = orig_x;
     const y = orig_y;
     this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
@@ -184,11 +184,12 @@ class UIStore {
    */
   updateDimensions() {
     const headstartContainer = window.document.querySelector(".vis-col");
-    const newSize = headstartContainer.clientWidth;
+    const subdisciplineTitle = window.document.querySelector("#subdiscipline_title");
+    const newSize = headstartContainer.clientHeight - subdisciplineTitle.clientHeight;
     this.paperExplorerHeight = window.document.querySelector("#explorer_header").clientHeight;
     const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     this.paperListHeight = h - this.paperExplorerHeight;
-    this.updateChartSize(newSize, newSize);
+    this.updateChartSize(headstartContainer.clientWidth, newSize);
   }
 
   /**
