@@ -66,7 +66,7 @@ const Chart = observer(
     const selectedPapers = !hasSelectedEntities ? '' :
       <Papers store={store} papers={selectedEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
     const hoverPapers = !hasHoverEntities ? '' :
-      <Papers store={store} papers={hoveredEntity.filter((paper) => hasSubstring(paper, searchString))}/>;
+      <Papers store={store} papers={hoveredEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
 
     return (
         <div className="vis-col">
