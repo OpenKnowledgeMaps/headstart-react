@@ -73,16 +73,16 @@ file extension *.test.js. Currently not passing.
 The root `<svg>` tag can be found in `src/components/Chart.js`. To add a new
 element to the svg:
 
-    1. Come up with the state the element needs (coordinates, dimensions)
+   1. Come up with the state the element needs (coordinates, dimensions)
     and add it to the UIStore (`src/models/UIStore.js`), possibly creating a class
     to manage the element's state if needed.
     
-    2. Create a React component in `src/components/`, passing the UIStore to it as a
+   2. Create a React component in `src/components/`, passing the UIStore to it as a
     prop and getting the necessary state from it. Depending on the state, parts
     of the component can be rendered one way or the other by conditionally adding styling,
     adding/substracting markup within the component's render method.
     
-    3. Import the `observer` function from `mobx-react` and wrap your 
+   3. Import the `observer` function from `mobx-react` and wrap your 
     component class/function in it. This connects the component to the UI
     store and will update the component everytime the UI Store's observables
     change.
@@ -91,7 +91,7 @@ element to the svg:
 
 To add new events to existing elements of the frontend:
 
-    1. Look through the existing event-handling functions in `eventhandlers`
+   1. Look through the existing event-handling functions in `eventhandlers`
     to see whether an event-handler already exists. If it does, use it.
-    2. If no event handler exists, create a new one and think of a good name.
+   2. If no event handler exists, create a new one and think of a good name.
     The event handler should modify the UIStore to achieve the desired effect.
