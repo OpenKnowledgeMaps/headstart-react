@@ -2,7 +2,7 @@ import GroupedSVGEntities from './GroupedSVGEntities';
 import BubbleModel from './BubbleModel';
 
 /**
- * BubblesModel manages the list of bubbles in the visualization;
+ * BubblesModel manages the state of the array of bubbles in the visualization;
  */
 class BubblesModel extends GroupedSVGEntities {
   constructor(initialState) {

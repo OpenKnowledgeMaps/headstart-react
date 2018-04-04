@@ -1,5 +1,9 @@
 import EntityModel from './EntityModel';
 
+/**
+ * The PaperModel class represents the state of a single paper in the visualization;
+ * Subclass of EntityModel
+ */
 class PaperModel extends EntityModel {
   constructor(paper) {
     if(!(paper.hasOwnProperty('orig_x'))) paper.orig_x = 0.;
@@ -19,6 +23,12 @@ class PaperModel extends EntityModel {
     super(paper);
   }
 
+  /**
+   * x, y are used as the actual coords of a paper and subject to change;
+   * orig_x, orig_y are treated as the original 'position' in the layout
+   * as determined by the force simulation and remain unchanged after the initial
+   * calculation;
+   */
   saveCoordsToOriginalCoords() {
     this.orig_x = this.x;
     this.orig_y = this.y;

@@ -5,7 +5,7 @@ import {extent} from 'd3-array';
 import {scalePow} from 'd3-scale';
 
 /**
- * PapersModel manages the list of bubbles in the visualization;
+ * PapersModel manages the state of the array of papers in the visualization;
  */
 class PapersModel extends GroupedSVGEntities {
   constructor(initialState) {

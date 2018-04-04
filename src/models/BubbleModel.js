@@ -1,7 +1,7 @@
 import EntityModel from './EntityModel';
 
 /**
- * The BubbleModel class represents a single bubble in the visualization;
+ * The BubbleModel class represents the state of a single bubble in the visualization;
  * Subclass of EntityModel
  */
 class BubbleModel extends EntityModel {
