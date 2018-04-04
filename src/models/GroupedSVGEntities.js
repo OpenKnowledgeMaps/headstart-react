@@ -20,20 +20,23 @@ class GroupedSVGEntities {
     extendObservable(this, {
       entities: entities,
 
-      // An entity is selected if it is associated with a selected Area
-      // e.g. when a bubble or paper is clicked and zoomed in on, it's
-      // area becomes selected
+      // An entity is selected if the user actively chose it
+      // e.g. clicked on it. All entities associated with the selected
+      // entity, e.g. papers in a bubble, also become selected
       get selectedEntities() {
         return this.entities.filter((entity) => entity.selected) || [];
       },
 
-      // An entity is active if it is associated with an active Area
-      // e.g. when hovering over a bubble the bubble's area is active
+      // An entity is active if it is associated with an entity the mouse cursor
+      // is currently hovering over. The hovered-over entity also is active.
+      // The difference to the hover flag is that active entities only have to be
+      // associated with a hovered-over entity, but they don't have to be hovered over
+      // themselves
       get activeEntities() {
         return this.entities.filter((entity) => entity.active) || [];
       },
 
-      // hoverEntities are elements that are hovered
+      // An entity is hover if the mouse cursor is currently hovering over it
       get hoverEntities() {
         return this.entities.filter((entity) => entity.hover) || [];
       },

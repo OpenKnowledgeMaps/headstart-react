@@ -31,22 +31,22 @@ class UIStore {
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
     extendObservable(this, {
-      areas: areasObject,
-      progress: 0,
-      svgWidth: initWidth*0.6,
-      svgHeight: initHeight - 65,
-      subtitleHeight: 65,
-      paperExplorerHeight: 113,
-      paperListHeight:
+      areas: areasObject,       // the list of bubble titles, as prepared by a domainStore
+      progress: 0,              // the progress of calculating the bubbles layout, not sure if still used
+      svgWidth: initWidth*0.6,  // the width of the svg
+      svgHeight: initHeight - 65,   // the height of the svg
+      subtitleHeight: 65,       // the height of the subtitle, can be refactored?
+      paperExplorerHeight: 113, // the height of the top part of the list, can be refactored?
+      paperListHeight:          // the height of the list
         initHeight - this.paperExplorerHeight,
-      forceSimIsDone: false,
-      zoomFactor: 1,
-      translationVecX: 0,
-      translationVecY: 0,
-      searchString: "",
-      displayList: true,
-      sortOption: null,
-      topic: 'cool'
+      forceSimIsDone: false,    // whether the force simulation is done calculating the layout
+      zoomFactor: 1,            // the zoomFactor - a value of 1 means no zoom
+      translationVecX: 0,       // a translation vector for the x coordinate, value of 0 means the viz is centered
+      translationVecY: 0,       // a translation vector for the y coordinate, value of 0 means the viz is centered
+      searchString: "",         // the string entered into the list search input
+      displayList: true,        // whether list is shown or not
+      sortOption: null,         // by which criteria the list should be sorted
+      topic: 'cool'             // the topic of the map, to be included in the subtitle
     });
     this.initCoords(this.previousSVGSize);
   }

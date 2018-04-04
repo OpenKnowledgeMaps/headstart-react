@@ -6,7 +6,7 @@ import HighlightableText from './HighlightableText';
 
 /**
  * Paper component.
- * Renders a Paper SVG element from a PaperModel.
+ * Renders a Paper SVG element from a PaperModel (class holding the state of a paper, see models/PaperModel.js).
  * Also contains math for the actual coordinate of the Paper on the Chart.
  * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({store?: *, paper?: *}))}
  */

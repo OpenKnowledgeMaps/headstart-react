@@ -24,14 +24,16 @@ const Chart = observer(
    * to the vis-col div's width;
    */
   componentDidMount() {
+    const { store } = this.props;
+    let { bubblesStore, papersStore, forceSimIsDone } = store;
     // TODO show indicator/spinner while layout is calculating ?
-    startForceSim(this.props.store, (store) => {
-      this.props.store.bubblesStore.saveAllCoordsToOriginalCoords();
-      this.props.store.papersStore.saveAllCoordsToOriginalCoords();
-      this.props.store.forceSimIsDone = true;
+    startForceSim(store, (store) => {
+      bubblesStore.saveAllCoordsToOriginalCoords();
+      papersStore.saveAllCoordsToOriginalCoords();
+      forceSimIsDone = true;
     });
-    this.props.store.updateDimensions();
-    addWindowResizer(this.props.store);
+    store.updateDimensions();
+    addWindowResizer(store);
   }
 
   /**
@@ -42,16 +44,16 @@ const Chart = observer(
    * @returns {*}
    */
   render() {
+    const { store } = this.props;
+    const { searchString, svgWidth, svgHeight, bubblesStore, papersStore } = store;
     let {
+      hasSelectedEntities,
+      hasHoverEntities,
       flaglessPapers,
       activeEntities,
       selectedEntities,
-      hoveredEntity,
-    } = this.props.store.papersStore;
-    const { searchString, svgWidth, svgHeight, bubblesStore } = this.props.store;
-    const store = this.props.store;
-
-    const { hasSelectedEntities, hasHoverEntities} = this.props.store.papersStore;
+      hoveredEntities
+    } = papersStore;
 
     // Filter papers according to the flags they have (hover/selected/active)
     // and the searchString;

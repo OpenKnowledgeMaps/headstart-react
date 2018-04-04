@@ -10,7 +10,7 @@ function sortOptionsHandle(event, store) {
 
 /**
  * SortButtons component
- * Renders a group of buttons;
+ * Renders the sort buttons above the papers list.
  * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | {new(): List}}
  */
 const SortButtons = observer(class List extends React.Component {

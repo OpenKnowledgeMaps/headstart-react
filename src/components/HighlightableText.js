@@ -20,17 +20,17 @@ function highlightPartsOfString(highlightStrings, value) {
       indices.push([startIndex, endIndex]);
     }
   });
-  let returnString = [];
+  let stringList = [];
   let lastIndex = 0;
   indices.forEach((index) => {
     if (index[0] >= lastIndex) {
-      returnString.push([value.slice(lastIndex, index[0]), false]);
-      returnString.push([value.slice(index[0], index[1]), true]);
+      stringList.push([value.slice(lastIndex, index[0]), false]);
+      stringList.push([value.slice(index[0], index[1]), true]);
       lastIndex = index[1];
     }
   });
-  if (lastIndex < value.length) returnString.push([value.slice(lastIndex, value.length), false]);
-  return returnString;
+  if (lastIndex < value.length) stringList.push([value.slice(lastIndex, value.length), false]);
+  return stringList;
 }
 
 /**
