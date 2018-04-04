@@ -130,11 +130,10 @@ class UIStore {
    * @param node - The node which is currently centered and zoomed in;
    */
   resetZoomState(callback, node) {
-    const mid = this.svgWidth*0.5;
     const zf = this.zoomFactor;
     const nodex = node.orig_x;
     const nodey = node.orig_y;
-    this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
+    this.updateZoomStateAnimated(1., this.svgWidth*0.5, this.svgHeight*0.5, nodex, nodey, zf, callback);
   }
 
   /**
