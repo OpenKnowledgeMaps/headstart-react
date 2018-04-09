@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap';
-import top100 from '../static/top100.png';
-import textSimliarity from '../static/textsimilarity.png';
-import headstartSearch from '../static/headstart-search.png';
+import top100 from '../../static/top100.png';
+import textSimliarity from '../../static/textsimilarity.png';
+import headstartSearch from '../../static/headstart-search.png';
 
 /**
  * Renders the "What's this?" button, opens a modal when clicked.
@@ -37,6 +37,7 @@ class InfoModal extends React.Component
   render()
   {
     return (
+        /* HTML starts here */
       <div style={{display: "inline"}}>
         <Button
           bsStyle="danger"
@@ -48,7 +49,7 @@ class InfoModal extends React.Component
 
         <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>
-            <h3 id="info-title" className="modal-title" style={{fontSize : "20px"}}>What's this?</h3>
+            <h3 id="info-title" className="modal-title" style={{fontSize : "20px"}}>{"What's this?"}</h3>
           </Modal.Header>
           <Modal.Body>
             <div className="description-headstart" style={{maxWidth: "1000px"}}>
@@ -81,6 +82,7 @@ class InfoModal extends React.Component
           </Modal.Footer>
         </Modal>
       </div>
+      /* HTML ends here */
     );
   }
 }

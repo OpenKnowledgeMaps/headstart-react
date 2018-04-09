@@ -1,7 +1,7 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import HighlightableText from './HighlightableText';
-import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../eventhandlers/BubbleEvents';
+import HighlightableText from '../HighlightableText';
+import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../../eventhandlers/BubbleEvents';
 
 /**
  * Bubble component

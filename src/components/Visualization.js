@@ -1,6 +1,6 @@
 import React from 'react';
 import Chart from './Chart';
-import List from './List';
+import List from './mainHtmlCarriers/List';
 import { observer } from 'mobx-react';
 /* eslint-disable react/no-direct-mutation-state */
 

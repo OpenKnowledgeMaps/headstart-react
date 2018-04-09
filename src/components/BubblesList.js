@@ -1,5 +1,5 @@
 import React from 'react';
-import Bubble from './Bubble';
+import Bubble from './mainHtmlCarriers/Bubble';
 import {observer} from 'mobx-react';
 
 

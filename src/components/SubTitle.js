@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import Modal from './InfoModal';
+import Modal from './mainHtmlCarriers/InfoModal';
 
 /**
  * SubTitle component

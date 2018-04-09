@@ -1,9 +1,9 @@
 import React from 'react';
 import PDFModal from './PDFModal';
 import PDFPreviewModal from './PDFPreviewModal';
-import HighlightableText from './HighlightableText';
+import HighlightableText from '../HighlightableText';
 import { observer } from 'mobx-react';
-import { onListClick } from '../eventhandlers/ListEvents';
+import { onListClick } from '../../eventhandlers/ListEvents';
 import {Button} from 'react-bootstrap';
 
 /* eslint-disable jsx-a11y/href-no-hash */
@@ -28,23 +28,20 @@ const ListEntry =
       const pdfLink = paper.oa ? <PDFModal link={paper.oa_link_pdf}/> : '';
       const listTitleClass = paper.oa ? 'list_title oa' : 'list_title';
       const highlightStrings = store.searchString.split(' ');
-      let titleLink =
-        <div className={listTitleClass} onClick={onListClick.bind(this, paper, store)}>
-          {openAccessLogo}&nbsp;
-          <a href="#" id="paper_list_title" className="highlightable">
-            <HighlightableText highlightStrings={highlightStrings} value={paper.title}/></a>
-        </div>;
-
       const preview = (paper.clicked && paper.oa)?
         <PDFPreviewModal link={paper.oa_link_pdf}/> : '';
-
       return (
+          /* HTML starts here */
         <div id="list_holder">
           <div className={listEntryClassName}>
 
             <div className="list_metadata">
 
-              {titleLink}
+            <div className={listTitleClass} onClick={onListClick.bind(this, paper, store)}>
+              {openAccessLogo}&nbsp;
+              <a href="#" id="paper_list_title" className="highlightable">
+                <HighlightableText highlightStrings={highlightStrings} value={paper.title}/></a>
+            </div>
 
               <div className="list_links">
                 {htmlLink}
@@ -83,6 +80,8 @@ const ListEntry =
         </div>
           {preview}
       </div>
+      /* HTML ends here */
+
         );
     }
   );

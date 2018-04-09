@@ -1,10 +1,10 @@
 import React from 'react';
 import ListEntry from './ListEntry';
-import Filter from './Filter';
-import SortButtons from './SortButtons';
-import {toggleList} from '../eventhandlers/ListEvents';
+import Filter from '../Filter';
+import SortButtons from '../SortButtons';
+import {toggleList} from '../../eventhandlers/ListEvents';
 import { observer } from 'mobx-react';
-import { hasSubstring } from './Helpers';
+import { hasSubstring } from '../Helpers';
 
 /**
  * List component
@@ -54,6 +54,7 @@ const List = observer(class List extends React.Component {
     }
 
     return (
+        /* HTML starts here */
       <div className="list-col">
         <div id="list_exporer">
           <div className="col-xs-12" id="explorer_header">
@@ -64,14 +65,10 @@ const List = observer(class List extends React.Component {
               </div>
               <div className="col-xs-2 text-right">{showHideIcon}</div>
             </div>
-
-
             <div id="explorer_options" className="row">
               <Filter store={this.props.store}/>
               {sortButtons}
             </div>
-
-
           </div>
           <div id="papers_list" className="col-xs-12" style={papersListStyle}>
             {filteredPapers
@@ -81,6 +78,7 @@ const List = observer(class List extends React.Component {
           </div>
         </div>
       </div>
+      /* HTML ends here */
     );
   }
 });

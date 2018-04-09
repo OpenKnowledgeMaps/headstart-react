@@ -40,6 +40,7 @@ class PDFPreviewModal extends React.Component
     let viewer = process.env.PUBLIC_URL + "/pdfjs-hypothesis/web/viewer.html";
     viewer = viewer + "?file=" + process.env.PUBLIC_URL + '/mockpdf.pdf';
     return (
+        /* HTML starts here */
       <div style={{display: "block"}}>
         <div
           id="preview_image"
@@ -52,8 +53,6 @@ class PDFPreviewModal extends React.Component
             Click here to open preview
           </div>
         </div>
-
-
         <Modal show={this.state.showModal} onHide={this.close.bind(this)} bsSize="large" aria-labelledby="contained-modal-title-lg" id="iframe_modal">
           <Modal.Header style={{ paddingBottom: '0px', borderBottom: '0px' }}>
             <button className="btn btn-default pull-right" onClick={this.close.bind(this)}>&times;</button>
@@ -65,6 +64,7 @@ class PDFPreviewModal extends React.Component
           </Modal.Body>
         </Modal>
       </div>
+      /* HTML ends here */
     );
   }
 };

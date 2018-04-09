@@ -31,6 +31,7 @@ class PDFModal extends React.Component
     viewer = viewer + "?file=" + process.env.PUBLIC_URL + '/mockpdf.pdf';
 
     return (
+        /* HTML starts here */
       <div style={{display: "block"}}>
         <Button
           bsStyle="danger"
@@ -41,8 +42,6 @@ class PDFModal extends React.Component
         >
           PDF <span id="whatsthis">&#xf05a;</span>
         </Button>
-
-
         <Modal show={this.state.showModal} onHide={this.close.bind(this)} bsSize="large" aria-labelledby="contained-modal-title-lg" id="iframe_modal">
           <Modal.Header style={{ paddingBottom: '0px', borderBottom: '0px' }}>
             <button className="btn btn-default pull-right" onClick={this.close.bind(this)}>&times;</button>
@@ -54,6 +53,7 @@ class PDFModal extends React.Component
           </Modal.Body>
         </Modal>
       </div>
+      /* HTML ends here */
     );
   }
 };

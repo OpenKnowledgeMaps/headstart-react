@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandlers/PaperEvents';
+import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../../eventhandlers/PaperEvents';
 
-import HighlightableText from './HighlightableText';
+import HighlightableText from '../HighlightableText';
 
 /**
  * Paper component.
@@ -98,6 +98,7 @@ const Paper =
       }
 
       return (
+          /* HTML starts here */
         <g
           onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
           onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
@@ -106,7 +107,6 @@ const Paper =
           style={displayStyle}
           transform={translateString}
         >
-
           <path
             id="region"
             d={pathD}
@@ -144,19 +144,17 @@ const Paper =
                     </span>
                   </span>
                 </p>
-
               </div>
-
               <div className="readers" style={readersDivStyle}>
                 <p id="readers" className={textClassName}>
                   <span id="num-readers">{readers}</span>
                   <span className="readers_entity" style={{fontSize: citationsFontSize}}> citations</span>
                 </p>
               </div>
-
             </div>
           </foreignObject>
         </g>
+        /* HTML ends here */
       )
     }
   );

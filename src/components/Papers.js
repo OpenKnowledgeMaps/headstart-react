@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Paper from './Paper';
+import Paper from './mainHtmlCarriers/Paper';
 import {observer} from 'mobx-react';
 
 /**
