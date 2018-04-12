@@ -67,6 +67,7 @@ const Chart = observer(
       <Papers store={store} papers={hoveredEntity.filter((paper) => hasSubstring(paper, searchString))}/>;
 
     return (
+        /* HTML starts here */
         <div className="vis-col">
 
           <SubTitle store={store}/>
@@ -90,6 +91,7 @@ const Chart = observer(
             </svg>
           </div>
       </div>
+      /* HTML ends here */
   )
   }
 });

@@ -53,6 +53,7 @@ const Bubble =
 
       const areaName = (node.area.length > 55) ? node.area.slice(0,55) + "..." : node.area;
       return (
+          /* HTML starts here */
         <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}
            onMouseLeave={onBubbleMouseLeave.bind(this, store)}
            onClick={onBubbleClick.bind(this, store, node)}
@@ -84,6 +85,7 @@ const Bubble =
             </div>
           </foreignObject>
         </g>
+        /* HTML ends here */
       );
     }
   );

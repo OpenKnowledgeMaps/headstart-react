@@ -47,6 +47,7 @@ const Filter = observer(
         <Glyphicon id='searchclear' glyph="remove-circle" onClick={this.clearSearch.bind(this)} style={{display: this.state.displayClearButton}}/>
         : '';
       return (
+          /* HTML starts here */
         <div className="" id="filter_container" style={{width: '187px', height: "30px"}}>
           <form>
             <FormGroup bsSize="sm">
@@ -63,6 +64,7 @@ const Filter = observer(
           </form>
               {glyphicon}
         </div>
+        /* HTML ends here */
 
       );
     }

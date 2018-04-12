@@ -24,6 +24,7 @@ const SortButtons = observer(class List extends React.Component {
     const {store} = this.props;
     const {sortOptions} = store.config;
     return (
+        /* HTML starts here */
       <div className="" id="sort_container" style={{display: "block"}}>
         <span id="sortby">sort by:</span>
         <ToggleButtonGroup type="radio" name="sortbyoptions" defaultValue={1} id="sort-buttons" bsSize="sm">
@@ -34,6 +35,7 @@ const SortButtons = observer(class List extends React.Component {
           })}
         </ToggleButtonGroup>
       </div>
+      /* HTML ends here */
     );
   }
 });
