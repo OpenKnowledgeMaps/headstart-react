@@ -58,6 +58,7 @@ class UIStore {
       sortOption: null,
       topic: 'cool'
     });
+    this.animationLock = false;
     this.initCoords(this.previousSVGSize);
   }
 
@@ -70,6 +71,7 @@ class UIStore {
    * @param originNode - the starting node of the zoom animation;
    */
   updateZoomState(targetNode, originNode, callback) {
+    this.animationLock = true;
     const {orig_r, orig_x, orig_y} = targetNode;
     const hasNode2 = (originNode !== undefined);
     const mid = this.svgWidth * 0.5;
@@ -113,10 +115,10 @@ class UIStore {
     const transY = midy - z*y;
 
     // add d3 transition here
-    let bubbleTransition = transition().duration(1500);
+    let bubbleTransition = transition().duration(500);
     this.bubblesStore.entities.forEach((entity) => {
       const {x_, y_, r_} = entity.getZoomedCoords(z, transX, transY);
-      console.log(x_, y_, r_);
+      // console.log(x_, y_, r_);
       const bubble = select(this.bubbleRefs[entity.id]);
       const circle = bubble.select("circle");
       bubble.transition(bubbleTransition)
@@ -132,6 +134,8 @@ class UIStore {
         .attr("transform", "translate("+x+" "+y+")");
     });
     bubbleTransition.on("end", () => {
+      console.log("DEBUG animation done lifting animation lock")
+      this.animationLock = false;
       this.translationVecX = this.svgWidth * 0.5 - z*x;
       this.translationVecY = this.svgHeight * 0.5 - z*y;
       this.zoomFactor = z;
@@ -187,6 +191,7 @@ class UIStore {
    * @param node - The node which is currently centered and zoomed in;
    */
   resetZoomState(callback) {
+    console.log("resetZoomState");
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
     // const zf = this.zoomFactor;

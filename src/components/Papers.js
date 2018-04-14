@@ -11,13 +11,14 @@ import {observer} from 'mobx-react';
 const Papers =
   observer(
     ({store, papers}) => {
+      console.log("DEBUG Papers render method");
       return (
         <g>
           {papers
             .map((paper) =>
               <Paper
                 store={store}
-                key={paper.id}
+                key={paper.title}
                 paper={paper}
               />)}
         </g>);

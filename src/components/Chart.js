@@ -63,9 +63,8 @@ const Chart = observer(
       <Papers store={store} papers={activeEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
     const selectedPapers = !hasSelectedEntities ? '' :
       <Papers store={store} papers={selectedEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
-    const hoverPapers = !hasHoverEntities ? '' :
-      <Papers store={store} papers={hoveredEntity.filter((paper) => hasSubstring(paper, searchString))}/>;
-
+    const hoverPapers =
+      <Papers store={store} papers={this.props.store.papersStore.entities} />;
     return (
         <div className="vis-col">
 
@@ -81,10 +80,10 @@ const Chart = observer(
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>
-                {flaglessPapers}
+                {/*{flaglessPapers}*/}
                 <Nodes store={store} nodes={bubblesStore}/>
-                {activePapers}
-                {selectedPapers}
+                {/*{activePapers}*/}
+                {/*{selectedPapers}*/}
                 {hoverPapers}
               </g>
             </svg>
