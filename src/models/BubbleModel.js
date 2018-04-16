@@ -22,9 +22,10 @@ class BubbleModel extends EntityModel {
     if(!(node.hasOwnProperty('vx'))) node.vx = false;
     if(!(node.hasOwnProperty('vy'))) node.vy = false;
     if(!(node.hasOwnProperty('group'))) node.group = 1;
-    if(!(node.hasOwnProperty('bubble'))) node.type = "bubble";
+    if(!(node.hasOwnProperty('type'))) node.type = 'bubble';
     if(!(node.hasOwnProperty('translationX'))) node.translationX = 0.;
     if(!(node.hasOwnProperty('translationX'))) node.translationY = 0;
+    if(!(node.hasOwnProperty('zIndex'))) node.zIndex = 1;
     super(node);
   }
 

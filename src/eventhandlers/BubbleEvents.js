@@ -25,6 +25,8 @@ function onBubbleClick(store, node) {
       store.bubblesStore.selectedArea = node.area;
       store.papersStore.selectedArea = node.area;
       store.papersStore.clickedEntity = null;
+      store.bubblesStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 4);
+      store.papersStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 5);
     });
   }
 }
@@ -50,13 +52,12 @@ const onBubbleDoubleClick = (store, node) => (event)  =>
   // event.preventDefault();
   // console.log(event);
   console.log("onBubbleDoubleClick");
-  console.log(resetBubblesAndPapers);
   resetBubblesAndPapers(store);
   clearSelection();
   setTimeout(() => {
     store.resetZoomState(() => {
     }, node)
-  },100);
+  },50);
   // if (store.forceSimIsDone && store.isZoomed) {
   //     store.bubblesStore.selectedArea = null;
   //     store.papersStore.selectedArea = null;
@@ -70,13 +71,17 @@ const onBubbleDoubleClick = (store, node) => (event)  =>
  * @param node - The hovered over bubble
  */
 const onBubbleMouseEnter = action((store, node) => {
+  if (!store.animationLock) {
     store.bubblesStore.hoveredEntity = node;
     store.papersStore.hoveredEntity = null;
-  //   if (!store.bubblesStore.hasSelectedEntities) {
-    store.bubblesStore.activeArea = node.area;
+    if (!store.bubblesStore.hasSelectedEntities) {
+      store.bubblesStore.activeArea = node.area;
       store.papersStore.activeArea = node.area;
-  //   }
+      store.bubblesStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 2);
+      store.papersStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 3);
+    }
   // }
+  }
 });
 
 /**
@@ -84,9 +89,13 @@ const onBubbleMouseEnter = action((store, node) => {
  * @param store - The UI Store
  */
 function onBubbleMouseLeave(store) {
-  // if (store.forceSimIsDone) {
-  //   store.bubblesStore.hoveredEntity = null;
-  // }
+  if (store.forceSimIsDone && !store.animationLock && !store.bubblesStore.hasSelectedEntities) {
+    store.bubblesStore.entities.forEach((entity) => entity.zIndex = 1);
+    store.papersStore.entities.forEach((entity) => entity.zIndex = 0);
+    store.bubblesStore.hoveredEntity = null;
+    store.bubblesStore.activeArea = null;
+    store.papersStore.actieArea = null;
+  }
 }
 
 export {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick};

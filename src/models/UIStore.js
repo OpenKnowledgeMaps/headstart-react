@@ -138,6 +138,7 @@ class UIStore {
       this.animationLock = false;
       this.translationVecX = this.svgWidth * 0.5 - z*x;
       this.translationVecY = this.svgHeight * 0.5 - z*y;
+      this.isZoomed = false;
       this.zoomFactor = z;
       if (isFunction(callback))
         callback();

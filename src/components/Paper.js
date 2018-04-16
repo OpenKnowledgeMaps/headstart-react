@@ -5,7 +5,6 @@ import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandle
 import HighlightableText from './HighlightableText';
 class Paper extends Component {
   shouldComponentUpdate() {
-    console.log(this.props.store.animationLock);
     return !this.props.store.animationLock;
   }
 

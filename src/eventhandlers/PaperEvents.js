@@ -6,10 +6,10 @@
  * @param paper
  */
 function onPaperMouseEnter(store, paper) {
-  // if (store.forceSimIsDone && store.isZoomed) {
-  //   store.papersStore.zoomedPaper = paper;
-  // }
-  // store.papersStore.hoveredEntity = paper;
+  if (store.forceSimIsDone && store.isZoomed) {
+    store.papersStore.zoomedPaper = paper;
+  }
+  store.papersStore.hoveredEntity = paper;
 }
 
 /**
@@ -17,10 +17,10 @@ function onPaperMouseEnter(store, paper) {
  * @param store
  */
 function onPaperMouseLeave(store) {
-  // if (store.forceSimIsDone && store.isZoomed) {
-  //   store.papersStore.zoomedPaper = null;
-  // }
-  // store.papersStore.hoveredEntity = null;
+  if (store.forceSimIsDone && store.isZoomed) {
+    store.papersStore.zoomedPaper = null;
+  }
+  store.papersStore.hoveredEntity = null;
 }
 
 /**
@@ -30,16 +30,18 @@ function onPaperMouseLeave(store) {
  * @param paper
  */
 function onPaperClick(store, paper) {
-  // if (store.forceSimIsDone) {
-  //   if (store.isZoomed) {
-  //     store.papersStore.clickedEntity = paper;
-  //   } else {
-  //     store.bubblesStore.selectedArea = paper.area;
-  //     store.papersStore.selectedArea = paper.area;
-  //     store.updateZoomState(store.bubblesStore.selectedEntities[0])
-  //     store.isZoomed = true;
-  //   }
-  // }
+  if (store.forceSimIsDone) {
+    if (store.isZoomed) {
+      store.papersStore.clickedEntity = paper;
+    } else {
+      store.bubblesStore.selectedArea = paper.area;
+      store.papersStore.selectedArea = paper.area;
+      store.updateZoomState(store.bubblesStore.selectedEntities[0])
+      store.isZoomed = true;
+      store.bubblesStore.entitiesInArea(paper.area).forEach((entity) => entity.zIndex = 4);
+      store.papersStore.entitiesInArea(paper.area).forEach((entity) => entity.zIndex = 5);
+    }
+  }
 }
 
 export {onPaperMouseLeave, onPaperMouseEnter, onPaperClick};

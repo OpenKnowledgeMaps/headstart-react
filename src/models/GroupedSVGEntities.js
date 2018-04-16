@@ -54,8 +54,8 @@ class GroupedSVGEntities {
         this.entitiesOutsideArea(area).forEach((entity) => {
           entity.active = false;
         });
-        this.entitiesInArea(area).forEach((entitiy) => {
-          entitiy.active = true;
+        this.entitiesInArea(area).forEach((entity) => {
+          entity.active = true;
         });
       },
 

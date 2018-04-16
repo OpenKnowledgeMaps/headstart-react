@@ -1,6 +1,6 @@
 import React from 'react';
-import Nodes from './Bubbles';
-import Papers from './Papers';
+import Bubble from './Bubble';
+import Paper from './Paper';
 import SubTitle from './SubTitle';
 import {observer} from 'mobx-react';
 import {onSVGClick, onSVGMouseOver} from '../eventhandlers/SVGEvents';
@@ -52,19 +52,24 @@ const Chart = observer(
     const store = this.props.store;
 
     const { hasSelectedEntities, hasHoverEntities} = this.props.store.papersStore;
-
-    // Filter papers according to the flags they have (hover/selected/active)
-    // and the searchString;
-    // Convert them to Papers components
-    // searchString is the input of the list search
-    flaglessPapers = hasSelectedEntities ? '' :
-      <Papers store={store} papers={flaglessPapers.filter((paper) => hasSubstring(paper, searchString))}/>;
-    const activePapers = hasSelectedEntities ? '' :
-      <Papers store={store} papers={activeEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
-    const selectedPapers = !hasSelectedEntities ? '' :
-      <Papers store={store} papers={selectedEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
-    const hoverPapers =
-      <Papers store={store} papers={this.props.store.papersStore.entities} />;
+    //
+    // // Filter papers according to the flags they have (hover/selected/active)
+    // // and the searchString;
+    // // Convert them to Papers components
+    // // searchString is the input of the list search
+    // flaglessPapers = hasSelectedEntities ? '' :
+    //   <Papers store={store} papers={flaglessPapers.filter((paper) => hasSubstring(paper, searchString))}/>;
+    // const activePapers = hasSelectedEntities ? '' :
+    //   <Papers store={store} papers={activeEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
+    // const selectedPapers = !hasSelectedEntities ? '' :
+    //   <Papers store={store} papers={selectedEntities.filter((paper) => hasSubstring(paper, searchString))}/>;
+    // const hoverPapers =
+    //   <Papers store={store} papers={this.props.store.papersStore.entities} />;
+    const compareEntities = (a,b) => {
+      return a.zIndex - b.zIndex;
+    };
+    const entities = store.bubblesStore.entities.concat(store.papersStore.entities);
+    const zIndices = [0,1,2,3,4,5,6,7,8];
     return (
         <div className="vis-col">
 
@@ -80,11 +85,24 @@ const Chart = observer(
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>
-                {/*{flaglessPapers}*/}
-                <Nodes store={store} nodes={bubblesStore}/>
-                {/*{activePapers}*/}
-                {/*{selectedPapers}*/}
-                {hoverPapers}
+                {zIndices.map((index) =>
+                  entities.filter((entity) => entity.zIndex === index).map((entity) =>
+                  (entity.type === 'bubble'
+                  ?
+                    <Bubble         key={entity.id}
+                                    id={entity.id}
+                                    node={entity}
+                                    nodes={store.bubblesStore.entities}
+                                    store={store}
+                    />
+                  :
+                    <Paper
+                      store={store}
+                      key={entity.title}
+                      paper={entity}
+                    />
+                  )
+                ))};
               </g>
             </svg>
           </div>
