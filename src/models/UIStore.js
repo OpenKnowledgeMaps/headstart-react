@@ -106,7 +106,6 @@ class UIStore {
    * @param id
    */
   updateZoomStateD3(targetCoords, callback) {
-    console.log("DEBUG update zoomstate d3");
     const {z, x, y} = targetCoords;
     // const {sz, sx, sy} = startCoords;
     const midx = this.svgWidth*0.5;
@@ -134,7 +133,6 @@ class UIStore {
         .attr("transform", "translate("+x+" "+y+")");
     });
     bubbleTransition.on("end", () => {
-      console.log("DEBUG animation done lifting animation lock")
       this.animationLock = false;
       this.translationVecX = this.svgWidth * 0.5 - z*x;
       this.translationVecY = this.svgHeight * 0.5 - z*y;

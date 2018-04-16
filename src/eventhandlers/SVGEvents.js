@@ -37,6 +37,8 @@ function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone}) {
   if (forceSimIsDone) {
     if (!papersStore.hasHoverEntities &&
         !bubblesStore.hasHoverEntities ) {
+      bubblesStore.entities.forEach((entity) => entity.zIndex = 1);
+      papersStore.entities.forEach((entity) => entity.zIndex = 0);
       papersStore.activeArea = null;
       bubblesStore.activeArea = null;
     }

@@ -34,10 +34,6 @@ class Paper extends Component {
       year
     } = this.props.paper;
 
-    if (title.includes("Synth")) {
-      console.log("DEBUG paper render method");
-    }
-
     // Actual coordinates and dimensions for the Paper is calculated from the
     // orig_ prefixed values
     // zoomFactor & translationVecX,Y are set by the zoom state

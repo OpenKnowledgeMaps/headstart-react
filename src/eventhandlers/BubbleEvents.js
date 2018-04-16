@@ -77,6 +77,8 @@ const onBubbleMouseEnter = action((store, node) => {
     if (!store.bubblesStore.hasSelectedEntities) {
       store.bubblesStore.activeArea = node.area;
       store.papersStore.activeArea = node.area;
+      store.papersStore.entitiesOutsideArea(node.area).forEach((entity) => entity.zIndex = 0);
+      store.bubblesStore.entitiesOutsideArea(node.area).forEach((entity) => entity.zIndex = 1);
       store.bubblesStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 2);
       store.papersStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 3);
     }
@@ -90,11 +92,7 @@ const onBubbleMouseEnter = action((store, node) => {
  */
 function onBubbleMouseLeave(store) {
   if (store.forceSimIsDone && !store.animationLock && !store.bubblesStore.hasSelectedEntities) {
-    store.bubblesStore.entities.forEach((entity) => entity.zIndex = 1);
-    store.papersStore.entities.forEach((entity) => entity.zIndex = 0);
     store.bubblesStore.hoveredEntity = null;
-    store.bubblesStore.activeArea = null;
-    store.papersStore.actieArea = null;
   }
 }
 
