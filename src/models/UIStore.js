@@ -120,6 +120,12 @@ class UIStore {
       // console.log(x_, y_, r_);
       const bubble = select(this.bubbleRefs[entity.id]);
       const circle = bubble.select("circle");
+      const foreignObject = bubble.select("foreignobject");
+      foreignObject.transition(bubbleTransition)
+        // .attr("x", 0-r_/Math.sqrt(2.))
+        // .attr("y", 0-r_/Math.sqrt(2.))
+        .attr("width", 2.*r_/Math.sqrt(2.))
+        .attr("height", 2.*r_/Math.sqrt(2.))
       bubble.transition(bubbleTransition)
         .attr("transform", "translate("+x_+" " + y_ +")");
       circle.transition(bubbleTransition)
@@ -131,6 +137,22 @@ class UIStore {
       const domPaper = select(this.paperRefs[paper.id]);
       domPaper.transition(bubbleTransition)
         .attr("transform", "translate("+x+" "+y+")");
+      domPaper.select(".paperBorder")
+        .transition(bubbleTransition)
+        .attr("d", 'M ' + 0 + ' ' + 0 +
+          ' h ' + (0.9*w) +
+          ' l ' + (0.1*w) + ' ' + (0.1*h) +
+          ' v ' + (0.9*h) +
+          ' h ' + (-w) +
+          ' v ' + (-h))
+      domPaper.select(".dogear")
+        .transition(bubbleTransition)
+        .attr("d", "M " + (0 + 0.9*w) + ' ' + 0 + " v " + (0.1*h) + " h " + (0.1*w));
+      console.log(domPaper.select(".paperContent"));
+      domPaper.select(".paperContent")
+        .transition(bubbleTransition)
+        .attr("width", w)
+        .attr("height", h);
     });
     bubbleTransition.on("end", () => {
       this.animationLock = false;

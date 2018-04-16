@@ -105,7 +105,7 @@ class Paper extends Component {
         <path
           id="region"
           d={pathD}
-          className={pathClassName}
+          className={'paperBorder ' + pathClassName}
         >
         </path>
 
@@ -118,6 +118,7 @@ class Paper extends Component {
         width={w}
         height={h}
         style={{"overflow":"hidden"}}
+        className={"paperContent"}
         >
         <div className="paper_holder">
 
