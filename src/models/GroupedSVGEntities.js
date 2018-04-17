@@ -68,10 +68,12 @@ class GroupedSVGEntities {
       },
 
       set selectedArea(area) {
-        this.entitiesOutsideArea(area).forEach((entity) => {
+        this.entities.filter((entity) => entity.selected).forEach((entity) => {
           entity.selected = false;
-          entity.listvisible = false;
         });
+        this.entities.filter((entity) => entity.listvisible).forEach((entity) => {
+          entity.listvisible = false;
+        })
         this.entitiesInArea(area).forEach((entity) => {
           entity.selected = true;
           entity.listvisible = true;
@@ -88,11 +90,16 @@ class GroupedSVGEntities {
       },
 
       set clickedEntity(entity) {
-        if (entity === null) this.entities.forEach((entity) => entity.clicked = false);
-        else {
-          this.allOtherEntitiesExcept(entity).forEach((entity) => entity.clicked = false);
-          entity.clicked = !entity.clicked;
-          if (!entity.clicked) this.entitiesInArea(entity.area).forEach((entity) => entity.listvisible = true);
+        const tmpEntityClicked = entity && entity.clicked;
+        if (entity === null)
+          this.entities.filter((entity) => entity.clicked).forEach((entity) => entity.clicked = false);
+        if (entity && !entity.clicked) {
+          this.entities.filter((entity) => entity.clicked).forEach((entity) => entity.clicked = false);
+          entity.clicked = true;
+        }
+        else if (entity && entity.clicked) {
+          entity.clicked = false;
+          this.entitiesInArea(entity.area).forEach((entity) => entity.listvisible = true);
         }
       }
 

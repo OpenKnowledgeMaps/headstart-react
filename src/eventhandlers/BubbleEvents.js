@@ -19,7 +19,7 @@ function clearSelection() {
 function onBubbleClick(store, node) {
   console.log("DEBUG onBubbleClick");
   store.animationLock = true;
-  if (store.forceSimIsDone && !node.selected) {
+  if (store.forceSimIsDone && !node.selected && !store.papersStore.hasHoverEntities) {
     let prevNode = store.bubblesStore.selectedEntities[0];
     store.updateZoomState(node, prevNode, () => {
       store.isZoomed = true;
@@ -53,17 +53,14 @@ const onBubbleDoubleClick = (store, node) => (event)  =>
   // event.preventDefault();
   // console.log(event);
   console.log("onBubbleDoubleClick");
-  resetBubblesAndPapers(store);
-  clearSelection();
-  setTimeout(() => {
-    store.resetZoomState(() => {
-    }, node)
-  },50);
-  // if (store.forceSimIsDone && store.isZoomed) {
-  //     store.bubblesStore.selectedArea = null;
-  //     store.papersStore.selectedArea = null;
-  //     store.papersStore.listVisiblePapers = store.papersStore.entities;
-  // }
+  if (!store.papersStore.hasHoverEntities) {
+    resetBubblesAndPapers(store);
+    clearSelection();
+    setTimeout(() => {
+      store.resetZoomState(() => {
+      }, node)
+    },50);
+  }
 };
 
 /**

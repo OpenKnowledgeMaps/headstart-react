@@ -34,13 +34,16 @@ function onPaperClick(store, paper) {
     if (store.isZoomed) {
       store.papersStore.clickedEntity = paper;
     } else {
-      store.bubblesStore.selectedArea = paper.area;
-      store.papersStore.selectedArea = paper.area;
-      store.updateZoomState(store.bubblesStore.selectedEntities[0])
-      store.isZoomed = true;
-      store.bubblesStore.entitiesInArea(paper.area).forEach((entity) => entity.zIndex = 4);
-      store.papersStore.entitiesInArea(paper.area).forEach((entity) => entity.zIndex = 5);
-    }
+      const node = store.bubblesStore.entities
+        .filter((entity) => entity.area === paper.area)[0];
+      store.updateZoomState(node, null, () => {
+        store.isZoomed = true;
+        store.bubblesStore.selectedArea = node.area;
+        store.papersStore.selectedArea = node.area;
+        store.papersStore.clickedEntity = null;
+        store.bubblesStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 4);
+        store.papersStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 5);
+      });}
   }
 }
 

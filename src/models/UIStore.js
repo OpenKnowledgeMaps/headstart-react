@@ -75,9 +75,6 @@ class UIStore {
     const {orig_r, orig_x, orig_y} = targetNode;
     const hasNode2 = (originNode !== undefined);
     const mid = this.svgWidth * 0.5;
-    const startx = hasNode2 ? originNode.orig_x : mid;
-    const starty = hasNode2 ? originNode.orig_y : mid;
-    const startz = this.zoomFactor;
     const z = mid / (orig_r*2.);
     const x = orig_x;
     const y = orig_y;

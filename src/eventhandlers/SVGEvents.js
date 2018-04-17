@@ -6,11 +6,11 @@ import { action } from 'mobx';
  */
 function onSVGClick(store) {
   let {bubblesStore, papersStore, forceSimIsDone} = store;
-  if (store.isZoomed && !bubblesStore.hasHoverEntities) {
+  if (store.isZoomed && !bubblesStore.hasHoverEntities && !papersStore.hasHoverEntities) {
     let node = store.bubblesStore.selectedEntities[0];
     store.resetZoomState(() => {
       store.isZoomed = false;
-      resetZIndices();
+      resetZIndices(store);
       bubblesStore.selectedArea = null;
       papersStore.selectedArea = null;
       papersStore.clickedEntity = null;
