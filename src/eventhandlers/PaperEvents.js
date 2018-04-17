@@ -34,6 +34,7 @@ function onPaperClick(store, paper) {
     if (store.isZoomed) {
       store.papersStore.clickedEntity = paper;
     } else {
+      this.animationLock = true;
       const node = store.bubblesStore.entities
         .filter((entity) => entity.area === paper.area)[0];
       store.updateZoomState(node, null, () => {

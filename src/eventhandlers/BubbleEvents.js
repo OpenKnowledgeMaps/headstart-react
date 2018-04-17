@@ -18,8 +18,9 @@ function clearSelection() {
  */
 function onBubbleClick(store, node) {
   console.log("DEBUG onBubbleClick");
-  store.animationLock = true;
+  store.papersStore.clickedEntity = null;
   if (store.forceSimIsDone && !node.selected && !store.papersStore.hasHoverEntities) {
+    store.animationLock = true;
     let prevNode = store.bubblesStore.selectedEntities[0];
     store.updateZoomState(node, prevNode, () => {
       store.isZoomed = true;

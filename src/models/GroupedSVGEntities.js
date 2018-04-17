@@ -20,17 +20,15 @@ class GroupedSVGEntities {
     extendObservable(this, {
       entities: entities,
 
+      // An entity is active if it is associated with an active Area
+      // e.g. when hovering over a bubble the bubble's area is active
+      activeEntities: null,
+
       // An entity is selected if it is associated with a selected Area
       // e.g. when a bubble or paper is clicked and zoomed in on, it's
       // area becomes selected
       get selectedEntities() {
         return this.entities.filter((entity) => entity.selected) || [];
-      },
-
-      // An entity is active if it is associated with an active Area
-      // e.g. when hovering over a bubble the bubble's area is active
-      get activeEntities() {
-        return this.entities.filter((entity) => entity.active) || [];
       },
 
       // hoverEntities are elements that are hovered
@@ -51,12 +49,13 @@ class GroupedSVGEntities {
       },
 
       set activeArea(area) {
-        this.entitiesOutsideArea(area).forEach((entity) => {
-          entity.active = false;
-        });
-        this.entitiesInArea(area).forEach((entity) => {
-          entity.active = true;
-        });
+        this.activeEntities && this.activeEntities.forEach((entity) => entity.active = false);
+        if ( area !== null ) {
+          this.activeEntities = this.entitiesInArea(area);
+          this.activeEntities.forEach((entity) => entity.active = true);
+        } else {
+          this.activeEntities = null;
+        }
       },
 
       get activeArea() {
@@ -81,7 +80,7 @@ class GroupedSVGEntities {
       },
 
       set hoveredEntity(entity) {
-        this.allOtherEntitiesExcept(entity).forEach((entity) => entity.hover = false);
+        this.hoverEntities.forEach((entity) => entity.hover = false);
         if (entity !== null) entity.hover = true;
       },
 

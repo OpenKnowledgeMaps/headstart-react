@@ -209,6 +209,7 @@ class UIStore {
    */
   resetZoomState(callback) {
     console.log("resetZoomState");
+    this.animationLock = true;
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
     // const zf = this.zoomFactor;
