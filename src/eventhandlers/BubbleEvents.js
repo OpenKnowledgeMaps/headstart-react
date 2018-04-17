@@ -1,4 +1,5 @@
 import { action } from 'mobx';
+import { resetZIndices } from "./SVGEvents";
 
 function clearSelection() {
   if(document.selection && document.selection.empty) {
@@ -77,8 +78,7 @@ const onBubbleMouseEnter = action((store, node) => {
     if (!store.bubblesStore.hasSelectedEntities) {
       store.bubblesStore.activeArea = node.area;
       store.papersStore.activeArea = node.area;
-      store.papersStore.entitiesOutsideArea(node.area).forEach((entity) => entity.zIndex = 0);
-      store.bubblesStore.entitiesOutsideArea(node.area).forEach((entity) => entity.zIndex = 1);
+      resetZIndices(store);
       store.bubblesStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 2);
       store.papersStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 3);
     }
@@ -91,7 +91,8 @@ const onBubbleMouseEnter = action((store, node) => {
  * @param store - The UI Store
  */
 function onBubbleMouseLeave(store) {
-  if (store.forceSimIsDone && !store.animationLock && !store.bubblesStore.hasSelectedEntities) {
+  if (store.forceSimIsDone && !store.animationLock) {
+    console.log("DEBUG onBubbleMouseLeave");
     store.bubblesStore.hoveredEntity = null;
   }
 }
