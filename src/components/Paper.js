@@ -4,8 +4,17 @@ import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandle
 
 import HighlightableText from './HighlightableText';
 class Paper extends Component {
-  shouldComponentUpdate() {
-    return !this.props.store.animationLock;
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      // !this.props.store.animationLock ||
+      // (this.props.store.animationLock !== nextProps.store.animationLock) ||
+      // (this.props.paper.selected !== nextProps.paper.selected) ||
+      // (this.props.paper.clicked !== nextProps.paper.clicked) ||
+      // (this.props.paper.zoomed !== nextProps.paper.zoomed) ||
+      ((this.props.paper.hover !== nextProps.paper.hover) ||
+      (this.props.paper.active !== nextProps.paper.active)) &&
+      (!this.props.store.animationLock && (this.props.store.animationLock !== nextProps.store.animationLock))
+    )
   }
 
   render() {

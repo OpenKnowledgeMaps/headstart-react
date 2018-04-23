@@ -22,70 +22,67 @@ class GroupedSVGEntities {
 
       // An entity is active if it is associated with an active Area
       // e.g. when hovering over a bubble the bubble's area is active
-      activeEntities: null,
+      activeEntities: [],
 
       // An entity is selected if it is associated with a selected Area
       // e.g. when a bubble or paper is clicked and zoomed in on, it's
       // area becomes selected
-      get selectedEntities() {
-        return this.entities.filter((entity) => entity.selected) || [];
-      },
-
+      selectedEntities: [],
+      hoverEntities: [],
+      _activeArea: null,
+      _selectedArea: null,
       // hoverEntities are elements that are hovered
-      get hoverEntities() {
-        return this.entities.filter((entity) => entity.hover) || [];
-      },
-
       get hasSelectedEntities() {
-        return this.entities.some((entity) => entity.selected);
+        return this.selectedEntities.length !== 0;
       },
 
       get hasActiveEntities() {
-        return this.entities.some((entity) => entity.active);
+        return this.activeEntities.length !== 0;
       },
 
       get hasHoverEntities() {
-        return this.entities.some((entity) => entity.hover);
+        return this.hoverEntities.length !== 0;
       },
 
       set activeArea(area) {
-        this.activeEntities && this.activeEntities.forEach((entity) => entity.active = false);
+        this.activeEntities.forEach((entity) => entity.active = false);
         if ( area !== null ) {
+          this._activeArea = area;
           this.activeEntities = this.entitiesInArea(area);
           this.activeEntities.forEach((entity) => entity.active = true);
         } else {
-          this.activeEntities = null;
+          this.activeEntities = [];
         }
       },
 
       get activeArea() {
-        const activeEntity = this.entities.find((entity) => entity.selected);
-        if (activeEntity !== undefined && activeEntity.hasOwnProperty('area'))
-          return activeEntity.area;
-        else
-          return '';
+        return this._activeArea;
       },
 
       set selectedArea(area) {
-        this.entities.filter((entity) => entity.selected).forEach((entity) => {
-          entity.selected = false;
-        });
-        this.entities.filter((entity) => entity.listvisible).forEach((entity) => {
-          entity.listvisible = false;
-        })
-        this.entitiesInArea(area).forEach((entity) => {
-          entity.selected = true;
-          entity.listvisible = true;
-        });
+        // TODO manage listvisibility
+        this.selectedEntities.forEach((entity) => entity.selected = false);
+        if ( area !== null ) {
+          this._selectedArea = area;
+          this.selectedEntities = this.entitiesInArea(area);
+          this.selectedEntities.forEach((entity) => entity.selected = true);
+        } else {
+          this.selectedEntities = [];
+        }
       },
 
       set hoveredEntity(entity) {
-        this.hoverEntities.forEach((entity) => entity.hover = false);
-        if (entity !== null) entity.hover = true;
+        this.hoverEntities.filter(entity => entity.hover).forEach((entity) => entity.hover = false);
+        if (entity !== null) {
+          entity.hover = true;
+          this.hoverEntities.push([entity]);
+        } else {
+          this.hoverEntities = [];
+        }
       },
 
       get hoveredEntity() {
-        return this.entities.filter((entity) => entity.hover);
+        return this.hoverEntities;
       },
 
       set clickedEntity(entity) {

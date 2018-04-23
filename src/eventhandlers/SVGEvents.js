@@ -31,15 +31,16 @@ const resetZIndices = action(({bubblesStore, papersStore}) => {
  * @param forceSimIsDone - The UI Store's forceSimIsDone flag
  */
 function onSVGMouseOver(store) {
-  const { bubblesStore, papersStore, forceSimIsDone } = store;
-    if (!papersStore.hasHoverEntities &&
-        !bubblesStore.hasHoverEntities &&
-        !store.isZoomed &&
-        forceSimIsDone ) {
-      resetZIndices(store);
-      papersStore.activeArea = null;
-      bubblesStore.activeArea = null;
-    }
+  // console.log("DEBUG onSVGMouseOver");
+  // const { bubblesStore, papersStore, forceSimIsDone } = store;
+  //   if (!papersStore.hasHoverEntities &&
+  //       !bubblesStore.hasHoverEntities &&
+  //       !store.isZoomed &&
+  //       forceSimIsDone ) {
+  //     resetZIndices(store);
+  //     papersStore.activeArea = null;
+  //     bubblesStore.activeArea = null;
+  //   }
 }
 
 export {onSVGClick, onSVGMouseOver, resetZIndices};

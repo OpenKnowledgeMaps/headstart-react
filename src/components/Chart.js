@@ -80,8 +80,8 @@ const Chart = observer(
               width={svgWidth}
               height={svgHeight}
               id="chart-svg"
-              onClick={onSVGClick.bind(this, store)}
-              onMouseOver={onSVGMouseOver.bind(this, store)}
+              // onClick={onSVGClick.bind(this, store)}
+              // onMouseOver={onSVGMouseOver.bind(this, store)}
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>
