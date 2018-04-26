@@ -74,7 +74,7 @@ class UIStore {
     this.animationLock = true;
     const {orig_r, orig_x, orig_y} = targetNode;
     const mid = this.svgWidth * 0.5;
-    const z = mid / (orig_r*2.);
+    const z = mid / (orig_r*1.25);
     const x = orig_x;
     const y = orig_y;
     this.updateZoomStateD3({z, x, y}, callback);
