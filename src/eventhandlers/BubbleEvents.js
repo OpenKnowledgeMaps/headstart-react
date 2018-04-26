@@ -56,9 +56,9 @@ const onBubbleDoubleClick = (store, node) => (event)  =>
     clearSelection();
     store.bubblesStore.selectedArea = null;
     store.papersStore.listVisiblePapers = store.papersStore.entities;
+    resetBubblesAndPapers(store);
     setTimeout(() => {
       store.resetZoomState(() => {
-        resetBubblesAndPapers(store);
       }, node)
     },50);
   }
