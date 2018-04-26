@@ -70,15 +70,13 @@ class UIStore {
    * @param orig_y - the original y coord of the target bubble;
    * @param originNode - the starting node of the zoom animation;
    */
-  updateZoomState(targetNode, originNode, callback) {
+  updateZoomState(targetNode, callback) {
     this.animationLock = true;
     const {orig_r, orig_x, orig_y} = targetNode;
-    const hasNode2 = (originNode !== undefined);
     const mid = this.svgWidth * 0.5;
     const z = mid / (orig_r*2.);
     const x = orig_x;
     const y = orig_y;
-    // this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
     this.updateZoomStateD3({z, x, y}, callback);
   }
 
@@ -212,11 +210,7 @@ class UIStore {
     this.animationLock = true;
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
-    // const zf = this.zoomFactor;
-    // const nodex = node.orig_x;
-    // const nodey = node.orig_y;
     this.updateZoomStateD3({z: 1.,x: midx,y: midy}, callback);
-    // this.updateZoomStateAnimated(1., mid, mid, nodex, nodey, zf, callback);
   }
 
   /**
@@ -266,11 +260,13 @@ class UIStore {
    */
   updateDimensions() {
     const headstartContainer = window.document.querySelector(".vis-col");
-    const newSize = headstartContainer.clientWidth;
+    const newWidth = headstartContainer.clientWidth;
     this.paperExplorerHeight = window.document.querySelector("#explorer_header").clientHeight;
-    const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    this.paperListHeight = h - this.paperExplorerHeight;
-    this.updateChartSize(newSize, newSize);
+    this.subdisciplineTitleHeight = window.document.querySelector("#subdiscipline_title").clientHeight;
+    const newHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const newSVGHeight = newHeight - this.subdisciplineTitleHeight;
+    this.paperListHeight = newHeight - this.paperExplorerHeight;
+    this.updateChartSize(newWidth, newSVGHeight);
   }
 
   /**

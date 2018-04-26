@@ -10,6 +10,13 @@ function clearSelection() {
   }
 }
 
+const updateZIndices = action((store, area) => {
+  store.bubblesStore.entitiesOutsideArea(area).forEach((entity) => entity.zIndex = 2);
+  store.papersStore.entitiesOutsideArea(area).forEach((entity) => entity.zIndex = 3);
+  store.bubblesStore.entitiesInArea(area).forEach((entity) => entity.zIndex = 4);
+  store.papersStore.entitiesInArea(area).forEach((entity) => entity.zIndex = 5);
+});
+
 /**
  * Checks whether a clicked Bubble should be zoomed in on.
  * If yes, update state.
@@ -21,23 +28,26 @@ function onBubbleClick(store, node) {
   store.papersStore.clickedEntity = null;
   if (store.forceSimIsDone && !node.selected && !store.papersStore.hasHoverEntities) {
     store.papersStore.selectedArea = node.area;
+    store.bubblesStore.selectedArea = node.area;
     store.animationLock = true;
-    let prevNode = store.bubblesStore.selectedEntities[0];
-    store.updateZoomState(node, prevNode, () => {
+    store.updateZoomState(node, () => {
       store.isZoomed = true;
-      store.bubblesStore.selectedArea = node.area;
       store.papersStore.clickedEntity = null;
-      store.bubblesStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 4);
-      store.papersStore.entitiesInArea(node.area).forEach((entity) => entity.zIndex = 5);
+      store.papersStore.listVisiblePapers = store.papersStore.entitiesInArea(node.area);
+      updateZIndices(store, node.area);
     });
   }
 }
 
 const resetBubblesAndPapers = action((store) => {
   let {bubblesStore, papersStore, forceSimIsDone} = store;
-  // store.isZoomed = false;
+  store.isZoomed = false;
   papersStore.selectedArea = null;
-  // papersStore.clickedEntity = null;
+  bubblesStore.selectedArea = null;
+  bubblesStore.activeArea = null;
+  papersStore.activeArea = null;
+  papersStore.clickedEntity = null;
+  papersStore.listVisiblePapers = store.papersStore.entities;
 });
 
 /**
@@ -49,17 +59,14 @@ const resetBubblesAndPapers = action((store) => {
  */
 const onBubbleDoubleClick = (store, node) => (event)  =>
 {
-  // event.preventDefault();
-  // console.log(event);
-  console.log("onBubbleDoubleClick");
-  if (!store.papersStore.hasHoverEntities) {
-    clearSelection();
-    store.bubblesStore.selectedArea = null;
-    store.papersStore.listVisiblePapers = store.papersStore.entities;
+  if (store.isZoomed && !store.papersStore.hasHoverEntities) {
+    store.papersStore.entities.forEach((entity) => entity.zIndex = 1);
+    store.bubblesStore.entities.forEach((entity) => entity.zIndex = 2);
     resetBubblesAndPapers(store);
+    clearSelection();
     setTimeout(() => {
       store.resetZoomState(() => {
-      }, node)
+      })
     },50);
   }
 };
@@ -88,9 +95,9 @@ const onBubbleMouseEnter = action((store, node) => {
  * @param store - The UI Store
  */
 function onBubbleMouseLeave(store) {
-  // if (store.forceSimIsDone && !store.animationLock) {
-  //   // store.bubblesStore.hoveredEntity = null;
-  // }
+  if (store.forceSimIsDone && !store.animationLock) {
+    store.bubblesStore.hoveredEntity = null;
+  }
 }
 
-export {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick};
+export {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick, resetBubblesAndPapers, updateZIndices};

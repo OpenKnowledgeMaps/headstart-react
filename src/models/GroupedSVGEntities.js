@@ -44,6 +44,10 @@ class GroupedSVGEntities {
         return this.hoverEntities.length !== 0;
       },
 
+      get maxZIndex() {
+        return Math.max(...this.entities.map((entity) => entity.zIndex));
+      },
+
       set activeArea(area) {
         this.activeEntities.forEach((entity) => entity.active = false);
         if ( area !== null ) {

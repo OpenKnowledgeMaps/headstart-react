@@ -11,8 +11,9 @@ import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleCli
  */
 
 class Bubble extends Component {
-  shouldComponentUpdate() {
-    return !this.props.store.animationLock;
+  shouldComponentUpdate(nextProps, nextState) {
+    return (this.props.node.selected !== nextProps.node.selected) &&
+    (!this.props.store.animationLock && !nextProps.store.animationLock);
   }
 
   render() {

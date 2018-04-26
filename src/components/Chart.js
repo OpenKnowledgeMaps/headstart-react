@@ -69,7 +69,7 @@ const Chart = observer(
       return a.zIndex - b.zIndex;
     };
     const entities = store.bubblesStore.entities.concat(store.papersStore.entities);
-    const zIndices = [0,1,2,3,4,5,6,7,8];
+    const zIndices = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
     return (
         <div className="vis-col">
 
@@ -80,8 +80,8 @@ const Chart = observer(
               width={svgWidth}
               height={svgHeight}
               id="chart-svg"
-              // onClick={onSVGClick.bind(this, store)}
-              // onMouseOver={onSVGMouseOver.bind(this, store)}
+              onClick={onSVGClick.bind(this, store)}
+              onMouseOver={onSVGMouseOver.bind(this, store)}
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>
@@ -89,7 +89,7 @@ const Chart = observer(
                   entities.filter((entity) => entity.zIndex === index).map((entity) =>
                   (entity.type === 'bubble'
                   ?
-                    <Bubble         key={entity.id}
+                    <Bubble         key={entity.area}
                                     id={entity.id}
                                     node={entity}
                                     nodes={store.bubblesStore.entities}
