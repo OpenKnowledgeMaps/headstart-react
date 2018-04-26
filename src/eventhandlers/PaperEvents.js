@@ -8,6 +8,8 @@
 function onPaperMouseEnter(store, paper) {
   if (store.forceSimIsDone && store.isZoomed) {
     store.papersStore.zoomedPaper = paper;
+    store.papersStore.entities.filter((entity) => entity.zIndex >= 5).forEach((entity) => entity.zIndex = 5);
+    paper.zIndex = 6;
   }
   store.papersStore.hoveredEntity = paper;
 }
