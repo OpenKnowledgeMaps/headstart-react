@@ -139,9 +139,9 @@ const Paper =
                 <p id="in" className={textClassName}>in
                   <span className={textClassName}>
                     <HighlightableText highlightStrings={highlightStrings} value={published_in}/>
-                    <span className="pubyear">
-                      (<HighlightableText highlightStrings={highlightStrings} value={year} />)
-                    </span>
+                  </span>{" "}
+                  <span className="pubyear">
+                    (<HighlightableText highlightStrings={highlightStrings} value={year} />)
                   </span>
                 </p>
 
