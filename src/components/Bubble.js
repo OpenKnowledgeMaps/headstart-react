@@ -50,6 +50,7 @@ class Bubble extends React.Component {
       .attr("r", r_)
       .on("end", () =>
         this.setState({
+          ...this.state,
           x: x_,
           y: y_,
           r: r_
