@@ -64,7 +64,7 @@ const Paper =
       // Adds css classes/other styles according to visualization state
       // TODO extract parts of it to functions, define css classes instead of manually styling them here
       let textClassName = 'highlightable';
-      const pathD = 'M ' + 0 + ' ' + 0 +
+      const pathD = 'M ' + x + ' ' + y +
                     ' h ' + (0.9*w) +
                     ' l ' + (0.1*w) + ' ' + (0.1*h) +
                     ' v ' + (0.9*h) +
@@ -73,12 +73,11 @@ const Paper =
       let pathClassName = clicked ? 'framed' : 'unframed';
       let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
 
-      let dogearPath = "M " + (0 + 0.9*w) + ' ' + 0 + " v " + (0.1*h) + " h " + (0.1*w);
+      let dogearPath = "M " + (x + 0.9*w) + ' ' + y + " v " + (0.1*h) + " h " + (0.1*w);
       let displayStyle = {display: "block", cursor : "default"};
       let metadataStyle = {height: (0.75*h) + "px", width: (0.9*w) + "px"};
       let readersDivStyle = {height: 0.24*h + "px", width: w + "px", marginBottom: "0px", marginTop: "0px"};
       let citationsFontSize = "8px";
-      let translateString = "translate(" + x + " " + y + ")";
       let highlightStrings = searchString.split(' ');
 
       if (selected) {
@@ -104,7 +103,6 @@ const Paper =
           onClick={onPaperClick.bind(this, store, paper)}
           className="paper"
           style={displayStyle}
-          transform={translateString}
         >
 
           <path
@@ -120,6 +118,8 @@ const Paper =
         </path>
 
           <foreignObject
+            x={x}
+            y={y}
             width={w}
             height={h}
             style={{"overflow":"hidden"}}

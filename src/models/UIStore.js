@@ -103,24 +103,20 @@ class UIStore {
     const midy = this.svgHeight*0.5;
 
     const duration = this.config.zoomDuration;
-    let ratio = 0.;
-    let t = timer(elapsed => {
-      ratio = (elapsed/duration) > 1 ? 1. : elapsed/duration;
-      const easeFactor = easePolyInOut(ratio, 1.2);
-      const newz = (1 - easeFactor)*startz_ + easeFactor*z;
-      const newy = (1 - easeFactor)*starty_ + easeFactor*y;
-      const newx = (1 - easeFactor)*startx_ + easeFactor*x;
+    // TODO remove ratio?
+    let ratio = 1.0;
+    const easeFactor = easePolyInOut(ratio, 1.2);
+    const newz = (1 - easeFactor)*startz_ + easeFactor*z;
+    const newy = (1 - easeFactor)*starty_ + easeFactor*y;
+    const newx = (1 - easeFactor)*startx_ + easeFactor*x;
 
-      this.translationVecX = midx - newz*newx;
-      this.translationVecY = midy - newz*newy;
-      this.zoomFactor = newz;
-      // this.updateZoomState2(startz, startx, starty);
-
-      if ( elapsed > duration ) {
-        t.stop();
-        if (typeof  callback === 'function') callback();
-      }
-    });
+    this.translationVecX = midx - newz*newx;
+    this.translationVecY = midy - newz*newy;
+    this.zoomFactor = newz;
+    // this.updateZoomState2(startz, startx, starty);
+    
+    // TODO callback not needed if synchronous
+    if (typeof  callback === 'function') callback();
   }
 
 

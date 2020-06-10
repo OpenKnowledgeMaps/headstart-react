@@ -41,7 +41,7 @@ const Bubble =
       if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
         areaTitleStyle.display = "none";
       }
-      const translateString = "translate(" + x_ + " " + y_ + ")";
+      
       let titleFontSize = "16px";
       if (store.svgWidth <= 650) {
         titleFontSize = "12px";
@@ -58,18 +58,17 @@ const Bubble =
            onClick={onBubbleClick.bind(this, store, node)}
            onDoubleClick={onBubbleDoubleClick.bind(this, store, node)}
            className="bubble_frame"
-           transform={translateString}
         >
           <circle
             className={circleClassName}
             r={r_}
-            cx={0}
-            cy={0}
+            cx={x_}
+            cy={y_}
             style={circleStyle}
           />
           <foreignObject
-            x={0 - r_/sqrtOfTwo}
-            y={0 - r_/sqrtOfTwo}
+            x={x_ - r_/sqrtOfTwo}
+            y={y_ - r_/sqrtOfTwo}
             width={2*r_/sqrtOfTwo}
             height={2*r_/sqrtOfTwo}
             id="area_title_object"
