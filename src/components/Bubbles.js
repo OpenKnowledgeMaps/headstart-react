@@ -17,9 +17,7 @@ const Bubbles =
       const selectedNodes = nodes.selectedEntities;
       return (
         <g>
-          <NodesList store={store} nodes={flagLessNodes}/>
-          <NodesList store={store} nodes={activeNodes}/>
-          <NodesList store={store} nodes={selectedNodes}/>
+          <NodesList store={store} nodes={nodes.entities}/>
         </g>);
       }
 );

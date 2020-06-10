@@ -2,6 +2,7 @@ import React from 'react';
 import {observer} from 'mobx-react';
 import HighlightableText from './HighlightableText';
 import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleClick} from '../eventhandlers/BubbleEvents';
+import * as d3 from "d3";
 
 /**
  * Bubble component
@@ -12,6 +13,13 @@ import {onBubbleMouseEnter, onBubbleMouseLeave, onBubbleClick, onBubbleDoubleCli
 class Bubble extends React.Component {
   constructor(props) {
     super(props);
+    const { x_, y_, r_ } = this.getCoordinates();
+    this.state = {
+      x: x_,
+      y: y_,
+      r: r_
+    };
+    this.circleRef = React.createRef();
   }
 
   getCoordinates() {
@@ -24,7 +32,30 @@ class Bubble extends React.Component {
   
     return { x_, y_, r_ };
   };
-    
+
+  componentDidUpdate(prevProps) {
+    const { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    if (prevProps.zoomFactor === zoomFactor && prevProps.translationVecX === translationVecX && prevProps.translationVecY === translationVecY) {
+      return;
+    }
+    let el = d3.select(this.circleRef.current);
+    const { x_, y_, r_ } = this.getCoordinates();
+
+    el.transition()
+      // TODO config
+      .duration(500)
+      .ease(d3.easeLinear)
+      .attr("cx", x_)
+      .attr("cy", y_)
+      .attr("r", r_)
+      .on("end", () =>
+        this.setState({
+          x: x_,
+          y: y_,
+          r: r_
+        })
+      );
+  } 
 
   render() {
     let node = this.props.node;
@@ -41,10 +72,15 @@ class Bubble extends React.Component {
     }
     
     const { x_, y_, r_ } = this.getCoordinates();
+    const { x, y, r } = this.state;
 
     const sqrtOfTwo = Math.sqrt(2);
     let areaTitleStyle = {wordWrap : "break-word", fontSize : "12px", width: 2*r_/sqrtOfTwo, height: 2*r_/sqrtOfTwo};
     if ((node.active || node.selected) || (store.bubblesStore.hasSelectedEntities && !node.selected)) {
+      areaTitleStyle.display = "none";
+    }
+
+    if (x !== x_ || y !== y_ || r !== r_) {
       areaTitleStyle.display = "none";
     }
     
@@ -66,10 +102,11 @@ class Bubble extends React.Component {
           className="bubble_frame"
       >
         <circle
+          ref={this.circleRef}
           className={circleClassName}
-          r={r_}
-          cx={x_}
-          cy={y_}
+          r={r}
+          cx={x}
+          cy={y}
           style={circleStyle}
         />
         <foreignObject
