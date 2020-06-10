@@ -102,7 +102,6 @@ class UIStore {
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
 
-    const duration = this.config.zoomDuration;
     // TODO remove ratio?
     let ratio = 1.0;
     const easeFactor = easePolyInOut(ratio, 1.2);
