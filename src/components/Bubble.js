@@ -33,12 +33,25 @@ class Bubble extends React.Component {
     return { x_, y_, r_ };
   };
 
-  componentDidUpdate(prevProps) {
-    const { zoomFactor, translationVecX, translationVecY } = this.props.store;
-    // TODO optimize
-    if (prevProps.zoomFactor === zoomFactor && prevProps.translationVecX === translationVecX && prevProps.translationVecY === translationVecY) {
+  componentDidUpdate() {
+    const { x_, y_, r_ } = this.getCoordinates();
+    const { x, y, r } = this.state;
+    if (x === x_ && y === y_ && r === r_ ) {
       return;
     }
+    if (this.props.store.animationLock) {
+      this.animate();
+    } else {
+      this.setState({
+        ...this.state,
+        x: x_,
+        y: y_,
+        r: r_
+      });
+    }
+  }
+
+  animate() {
     let el = d3.select(this.circleRef.current);
     const { x_, y_, r_ } = this.getCoordinates();
 
@@ -58,7 +71,7 @@ class Bubble extends React.Component {
         });
         this.props.store.animationLock = false;
       });
-  } 
+  }
 
   render() {
     let node = this.props.node;
