@@ -35,6 +35,7 @@ class Bubble extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    // TODO optimize
     if (prevProps.zoomFactor === zoomFactor && prevProps.translationVecX === translationVecX && prevProps.translationVecY === translationVecY) {
       return;
     }
@@ -48,14 +49,15 @@ class Bubble extends React.Component {
       .attr("cx", x_)
       .attr("cy", y_)
       .attr("r", r_)
-      .on("end", () =>
+      .on("end", () => {
         this.setState({
           ...this.state,
           x: x_,
           y: y_,
           r: r_
-        })
-      );
+        });
+        this.props.store.animationLock = false;
+      });
   } 
 
   render() {

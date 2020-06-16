@@ -15,7 +15,8 @@ import HighlightableText from './HighlightableText';
 class Paper extends React.Component {
   constructor(props) {
     super(props);
-    const { x_, y_, w_, h_ } = this.getCoordinates();
+    this.isAnimatedOnMount = this.isAnimated();
+    const { x_, y_, w_, h_ } = this.getCoordinates(this.isAnimatedOnMount);
     const path_ = this.getPath(x_, y_, w_, h_);
     const dogear_ = this.getDogEar(x_, y_, w_, h_);
     this.state = {
@@ -31,9 +32,22 @@ class Paper extends React.Component {
     this.objRef = React.createRef();
   }
 
-  getCoordinates() {
+  /**
+   * Returns true if the component is mounted during the animation.
+   */
+  isAnimated() {
+    return this.props.store.animationLock;
+  }
+
+  getCoordinates(prev = false) {
     const { orig_x, orig_y, orig_width, orig_height } = this.props.paper;
-    const { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    let { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    if (prev) {
+      const { prevZoomFactor, prevTranslationVecX, prevTranslationVecY } = this.props.store;
+      zoomFactor = prevZoomFactor;
+      translationVecX = prevTranslationVecX;
+      translationVecY = prevTranslationVecY;
+    }
   
     // Actual coordinates and dimensions for the Paper is calculated from the
     // orig_ prefixed values
@@ -46,17 +60,30 @@ class Paper extends React.Component {
     return { x_, y_, w_, h_ };
   };
 
+  componentDidMount() {
+    if (this.isAnimatedOnMount) {
+      this.animate();
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { zoomFactor, translationVecX, translationVecY } = this.props.store;
-    if (prevProps.zoomFactor === zoomFactor && prevProps.translationVecX === translationVecX && prevProps.translationVecY === translationVecY) {
+    const prevStore = prevProps.store;
+    if (prevStore.zoomFactor === zoomFactor && prevStore.translationVecX === translationVecX && prevStore.translationVecY === translationVecY) {
       return;
     }
 
-    this.animatePath();
+    this.animate();
   }
 
-  animatePath() {
+  animate() {
     const { x_, y_, w_, h_ } = this.getCoordinates();
+    this.setPathAnimated(x_, y_, w_, h_);
+    this.setDogEarAnimated(x_, y_, w_, h_);
+    this.setObjectAnimated(x_, y_, w_, h_);
+  }
+
+  setPathAnimated(x_, y_, w_, h_) {
     const path = this.getPath(x_, y_, w_, h_);
 
     let el = d3.select(this.pathRef.current);
@@ -72,8 +99,7 @@ class Paper extends React.Component {
       );
   }
 
-  animateDogEar() {
-    const { x_, y_, w_, h_ } = this.getCoordinates();
+  setDogEarAnimated(x_, y_, w_, h_) {
     const path = this.getDogEar(x_, y_, w_, h_);
 
     let el = d3.select(this.dogearRef.current);
@@ -85,6 +111,26 @@ class Paper extends React.Component {
         this.setState({
           ...this.state,
           dogear: path
+        })
+      );
+  }
+
+  setObjectAnimated(x_, y_, w_, h_) {
+    let el = d3.select(this.objRef.current);
+    el.transition()
+      .duration(500)
+      .ease(d3.easeLinear)
+      .attr("x", x_)
+      .attr("y", y_)
+      .attr("w", w_)
+      .attr("h", h_)
+      .on("end", () =>
+        this.setState({
+          ...this.state,
+          x: x_,
+          y: y_,
+          w: w_,
+          h: h_
         })
       );
   }
@@ -108,8 +154,7 @@ class Paper extends React.Component {
     const store = this.props.store;
     const paper = this.props.paper;
 
-    const { x_, y_, w_, h_ } = this.getCoordinates();
-    let { x, y, w, h, path } = this.state;
+    let { x, y, w, h, path, dogear } = this.state;
     const { svgWidth, svgHeight, searchString, papersStore } = store;
     const {
       zoomed,
@@ -123,18 +168,19 @@ class Paper extends React.Component {
       year
     } = paper;
 
-    // Caculate enlarged paper dimensions so paper stays within svg
-    // when paper is hovered in zoomed-in visualization state
-    // TODO zoomed flag should be renamed hovered
-    while (
-      zoomed &&
-      ((x + w) < svgWidth) &&
-      ((y + h) < svgHeight) &&
-      (w < svgWidth*0.5) &&
-      (h < svgHeight*0.5)) {
-      w += 1;
-      h += 1.33;
+    if (zoomed) {
+      while (
+        ((x + w) < svgWidth) &&
+        ((y + h) < svgHeight) &&
+        (w < svgWidth*0.5) &&
+        (h < svgHeight*0.5)) {
+        w += 1;
+        h += 1.33;
+      }
+      path = this.getPath(x, y, w, h);
+      dogear = this.getDogEar(x, y, w, h);
     }
+    
 
     // The messy part
     // Creates SVG paths
@@ -144,7 +190,6 @@ class Paper extends React.Component {
     let pathClassName = clicked ? 'framed' : 'unframed';
     let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
 
-    let dogearPath = this.getDogEar(x, y, w, h);
     let displayStyle = {display: "block", cursor : "default"};
     let metadataStyle = {height: (0.75*h) + "px", width: (0.9*w) + "px"};
     let readersDivStyle = {height: 0.24*h + "px", width: w + "px", marginBottom: "0px", marginTop: "0px"};
@@ -184,11 +229,13 @@ class Paper extends React.Component {
         </path>
 
         <path
+          ref={this.dogearRef}
           className="dogear"
-          d={dogearPath}>
+          d={dogear}>
         </path>
 
         <foreignObject
+          ref={this.objRef}
           x={x}
           y={y}
           width={w}

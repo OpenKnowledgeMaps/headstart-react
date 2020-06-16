@@ -27,6 +27,7 @@ class UIStore {
     this.previousSVGSize = Math.min(initWidth*0.6, initHeight);
     this.isZoomed = false;
     this.lock = false;
+    this.animationLock = false;
 
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
@@ -43,6 +44,9 @@ class UIStore {
       zoomFactor: 1,            // the zoomFactor - a value of 1 means no zoom
       translationVecX: 0,       // a translation vector for the x coordinate, value of 0 means the viz is centered
       translationVecY: 0,       // a translation vector for the y coordinate, value of 0 means the viz is centered
+      prevZoomFactor: 1,
+      prevTranslationVecX: 0,
+      prevTranslationVecY: 0,
       searchString: "",         // the string entered into the list search input
       displayList: true,        // whether list is shown or not
       sortOption: null,         // by which criteria the list should be sorted
@@ -102,22 +106,37 @@ class UIStore {
     const midx = this.svgWidth*0.5;
     const midy = this.svgHeight*0.5;
 
-    // TODO remove ratio?
+    // TODO remove ???
     let ratio = 1.0;
     const easeFactor = easePolyInOut(ratio, 1.2);
-    const newz = (1 - easeFactor)*startz_ + easeFactor*z;
-    const newy = (1 - easeFactor)*starty_ + easeFactor*y;
-    const newx = (1 - easeFactor)*startx_ + easeFactor*x;
+    const newz = (1 - easeFactor) * startz_ + easeFactor * z;
+    const newy = (1 - easeFactor) * starty_ + easeFactor * y;
+    const newx = (1 - easeFactor) * startx_ + easeFactor * x;
 
-    this.translationVecX = midx - newz*newx;
-    this.translationVecY = midy - newz*newy;
-    this.zoomFactor = newz;
+    this.animationLock = true;
+    this.setTranslationVecX(midx - newz * newx);
+    this.setTranslationVecY(midy - newz * newy);
+    this.setZoomFactor(newz);
     // this.updateZoomState2(startz, startx, starty);
     
     // TODO callback not needed if synchronous
     if (typeof  callback === 'function') callback();
   }
 
+  setTranslationVecX(translationVecX) {
+    this.prevTranslationVecX = this.translationVecX;
+    this.translationVecX = translationVecX;
+  }
+
+  setTranslationVecY(translationVecY) {
+    this.prevTranslationVecY = this.translationVecY;
+    this.translationVecY = translationVecY;
+  }
+
+  setZoomFactor(zoomFactor) {
+    this.prevZoomFactor = this.zoomFactor;
+    this.zoomFactor = zoomFactor;
+  }
 
   /**
    * Returns the visualization to the original 'zoomed-out' state;
