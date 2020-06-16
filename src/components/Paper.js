@@ -66,14 +66,25 @@ class Paper extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { zoomFactor, translationVecX, translationVecY } = this.props.store;
-    const prevStore = prevProps.store;
-    if (prevStore.zoomFactor === zoomFactor && prevStore.translationVecX === translationVecX && prevStore.translationVecY === translationVecY) {
+  componentDidUpdate() {
+    const { x_, y_, w_, h_ } = this.getCoordinates();
+    const { x, y, w, h } = this.state;
+    
+    if (x === x_ && y === y_ && w === w_ && h === h_ ) {
       return;
     }
 
-    this.animate();
+    if (this.props.store.animationLock) {
+      this.animate();
+    } else {
+      this.setState({
+        ...this.state,
+        x: x_,
+        y: y_,
+        w: w_,
+        h: h_
+      });
+    }
   }
 
   animate() {

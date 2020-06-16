@@ -81,7 +81,7 @@ const Chart = observer(
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>
-                {flaglessPapers}
+                {this.props.store.forceSimIsDone && flaglessPapers}
                 <Nodes store={store} nodes={bubblesStore}/>
                 {activePapers}
                 {selectedPapers}
