@@ -216,7 +216,11 @@ class Paper extends React.Component {
       readersDivStyle.marginTop = '5px';
       citationsFontSize = '11px';
     } else {
-      if (papersStore.hasSelectedEntities) displayStyle.display = "none";
+      if (papersStore.hasSelectedEntities) {
+        displayStyle.display = "none";
+      } else {
+        displayStyle.cursor = "zoom-in";
+      }
     }
     if (zoomed) {
       textClassName = 'larger';

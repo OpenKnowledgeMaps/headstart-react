@@ -106,6 +106,8 @@ class Bubble extends React.Component {
     let areaStyle = {};
     if ((node.active || store.bubblesStore.hasSelectedEntities) && !node.selected) {
       areaStyle.cursor = "zoom-in";
+    } else {
+      areaStyle.cursor = "auto";
     }
     
     const { x_, y_, r_ } = this.getCoordinates();
@@ -145,7 +147,7 @@ class Bubble extends React.Component {
           r={r}
           cx={x}
           cy={y}
-          style={circleStyle}
+          style={{...circleStyle, ...areaStyle}}
         />
         <foreignObject
           x={x_ - r_/sqrtOfTwo}
