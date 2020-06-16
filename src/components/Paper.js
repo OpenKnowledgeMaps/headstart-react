@@ -133,8 +133,8 @@ class Paper extends React.Component {
       .ease(d3.easeLinear)
       .attr("x", x_)
       .attr("y", y_)
-      .attr("w", w_)
-      .attr("h", h_)
+      .attr("width", w_)
+      .attr("height", h_)
       .on("end", () =>
         this.setState({
           ...this.state,
@@ -251,7 +251,7 @@ class Paper extends React.Component {
           y={y}
           width={w}
           height={h}
-          style={{"overflow":"hidden"}}
+          style={{overflow: "hidden"}}
         >
           <div className="paper_holder">
             <div className="metadata" style={metadataStyle}>
