@@ -225,9 +225,9 @@ class Paper extends React.Component {
 
     return (
       <g
-        onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
+        onMouseEnter={this.isAnimated() ? undefined : onPaperMouseEnter.bind(this, store, paper)}
         onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
-        onClick={onPaperClick.bind(this, store, paper)}
+        onClick={this.isAnimated() ? undefined : onPaperClick.bind(this, store, paper)}
         className="paper"
         style={displayStyle}
       >

@@ -76,8 +76,8 @@ const Chart = observer(
               width={svgWidth}
               height={svgHeight}
               id="chart-svg"
-              onClick={onSVGClick.bind(this, store)}
-              onMouseOver={onSVGMouseOver.bind(this, store)}
+              onClick={this.props.store.animationLock ? undefined : onSVGClick.bind(this, store)}
+              onMouseOver={this.props.store.animationLock ? undefined : onSVGMouseOver.bind(this, store)}
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>

@@ -27,7 +27,6 @@ class UIStore {
     this.previousSVGSize = Math.min(initWidth*0.6, initHeight);
     this.isZoomed = false;
     this.lock = false;
-    this.animationLock = false;
 
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
@@ -50,7 +49,8 @@ class UIStore {
       searchString: "",         // the string entered into the list search input
       displayList: true,        // whether list is shown or not
       sortOption: null,         // by which criteria the list should be sorted
-      topic: 'cool'             // the topic of the map, to be included in the subtitle
+      topic: 'cool',            // the topic of the map, to be included in the subtitle
+      animationLock: false
     });
     this.initCoords(this.previousSVGSize);
   }
@@ -117,6 +117,7 @@ class UIStore {
     this.setTranslationVecX(midx - newz * newx);
     this.setTranslationVecY(midy - newz * newy);
     this.setZoomFactor(newz);
+    setTimeout(() => this.animationLock = false, 500);
     // this.updateZoomState2(startz, startx, starty);
     
     // TODO callback not needed if synchronous

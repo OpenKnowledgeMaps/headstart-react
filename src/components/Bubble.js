@@ -86,7 +86,6 @@ class Bubble extends React.Component {
           y: y_,
           r: r_
         });
-        this.props.store.animationLock = false;
       });
   }
 
@@ -128,10 +127,10 @@ class Bubble extends React.Component {
 
     const areaName = (node.area.length > 55) ? node.area.slice(0,55) + "..." : node.area;
     return (
-      <g onMouseEnter={onBubbleMouseEnter.bind(this, store, node)}
+      <g onMouseEnter={this.isAnimated() ? undefined : onBubbleMouseEnter.bind(this, store, node)}
           onMouseLeave={onBubbleMouseLeave.bind(this, store)}
-          onClick={onBubbleClick.bind(this, store, node)}
-          onDoubleClick={onBubbleDoubleClick.bind(this, store, node)}
+          onClick={this.isAnimated() ? undefined : onBubbleClick.bind(this, store, node)}
+          onDoubleClick={this.isAnimated() ? undefined : onBubbleDoubleClick.bind(this, store, node)}
           className="bubble_frame"
       >
         <circle
