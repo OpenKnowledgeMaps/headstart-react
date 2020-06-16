@@ -13,7 +13,8 @@ import * as d3 from "d3";
 class Bubble extends React.Component {
   constructor(props) {
     super(props);
-    const { x_, y_, r_ } = this.getCoordinates();
+    this.isAnimatedOnMount = this.isAnimated();
+    const { x_, y_, r_ } = this.getCoordinates(this.isAnimatedOnMount);
     this.state = {
       x: x_,
       y: y_,
@@ -22,9 +23,19 @@ class Bubble extends React.Component {
     this.circleRef = React.createRef();
   }
 
-  getCoordinates() {
+  isAnimated() {
+    return this.props.store.animationLock;
+  }
+
+  getCoordinates(prev = false) {
     const { orig_x, orig_y, orig_r } = this.props.node;
-    const { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    let { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    if (prev) {
+      const { prevZoomFactor, prevTranslationVecX, prevTranslationVecY } = this.props.store;
+      zoomFactor = prevZoomFactor;
+      translationVecX = prevTranslationVecX;
+      translationVecY = prevTranslationVecY;
+    }
   
     const x_ = zoomFactor * orig_x + translationVecX;
     const y_ = zoomFactor * orig_y + translationVecY;
@@ -32,6 +43,12 @@ class Bubble extends React.Component {
   
     return { x_, y_, r_ };
   };
+
+  componentDidMount() {
+    if (this.isAnimatedOnMount) {
+      this.animate();
+    }
+  }
 
   componentDidUpdate() {
     const { x_, y_, r_ } = this.getCoordinates();
