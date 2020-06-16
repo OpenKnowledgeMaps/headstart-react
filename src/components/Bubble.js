@@ -102,6 +102,11 @@ class Bubble extends React.Component {
       circleClassName = node.active ? "zoom_selected" : "area";
       circleStyle.fillOpacity = (node.active || node.selected) ? "1." : "0.8";
     }
+
+    let areaStyle = {};
+    if ((node.active || store.bubblesStore.hasSelectedEntities) && !node.selected) {
+      areaStyle.cursor = "zoom-in";
+    }
     
     const { x_, y_, r_ } = this.getCoordinates();
     const { x, y, r } = this.state;
@@ -132,6 +137,7 @@ class Bubble extends React.Component {
           onClick={this.isAnimated() ? undefined : onBubbleClick.bind(this, store, node)}
           onDoubleClick={this.isAnimated() ? undefined : onBubbleDoubleClick.bind(this, store, node)}
           className="bubble_frame"
+          style={areaStyle}
       >
         <circle
           ref={this.circleRef}
