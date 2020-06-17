@@ -94,6 +94,12 @@ class Paper extends React.Component {
     this.setObjectAnimated(x_, y_, w_, h_);
   }
 
+  componentWillUnmount() {
+    d3.select(this.pathRef.current).interrupt();
+    d3.select(this.dogearRef.current).interrupt();
+    d3.select(this.objRef.current).interrupt();
+  }
+
   setPathAnimated(x_, y_, w_, h_) {
     const path = this.getPath(x_, y_, w_, h_);
 

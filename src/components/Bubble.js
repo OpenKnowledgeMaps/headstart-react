@@ -89,6 +89,11 @@ class Bubble extends React.Component {
       });
   }
 
+  componentWillUnmount() {
+    let el = d3.select(this.circleRef.current);
+    el.interrupt();
+  }
+
   render() {
     let node = this.props.node;
     let store = this.props.store;
