@@ -5,6 +5,9 @@
  * @param node - The clicked Bubble
  */
 function onBubbleClick(store, node) {
+  if (store.animationLock) {
+    return;
+  }
   if (store.forceSimIsDone && !node.selected) {
     let prevNode = store.bubblesStore.selectedEntities[0];
     store.bubblesStore.selectedArea = node.area;
@@ -27,8 +30,10 @@ function onBubbleClick(store, node) {
  * @param store - The UI Store
  * @param node - The double clicked bubble
  */
-function onBubbleDoubleClick(store, node)
-{
+function onBubbleDoubleClick(store, node) {
+  if (store.animationLock) {
+    return;
+  }
   if (store.forceSimIsDone && store.isZoomed) {
       store.bubblesStore.selectedArea = null;
       store.papersStore.selectedArea = null;
@@ -45,13 +50,15 @@ function onBubbleDoubleClick(store, node)
  * @param node - The hovered over bubble
  */
 function onBubbleMouseEnter(store, node) {
-  if (store.forceSimIsDone) {
-    store.bubblesStore.hoveredEntity = node;
-    store.papersStore.hoveredEntity = null;
-    if (!store.bubblesStore.hasSelectedEntities) {
-      store.bubblesStore.activeArea = node.area;
-      store.papersStore.activeArea = node.area;
-    }
+  if (!store.forceSimIsDone) {
+    return;
+  }
+  
+  store.bubblesStore.hoveredEntity = node;
+  store.papersStore.hoveredEntity = null;
+  if (!store.bubblesStore.hasSelectedEntities) {
+    store.bubblesStore.activeArea = node.area;
+    store.papersStore.activeArea = node.area;
   }
 }
 
