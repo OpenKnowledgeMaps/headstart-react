@@ -50,7 +50,8 @@ class UIStore {
       displayList: true,        // whether list is shown or not
       sortOption: null,         // by which criteria the list should be sorted
       topic: 'cool',            // the topic of the map, to be included in the subtitle
-      animationLock: false
+      animationLock: false,
+      hidePapers: false
     });
     this.initCoords(this.previousSVGSize);
   }
@@ -213,6 +214,8 @@ class UIStore {
    * @param check
    */
   updateChartSize(width, height) {
+    this.hidePapers = true;
+
     let newSVGSize = width;
     this.previousSVGSize = this.svgWidth;
     const prevX = this.svgWidth*0.5;
@@ -225,6 +228,8 @@ class UIStore {
     this.translationVecY *= midY/prevY;
     this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
     this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
+
+    this.hidePapers = false;
   }
 }
 

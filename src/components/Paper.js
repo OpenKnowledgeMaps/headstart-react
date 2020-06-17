@@ -82,7 +82,9 @@ class Paper extends React.Component {
         x: x_,
         y: y_,
         w: w_,
-        h: h_
+        h: h_,
+        path: this.getPath(x_, y_, w_, h_),
+        dogear: this.getDogEar(x_, y_, w_, h_)
       });
     }
   }
