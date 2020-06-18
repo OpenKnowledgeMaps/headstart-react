@@ -191,6 +191,14 @@ class Paper extends React.Component {
         w += 1;
         h += 1.33;
       }
+      while (
+        ((x + w_) < svgWidth) &&
+        ((y + h_) < svgHeight) &&
+        (w_ < svgWidth*0.5) &&
+        (h_ < svgHeight*0.5)) {
+        w_ += 1;
+        h_ += 1.33;
+      }
       path = this.getPath(x, y, w, h);
       dogear = this.getDogEar(x, y, w, h);
     }
