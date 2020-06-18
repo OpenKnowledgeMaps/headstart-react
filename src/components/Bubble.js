@@ -72,10 +72,7 @@ class Bubble extends React.Component {
     let el = d3.select(this.circleRef.current);
     const { x_, y_, r_ } = this.getCoordinates();
 
-    el.transition()
-      // TODO config
-      .duration(500)
-      .ease(d3.easeLinear)
+    el.transition(this.props.store.transition)
       .attr("cx", x_)
       .attr("cy", y_)
       .attr("r", r_)

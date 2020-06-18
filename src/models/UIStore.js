@@ -1,9 +1,10 @@
 import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
-import { timer } from 'd3-timer';
+import { transition } from 'd3-transition';
 import { easePolyInOut } from 'd3-ease';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
+import * as d3 from "d3";
 
 /**
  * The UI Store
@@ -27,6 +28,7 @@ class UIStore {
     this.previousSVGSize = Math.min(initWidth*0.6, initHeight);
     this.isZoomed = false;
     this.lock = false;
+    this.transition = null;
 
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
@@ -115,10 +117,15 @@ class UIStore {
     const newx = (1 - easeFactor) * startx_ + easeFactor * x;
 
     this.animationLock = true;
+    // TODO take the duration from config
+    this.transition = transition().duration(750).ease(d3.easePolyInOut.exponent(3));
     this.setTranslationVecX(midx - newz * newx);
     this.setTranslationVecY(midy - newz * newy);
     this.setZoomFactor(newz);
-    setTimeout(() => this.animationLock = false, 500);
+    this.transition.on("end", () => {
+      this.animationLock = false;
+      this.transition = null;
+    });
     // this.updateZoomState2(startz, startx, starty);
     
     // TODO callback not needed if synchronous

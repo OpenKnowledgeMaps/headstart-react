@@ -106,9 +106,7 @@ class Paper extends React.Component {
     const path = this.getPath(x_, y_, w_, h_);
 
     let el = d3.select(this.pathRef.current);
-    el.transition()
-      .duration(500)
-      .ease(d3.easeLinear)
+    el.transition(this.props.store.transition)
       .attr("d", path)
       .on("end", () =>
         this.setState({
@@ -122,9 +120,7 @@ class Paper extends React.Component {
     const path = this.getDogEar(x_, y_, w_, h_);
 
     let el = d3.select(this.dogearRef.current);
-    el.transition()
-      .duration(500)
-      .ease(d3.easeLinear)
+    el.transition(this.props.store.transition)
       .attr("d", path)
       .on("end", () =>
         this.setState({
@@ -136,9 +132,7 @@ class Paper extends React.Component {
 
   setObjectAnimated(x_, y_, w_, h_) {
     let el = d3.select(this.objRef.current);
-    el.transition()
-      .duration(500)
-      .ease(d3.easeLinear)
+    el.transition(this.props.store.transition)
       .attr("x", x_)
       .attr("y", y_)
       .attr("width", w_)
