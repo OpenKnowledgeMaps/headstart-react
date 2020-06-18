@@ -29,8 +29,8 @@ function onSVGClick(store) {
  * @param papersStore - The papersStore
  * @param forceSimIsDone - The UI Store's forceSimIsDone flag
  */
-function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone}) {
-  if (forceSimIsDone) {
+function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone, animationLock}) {
+  if (forceSimIsDone && !animationLock) {
     if (!papersStore.hasHoverEntities &&
         !bubblesStore.hasHoverEntities ) {
       papersStore.activeArea = null;

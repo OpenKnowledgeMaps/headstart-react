@@ -50,7 +50,7 @@ function onBubbleDoubleClick(store, node) {
  * @param node - The hovered over bubble
  */
 function onBubbleMouseEnter(store, node) {
-  if (!store.forceSimIsDone) {
+  if (!store.forceSimIsDone || store.animationLock) {
     return;
   }
   
@@ -67,9 +67,11 @@ function onBubbleMouseEnter(store, node) {
  * @param store - The UI Store
  */
 function onBubbleMouseLeave(store) {
-  if (store.forceSimIsDone) {
-    store.bubblesStore.hoveredEntity = null;
+  if (!store.forceSimIsDone || store.animationLock) {
+    return;
   }
+
+  store.bubblesStore.hoveredEntity = null;
 }
 
 export {onBubbleClick, onBubbleMouseEnter, onBubbleMouseLeave, onBubbleDoubleClick};
