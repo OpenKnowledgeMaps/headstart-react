@@ -50,10 +50,18 @@ function onBubbleDoubleClick(store, node) {
  * @param node - The hovered over bubble
  */
 function onBubbleMouseEnter(store, node) {
-  if (!store.forceSimIsDone || store.animationLock) {
+  if (!store.forceSimIsDone) {
     return;
   }
   
+  if (store.animationLock) {
+    store.mouseeventQueue.push(() => handleMouseEnter(store, node));
+  } else {
+    handleMouseEnter(store, node);
+  }
+}
+
+function handleMouseEnter(store, node) {
   store.bubblesStore.hoveredEntity = node;
   store.papersStore.hoveredEntity = null;
   if (!store.bubblesStore.hasSelectedEntities) {
@@ -67,10 +75,18 @@ function onBubbleMouseEnter(store, node) {
  * @param store - The UI Store
  */
 function onBubbleMouseLeave(store) {
-  if (!store.forceSimIsDone || store.animationLock) {
+  if (!store.forceSimIsDone) {
     return;
   }
 
+  if (store.animationLock) {
+    store.mouseeventQueue.push(() => handleMouseLeave(store));
+  } else {
+    handleMouseLeave(store);
+  }
+}
+
+function handleMouseLeave(store) {
   store.bubblesStore.hoveredEntity = null;
 }
 

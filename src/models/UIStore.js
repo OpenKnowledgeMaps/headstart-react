@@ -29,6 +29,7 @@ class UIStore {
     this.isZoomed = false;
     this.lock = false;
     this.transition = null;
+    this.mouseeventQueue = [];
 
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
@@ -105,31 +106,27 @@ class UIStore {
    * @param startz_- The starting zoom factor;
    * @param callback - A callback function;
    */
-  updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
-    const midx = this.svgWidth*0.5;
-    const midy = this.svgHeight*0.5;
-
-    // TODO remove ???
-    let ratio = 1.0;
-    const easeFactor = easePolyInOut(ratio, 1.2);
-    const newz = (1 - easeFactor) * startz_ + easeFactor * z;
-    const newy = (1 - easeFactor) * starty_ + easeFactor * y;
-    const newx = (1 - easeFactor) * startx_ + easeFactor * x;
+  updateZoomStateAnimated(zoom, x, y, startx_, starty_, startz_, callback) {
+    const midx = this.svgWidth * 0.5;
+    const midy = this.svgHeight * 0.5;
 
     this.animationLock = true;
     // TODO take the duration from config
     this.transition = transition().duration(750).ease(d3.easePolyInOut.exponent(3));
-    this.setTranslationVecX(midx - newz * newx);
-    this.setTranslationVecY(midy - newz * newy);
-    this.setZoomFactor(newz);
+    this.setTranslationVecX(midx - zoom * x);
+    this.setTranslationVecY(midy - zoom * y);
+    this.setZoomFactor(zoom);
     this.transition.on("end", () => {
       this.animationLock = false;
       this.transition = null;
+
+      while (this.mouseeventQueue.length > 0) {
+        let mouseeventHandler = this.mouseeventQueue.shift();
+        if (typeof mouseeventHandler === 'function') mouseeventHandler();
+      }
+
+      if (typeof callback === 'function') callback();
     });
-    // this.updateZoomState2(startz, startx, starty);
-    
-    // TODO callback not needed if synchronous
-    if (typeof  callback === 'function') callback();
   }
 
   setTranslationVecX(translationVecX) {

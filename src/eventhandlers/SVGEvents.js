@@ -29,13 +29,22 @@ function onSVGClick(store) {
  * @param papersStore - The papersStore
  * @param forceSimIsDone - The UI Store's forceSimIsDone flag
  */
-function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone, animationLock}) {
-  if (forceSimIsDone && !animationLock) {
-    if (!papersStore.hasHoverEntities &&
-        !bubblesStore.hasHoverEntities ) {
-      papersStore.activeArea = null;
-      bubblesStore.activeArea = null;
-    }
+function onSVGMouseOver({bubblesStore, papersStore, forceSimIsDone, animationLock, mouseeventQueue}) {
+  if (!forceSimIsDone) {
+    return;
+  }
+
+  if (animationLock) {
+    mouseeventQueue.push(() => handleSVGMouseOver(bubblesStore, papersStore));
+  } else {
+    handleSVGMouseOver(bubblesStore, papersStore);
+  }
+}
+
+function handleSVGMouseOver(bubblesStore, papersStore) {
+  if (!papersStore.hasHoverEntities && !bubblesStore.hasHoverEntities ) {
+    papersStore.activeArea = null;
+    bubblesStore.activeArea = null;
   }
 }
 
