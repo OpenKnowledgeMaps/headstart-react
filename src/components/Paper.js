@@ -168,6 +168,7 @@ class Paper extends React.Component {
     const paper = this.props.paper;
 
     let { x, y, w, h, path, dogear } = this.state;
+    let { w_, h_ } = this.getCoordinates();
     const { svgWidth, svgHeight, searchString, papersStore } = store;
     const {
       zoomed,
@@ -204,15 +205,15 @@ class Paper extends React.Component {
     let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
 
     let displayStyle = {display: "block", cursor : "default"};
-    let metadataStyle = {height: (0.75*h) + "px", width: (0.9*w) + "px"};
-    let readersDivStyle = {height: 0.24*h + "px", width: w + "px", marginBottom: "0px", marginTop: "0px"};
+    let metadataStyle = {height: (0.75 * h_) + "px", width: (0.9 * w_) + "px"};
+    let readersDivStyle = {height: 0.24 * h_ + "px", width: w_ + "px", marginBottom: "0px", marginTop: "0px"};
     let citationsFontSize = "8px";
     let highlightStrings = searchString.split(' ');
 
     if (selected) {
       textClassName = 'large highlightable';
       displayStyle.cursor = "pointer";
-      metadataStyle.height = (h - 20) + "px";
+      metadataStyle.height = (h_ - 20) + "px";
       readersDivStyle.height = 15 + "px";
       readersDivStyle.marginBottom = '3px';
       readersDivStyle.marginTop = '5px';
