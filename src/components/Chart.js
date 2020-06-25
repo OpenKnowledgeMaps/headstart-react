@@ -67,7 +67,7 @@ const Chart = observer(
       <Papers store={store} papers={hoveredEntity.filter((paper) => hasSubstring(paper, searchString))}/>;
 
     let areaStyle = {};
-    if (this.props.store.bubblesStore.hasSelectedEntities) {
+    if (this.props.store.bubblesStore.hasSelectedEntities && ! this.props.store.animationLock) {
       areaStyle.cursor = "zoom-out";
     }
 
