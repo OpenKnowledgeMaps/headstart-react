@@ -6,6 +6,8 @@ import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 import * as d3 from "d3";
 
+const ZOOMED_BUBBLE_RATIO = 2/3;
+
 /**
  * The UI Store
  * The UI Store is the single source of truth for the state of the UI.
@@ -73,7 +75,7 @@ class UIStore {
     const startx = hasNode2 ? node2.orig_x : mid;
     const starty = hasNode2 ? node2.orig_y : mid;
     const startz = this.zoomFactor;
-    const z = mid / (orig_r*1.9);
+    const z = mid / orig_r * ZOOMED_BUBBLE_RATIO;
     const x = orig_x;
     const y = orig_y;
     this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
