@@ -6,7 +6,7 @@ import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
 import * as d3 from "d3";
 
-const ZOOMED_BUBBLE_RATIO = 2/3;
+const ZOOMED_BUBBLE_RATIO = 18/25;
 
 /**
  * The UI Store
