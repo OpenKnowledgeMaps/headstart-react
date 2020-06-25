@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import {onPaperMouseEnter, onPaperMouseLeave, onPaperClick} from '../eventhandlers/PaperEvents';
+import * as d3 from "d3";
 
 import HighlightableText from './HighlightableText';
 
@@ -10,47 +11,179 @@ import HighlightableText from './HighlightableText';
  * Also contains math for the actual coordinate of the Paper on the Chart.
  * @type {<T extends IReactComponent>(clazz: T) => void | IReactComponent | (function({store?: *, paper?: *}))}
  */
-const Paper =
-  observer(
-    ({store, paper}) =>{
-      const {
-        zoomFactor,
-        translationVecX,
-        translationVecY,
-        svgWidth,
-        svgHeight,
-        searchString,
-        papersStore
-      } = store;
-      const {
-        orig_x,
-        orig_y,
-        orig_width,
-        orig_height,
-        zoomed,
-        selected,
-        authors : displayAuthors,
-        title,
-        clicked,
-        oa,
-        readers,
-        published_in,
-        year
-      } = paper;
 
-      // Actual coordinates and dimensions for the Paper is calculated from the
-      // orig_ prefixed values
-      // zoomFactor & translationVecX,Y are set by the zoom state
-      let x =  zoomFactor  *  orig_x + translationVecX;
-      let y =  zoomFactor  *  orig_y + translationVecY;
-      let w =  zoomFactor  *  orig_width;
-      let h =  zoomFactor  *  orig_height;
+class Paper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.isAnimatedOnMount = this.isAnimated();
+    const { x_, y_, w_, h_ } = this.getCoordinates(this.isAnimatedOnMount);
+    const path_ = this.getPath(x_, y_, w_, h_);
+    const dogear_ = this.getDogEar(x_, y_, w_, h_);
+    this.state = {
+      x: x_,
+      y: y_,
+      w: w_,
+      h: h_,
+      path: path_,
+      dogear: dogear_
+    };
+    this.pathRef = React.createRef();
+    this.dogearRef = React.createRef();
+    this.objRef = React.createRef();
+  }
 
-      // Caculate enlarged paper dimensions so paper stays within svg
-      // when paper is hovered in zoomed-in visualization state
-      // TODO zoomed flag should be renamed hovered
+  /**
+   * Returns true if the component is mounted during the animation.
+   */
+  isAnimated() {
+    return this.props.store.animationLock;
+  }
+
+  getCoordinates(prev = false) {
+    const { orig_x, orig_y, orig_width, orig_height } = this.props.paper;
+    let { zoomFactor, translationVecX, translationVecY } = this.props.store;
+    if (prev) {
+      const { prevZoomFactor, prevTranslationVecX, prevTranslationVecY } = this.props.store;
+      zoomFactor = prevZoomFactor;
+      translationVecX = prevTranslationVecX;
+      translationVecY = prevTranslationVecY;
+    }
+  
+    // Actual coordinates and dimensions for the Paper is calculated from the
+    // orig_ prefixed values
+    // zoomFactor & translationVecX,Y are set by the zoom state
+    const x_ =  zoomFactor * orig_x + translationVecX;
+    const y_ =  zoomFactor * orig_y + translationVecY;
+    const w_ =  zoomFactor * orig_width;
+    const h_ =  zoomFactor * orig_height;
+  
+    return { x_, y_, w_, h_ };
+  };
+
+  componentDidMount() {
+    if (this.isAnimatedOnMount) {
+      this.animate();
+    }
+  }
+
+  componentDidUpdate() {
+    const { x_, y_, w_, h_ } = this.getCoordinates();
+    const { x, y, w, h } = this.state;
+    
+    if (x === x_ && y === y_ && w === w_ && h === h_ ) {
+      return;
+    }
+
+    if (this.props.store.animationLock) {
+      this.animate();
+    } else {
+      this.setState({
+        ...this.state,
+        x: x_,
+        y: y_,
+        w: w_,
+        h: h_,
+        path: this.getPath(x_, y_, w_, h_),
+        dogear: this.getDogEar(x_, y_, w_, h_)
+      });
+    }
+  }
+
+  animate() {
+    const { x_, y_, w_, h_ } = this.getCoordinates();
+    this.setPathAnimated(x_, y_, w_, h_);
+    this.setDogEarAnimated(x_, y_, w_, h_);
+    this.setObjectAnimated(x_, y_, w_, h_);
+  }
+
+  componentWillUnmount() {
+    d3.select(this.pathRef.current).interrupt();
+    d3.select(this.dogearRef.current).interrupt();
+    d3.select(this.objRef.current).interrupt();
+  }
+
+  setPathAnimated(x_, y_, w_, h_) {
+    const path = this.getPath(x_, y_, w_, h_);
+
+    let el = d3.select(this.pathRef.current);
+    el.transition(this.props.store.transition)
+      .attr("d", path)
+      .on("end", () =>
+        this.setState({
+          ...this.state,
+          path: path
+        })
+      );
+  }
+
+  setDogEarAnimated(x_, y_, w_, h_) {
+    const path = this.getDogEar(x_, y_, w_, h_);
+
+    let el = d3.select(this.dogearRef.current);
+    el.transition(this.props.store.transition)
+      .attr("d", path)
+      .on("end", () =>
+        this.setState({
+          ...this.state,
+          dogear: path
+        })
+      );
+  }
+
+  setObjectAnimated(x_, y_, w_, h_) {
+    let el = d3.select(this.objRef.current);
+    el.transition(this.props.store.transition)
+      .attr("x", x_)
+      .attr("y", y_)
+      .attr("width", w_)
+      .attr("height", h_)
+      .on("end", () =>
+        this.setState({
+          ...this.state,
+          x: x_,
+          y: y_,
+          w: w_,
+          h: h_
+        })
+      );
+  }
+
+  getPath(x, y, w, h) {
+    const pathD = 'M ' + x + ' ' + y +
+                  ' h ' + (0.9 * w) +
+                  ' l ' + (0.1 * w) + ' ' + (0.1 * h) +
+                  ' v ' + (0.9 * h) +
+                  ' h ' + (-w) +
+                  ' v ' + (-h);
+
+    return pathD;
+  }
+
+  getDogEar(x, y, w, h) {
+    return "M " + (x + 0.9 * w) + ' ' + y + " v " + (0.1 * h) + " h " + (0.1 * w);
+  }
+
+  render() {
+    const store = this.props.store;
+    const paper = this.props.paper;
+
+    let { x, y, w, h, path, dogear } = this.state;
+    let { x_, y_, w_, h_ } = this.getCoordinates();
+    const { svgWidth, svgHeight, searchString, papersStore } = store;
+    const {
+      zoomed,
+      selected,
+      authors : displayAuthors,
+      title,
+      clicked,
+      oa,
+      readers,
+      published_in,
+      year
+    } = paper;
+
+    if (zoomed) {
       while (
-        zoomed &&
         ((x + w) < svgWidth) &&
         ((y + h) < svgHeight) &&
         (w < svgWidth*0.5) &&
@@ -58,81 +191,97 @@ const Paper =
         w += 1;
         h += 1.33;
       }
+      while (
+        ((x + w_) < svgWidth) &&
+        ((y + h_) < svgHeight) &&
+        (w_ < svgWidth*0.5) &&
+        (h_ < svgHeight*0.5)) {
+        w_ += 1;
+        h_ += 1.33;
+      }
+      path = this.getPath(x, y, w, h);
+      dogear = this.getDogEar(x, y, w, h);
+    }
+    
 
-      // The messy part
-      // Creates SVG paths
-      // Adds css classes/other styles according to visualization state
-      // TODO extract parts of it to functions, define css classes instead of manually styling them here
-      let textClassName = 'highlightable';
-      const pathD = 'M ' + 0 + ' ' + 0 +
-                    ' h ' + (0.9*w) +
-                    ' l ' + (0.1*w) + ' ' + (0.1*h) +
-                    ' v ' + (0.9*h) +
-                    ' h ' + (-w) +
-                    ' v ' + (-h);
-      let pathClassName = clicked ? 'framed' : 'unframed';
-      let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
+    // The messy part
+    // Creates SVG paths
+    // Adds css classes/other styles according to visualization state
+    // TODO extract parts of it to functions, define css classes instead of manually styling them here
+    let textClassName = 'highlightable';
+    let pathClassName = clicked ? 'framed' : 'unframed';
+    let openAccessStyle = oa ? {height: (15) + "px", display: "block", marginBottom:"3px"} : {display: "none"};
 
-      let dogearPath = "M " + (0 + 0.9*w) + ' ' + 0 + " v " + (0.1*h) + " h " + (0.1*w);
-      let displayStyle = {display: "block", cursor : "default"};
-      let metadataStyle = {height: (0.75*h) + "px", width: (0.9*w) + "px"};
-      let readersDivStyle = {height: 0.24*h + "px", width: w + "px", marginBottom: "0px", marginTop: "0px"};
-      let citationsFontSize = "8px";
-      let translateString = "translate(" + x + " " + y + ")";
-      let highlightStrings = searchString.split(' ');
+    let displayStyle = {display: "block", cursor : "default"};
+    let metadataStyle = {height: (0.75 * h_) + "px", width: (0.9 * w_) + "px"};
+    let readersDivStyle = {height: 0.24 * h_ + "px", width: w_ + "px", marginBottom: "0px", marginTop: "0px"};
+    let citationsFontSize = "8px";
+    let highlightStrings = searchString.split(' ');
 
-      if (selected) {
-        textClassName = 'large highlightable';
-        displayStyle.cursor = "pointer";
-        metadataStyle.height = (h - 20) + "px";
-        readersDivStyle.height = 15 + "px";
-        readersDivStyle.marginBottom = '3px';
-        readersDivStyle.marginTop = '5px';
-        citationsFontSize = '11px';
+    if (selected) {
+      textClassName = 'large highlightable';
+      displayStyle.cursor = "pointer";
+      metadataStyle.height = (h_ - 20) + "px";
+      readersDivStyle.height = 15 + "px";
+      readersDivStyle.marginBottom = '3px';
+      readersDivStyle.marginTop = '5px';
+      citationsFontSize = '11px';
+    } else {
+      if (papersStore.hasSelectedEntities) {
+        displayStyle.display = "none";
       } else {
-        if (papersStore.hasSelectedEntities) displayStyle.display = "none";
+        displayStyle.cursor = "zoom-in";
       }
-      if (zoomed) {
-        textClassName = 'larger';
-        citationsFontSize = '11px';
-      }
+    }
+    if (zoomed) {
+      textClassName = 'larger';
+      citationsFontSize = '11px';
+    }
 
-      return (
-        <g
-          onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
-          onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
-          onClick={onPaperClick.bind(this, store, paper)}
-          className="paper"
-          style={displayStyle}
-          transform={translateString}
+    let zoomingOut = false;
+    if (!selected && (x !== x_ || y !== y_)) {
+      zoomingOut = true;
+    }
+
+    return (
+      <g
+        onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
+        onMouseLeave={onPaperMouseLeave.bind(this, store, paper)}
+        onClick={onPaperClick.bind(this, store, paper)}
+        className="paper"
+        style={displayStyle}
+      >
+        <path
+          ref={this.pathRef}
+          id="region"
+          d={path}
+          className={pathClassName}
         >
-
-          <path
-            id="region"
-            d={pathD}
-            className={pathClassName}
-          >
-          </path>
-
-          <path
-          className="dogear"
-          d={dogearPath}>
         </path>
 
-          <foreignObject
-            width={w}
-            height={h}
-            style={{"overflow":"hidden"}}
-          >
-            <div className="paper_holder">
+        <path
+          ref={this.dogearRef}
+          className="dogear"
+          d={dogear}>
+        </path>
 
-              <div className="metadata" style={metadataStyle}>
-                <div id="icons" style={openAccessStyle}>
-                  <p id="open-access-logo" className={textClassName}>&#xf09c;</p>
-                </div>
-                <p id="title" className={textClassName}>
-                  <HighlightableText highlightStrings={highlightStrings} value={title}/>
-                </p>
+        <foreignObject
+          ref={this.objRef}
+          x={x}
+          y={y}
+          width={w}
+          height={h}
+          style={{overflow: "hidden"}}
+        >
+          <div className="paper_holder">
+            <div className="metadata" style={metadataStyle}>
+              <div id="icons" style={openAccessStyle}>
+                <p id="open-access-logo" className={textClassName}>&#xf09c;</p>
+              </div>
+              <p id="title" className={textClassName}>
+                <HighlightableText highlightStrings={highlightStrings} value={title}/>
+              </p>
+              {!zoomingOut && <React.Fragment>
                 <p id="details" className={textClassName}>
                   <HighlightableText highlightStrings={highlightStrings} value={displayAuthors}/>
                 </p>
@@ -144,21 +293,19 @@ const Paper =
                     </span>
                   </span>
                 </p>
-
-              </div>
-
-              <div className="readers" style={readersDivStyle}>
-                <p id="readers" className={textClassName}>
-                  <span id="num-readers">{readers}</span>
-                  <span className="readers_entity" style={{fontSize: citationsFontSize}}> citations</span>
-                </p>
-              </div>
-
+              </React.Fragment>}
             </div>
-          </foreignObject>
-        </g>
-      )
-    }
-  );
+            <div className="readers" style={readersDivStyle}>
+              <p id="readers" className={textClassName}>
+                <span id="num-readers">{readers}</span>
+                <span className="readers_entity" style={{fontSize: citationsFontSize}}> citations</span>
+              </p>
+            </div>
+          </div>
+        </foreignObject>
+      </g>
+    )
+  }
+}
 
-export default Paper;
+export default observer(Paper);

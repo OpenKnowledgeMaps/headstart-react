@@ -11,6 +11,9 @@ import {observer} from 'mobx-react';
 const Papers =
   observer(
     ({store, papers}) => {
+      if (store.hidePapers) {
+        return (<React.Fragment></React.Fragment>);
+      }
       return (
         <g>
           {papers

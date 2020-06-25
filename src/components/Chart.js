@@ -66,6 +66,11 @@ const Chart = observer(
     const hoverPapers = !hasHoverEntities ? '' :
       <Papers store={store} papers={hoveredEntity.filter((paper) => hasSubstring(paper, searchString))}/>;
 
+    let areaStyle = {};
+    if (this.props.store.bubblesStore.hasSelectedEntities && ! this.props.store.animationLock) {
+      areaStyle.cursor = "zoom-out";
+    }
+
     return (
         <div className="vis-col">
 
@@ -78,10 +83,11 @@ const Chart = observer(
               id="chart-svg"
               onClick={onSVGClick.bind(this, store)}
               onMouseOver={onSVGMouseOver.bind(this, store)}
+              style={areaStyle}
             >
               <g id="chart_canvas">
                 <rect width={svgWidth} height={svgHeight}/>
-                {flaglessPapers}
+                {this.props.store.forceSimIsDone && flaglessPapers}
                 <Nodes store={store} nodes={bubblesStore}/>
                 {activePapers}
                 {selectedPapers}

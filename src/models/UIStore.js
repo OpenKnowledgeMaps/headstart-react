@@ -1,9 +1,12 @@
 import { extendObservable } from "mobx";
 import { scaleLinear } from "d3-scale";
-import { timer } from 'd3-timer';
+import { transition } from 'd3-transition';
 import { easePolyInOut } from 'd3-ease';
 import PapersModel from "./PapersModel";
 import BubblesModel from "./BubblesModel";
+import * as d3 from "d3";
+
+const ZOOMED_BUBBLE_RATIO = 18/25;
 
 /**
  * The UI Store
@@ -27,6 +30,8 @@ class UIStore {
     this.previousSVGSize = Math.min(initWidth*0.6, initHeight);
     this.isZoomed = false;
     this.lock = false;
+    this.transition = null;
+    this.mouseeventQueue = [];
 
     // extendObservable tells MobX that these members of UIStore are observable.
     // When an observable is changed, all observers are updated automatically.
@@ -43,10 +48,15 @@ class UIStore {
       zoomFactor: 1,            // the zoomFactor - a value of 1 means no zoom
       translationVecX: 0,       // a translation vector for the x coordinate, value of 0 means the viz is centered
       translationVecY: 0,       // a translation vector for the y coordinate, value of 0 means the viz is centered
+      prevZoomFactor: 1,
+      prevTranslationVecX: 0,
+      prevTranslationVecY: 0,
       searchString: "",         // the string entered into the list search input
       displayList: true,        // whether list is shown or not
       sortOption: null,         // by which criteria the list should be sorted
-      topic: 'cool'             // the topic of the map, to be included in the subtitle
+      topic: 'cool',            // the topic of the map, to be included in the subtitle
+      animationLock: false,
+      hidePapers: false
     });
     this.initCoords(this.previousSVGSize);
   }
@@ -65,7 +75,7 @@ class UIStore {
     const startx = hasNode2 ? node2.orig_x : mid;
     const starty = hasNode2 ? node2.orig_y : mid;
     const startz = this.zoomFactor;
-    const z = mid / (orig_r*1.9);
+    const z = mid / orig_r * ZOOMED_BUBBLE_RATIO;
     const x = orig_x;
     const y = orig_y;
     this.updateZoomStateAnimated(z, x, y, startx, starty, startz);
@@ -98,31 +108,43 @@ class UIStore {
    * @param startz_- The starting zoom factor;
    * @param callback - A callback function;
    */
-  updateZoomStateAnimated(z, x, y, startx_, starty_, startz_, callback) {
-    const midx = this.svgWidth*0.5;
-    const midy = this.svgHeight*0.5;
+  updateZoomStateAnimated(zoom, x, y, startx_, starty_, startz_, callback) {
+    const midx = this.svgWidth * 0.5;
+    const midy = this.svgHeight * 0.5;
 
-    const duration = this.config.zoomDuration;
-    let ratio = 0.;
-    let t = timer(elapsed => {
-      ratio = (elapsed/duration) > 1 ? 1. : elapsed/duration;
-      const easeFactor = easePolyInOut(ratio, 1.2);
-      const newz = (1 - easeFactor)*startz_ + easeFactor*z;
-      const newy = (1 - easeFactor)*starty_ + easeFactor*y;
-      const newx = (1 - easeFactor)*startx_ + easeFactor*x;
+    this.animationLock = true;
+    // TODO take the duration from config
+    this.transition = transition().duration(750).ease(d3.easePolyInOut.exponent(3));
+    this.setTranslationVecX(midx - zoom * x);
+    this.setTranslationVecY(midy - zoom * y);
+    this.setZoomFactor(zoom);
+    this.transition.on("end", () => {
+      this.animationLock = false;
+      this.transition = null;
 
-      this.translationVecX = midx - newz*newx;
-      this.translationVecY = midy - newz*newy;
-      this.zoomFactor = newz;
-      // this.updateZoomState2(startz, startx, starty);
-
-      if ( elapsed > duration ) {
-        t.stop();
-        if (typeof  callback === 'function') callback();
+      while (this.mouseeventQueue.length > 0) {
+        let mouseeventHandler = this.mouseeventQueue.shift();
+        if (typeof mouseeventHandler === 'function') mouseeventHandler();
       }
+
+      if (typeof callback === 'function') callback();
     });
   }
 
+  setTranslationVecX(translationVecX) {
+    this.prevTranslationVecX = this.translationVecX;
+    this.translationVecX = translationVecX;
+  }
+
+  setTranslationVecY(translationVecY) {
+    this.prevTranslationVecY = this.translationVecY;
+    this.translationVecY = translationVecY;
+  }
+
+  setZoomFactor(zoomFactor) {
+    this.prevZoomFactor = this.zoomFactor;
+    this.zoomFactor = zoomFactor;
+  }
 
   /**
    * Returns the visualization to the original 'zoomed-out' state;
@@ -198,6 +220,8 @@ class UIStore {
    * @param check
    */
   updateChartSize(width, height) {
+    this.hidePapers = true;
+
     let newSVGSize = width;
     this.previousSVGSize = this.svgWidth;
     const prevX = this.svgWidth*0.5;
@@ -210,6 +234,8 @@ class UIStore {
     this.translationVecY *= midY/prevY;
     this.bubblesStore.onWindowResize(this.previousSVGSize, newSVGSize);
     this.papersStore.onWindowResize(this.previousSVGSize, newSVGSize);
+
+    this.hidePapers = false;
   }
 }
 
