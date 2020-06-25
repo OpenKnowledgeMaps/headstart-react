@@ -168,7 +168,7 @@ class Paper extends React.Component {
     const paper = this.props.paper;
 
     let { x, y, w, h, path, dogear } = this.state;
-    let { w_, h_ } = this.getCoordinates();
+    let { x_, y_, w_, h_ } = this.getCoordinates();
     const { svgWidth, svgHeight, searchString, papersStore } = store;
     const {
       zoomed,
@@ -238,6 +238,11 @@ class Paper extends React.Component {
       citationsFontSize = '11px';
     }
 
+    let zoomingOut = false;
+    if (!selected && (x !== x_ || y !== y_)) {
+      zoomingOut = true;
+    }
+
     return (
       <g
         onMouseEnter={onPaperMouseEnter.bind(this, store, paper)}
@@ -276,17 +281,19 @@ class Paper extends React.Component {
               <p id="title" className={textClassName}>
                 <HighlightableText highlightStrings={highlightStrings} value={title}/>
               </p>
-              <p id="details" className={textClassName}>
-                <HighlightableText highlightStrings={highlightStrings} value={displayAuthors}/>
-              </p>
-              <p id="in" className={textClassName}>in
-                <span className={textClassName}>
-                  <HighlightableText highlightStrings={highlightStrings} value={published_in}/>
-                  <span className="pubyear">
-                    (<HighlightableText highlightStrings={highlightStrings} value={year} />)
+              {!zoomingOut && <React.Fragment>
+                <p id="details" className={textClassName}>
+                  <HighlightableText highlightStrings={highlightStrings} value={displayAuthors}/>
+                </p>
+                <p id="in" className={textClassName}>in
+                  <span className={textClassName}>
+                    <HighlightableText highlightStrings={highlightStrings} value={published_in}/>
+                    <span className="pubyear">
+                      (<HighlightableText highlightStrings={highlightStrings} value={year} />)
+                    </span>
                   </span>
-                </span>
-              </p>
+                </p>
+              </React.Fragment>}
             </div>
             <div className="readers" style={readersDivStyle}>
               <p id="readers" className={textClassName}>
